@@ -1,4 +1,4 @@
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Project {
     // Attributes
@@ -9,19 +9,19 @@ public class Project {
     String erfNum;
     double cost;
     double totalPaid;
-    Date deadline;
+    LocalDate deadline;
     boolean finalised;
     Person customer;
     Person architect;
     Person contractor;
-    Date completeDate;
+    LocalDate completeDate;
 
     // Methods
 
     // Constructor
     public Project(int projectNum, String projectName, String typeBuilding, String address,
-                   String erfNum, double cost, double totalPaid, Date deadline, boolean finalised,
-                   Person customer, Person contractor, Person architect, Date completeDate){
+                   String erfNum, double cost, double totalPaid, LocalDate deadline, boolean finalised,
+                   Person customer, Person contractor, Person architect, LocalDate completeDate){
     this.projectNum = projectNum;
     this.projectName = projectName;
     this.typeBuilding = typeBuilding;
