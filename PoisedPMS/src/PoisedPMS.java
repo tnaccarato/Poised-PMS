@@ -13,9 +13,13 @@ public class PoisedPMS {
     // Calls main method
     public static void main (String [] args){
         newProject();
-        Project.changeDeadline(projectList.get(0));
-        System.out.println(projectList.get(0));
-    }
+        // Asks user which project they want to edit
+        Scanner input = new Scanner(System.in);
+        System.out.println("Which project would you like to change the deadline of?");
+        int changeDeadlineNum = input.nextInt() - 1; // -1 as index starts at 0
+        input.nextLine();
+        Project.changeDeadline(projectList.get(changeDeadlineNum));
+            }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
     public static void newProject (){
