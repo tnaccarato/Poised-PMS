@@ -19,4 +19,14 @@ public class Person {
         this.email = email;
         this.address = address;
     }
+
+    // toString
+    public String toString (){
+        String output = "Role: " + role;
+        output += "\nName: " + firstName + " " + surname;
+        output += "\nPhone Number: " + phoneNum;
+        output += "\nEmail: " + email;
+        output += "\n Address: " + address;
+        return output;
+    }
 }

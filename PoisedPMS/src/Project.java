@@ -36,4 +36,24 @@ public class Project {
     this.contractor = contractor;
     this.completeDate = completeDate;
     }
+
+    //toString
+    public String toString(){
+        String output = "Project Number: " + projectNum;
+        output += "\nProject Name: " + projectName;
+        output += "\nType of Building: " + typeBuilding;
+        output += "\nAddress: " + address;
+        output += "\nERF Number: " + erfNum;
+        output += "\nTotal Cost: " + cost;
+        output += "\nAmount Paid: " + totalPaid;
+        output += "\nDeadline: " + deadline;
+        output += "\nFinalised?: " + finalised;
+        if (finalised){
+            output += "\nCompletion Date: " + completeDate;}
+        output += "\nCustomer Details:\n" + customer;
+        output += "\nArchitect Details:\n" + architect;
+        output += "\nContractor Details:\n" + contractor;
+        return output;
+    }
 }
+
