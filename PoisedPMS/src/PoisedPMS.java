@@ -6,19 +6,21 @@ import java.util.Scanner;
 public class PoisedPMS {
     // Creates an empty project list (1)
     static List<Project> projectList = new LinkedList<>();
+    // Declares a count for the contact details
+    static int personCount = 0;
+    //Declares a count for project number
+    static int projectNum = 0;
     // Calls main method
     public static void main (String [] args){
         newProject();
-        System.out.println(projectList);
     }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
     public static void newProject (){
-    // Takes user inputs for attributes of the project
+        // Increases project number count
+        projectNum ++;
+        // Takes user inputs for attributes of the project
         Scanner input = new Scanner(System.in);
-        System.out.println("What number project is this?");
-        int projectNum = input.nextInt();
-        input.nextLine();   // Consumes rest of line so scanner works correctly (2)
         System.out.println("What is the name of this project? If this is left blank, " +
                 "a name will be generated.");
         String projectName = input.nextLine();
@@ -30,12 +32,12 @@ public class PoisedPMS {
         String erfNum = input.nextLine();
         System.out.println("What is the total cost of the project?");
         double cost = input.nextDouble();
-        input.nextLine();
+        input.nextLine(); // Consumes rest of line so scanner works correctly (2)
         System.out.println("How much has the customer already paid?");
         double totalPaid = input.nextDouble();
         input.nextLine();
-        System.out.println("When is the deadline for the project? Please enter as dd/MM/yyyy " +
-                "(i.e. 10/12/2022");
+        System.out.println("When is the deadline for the project? Please enter as yyyy-mm-dd " +
+                "(i.e. 2022-12-10)");
         String deadlineS = input.nextLine();
         // Converts deadline into Date (3)
         LocalDate deadline = LocalDate.parse(deadlineS);
@@ -51,7 +53,7 @@ public class PoisedPMS {
         // Sets a placeholder date for completion date as deadline
         LocalDate completionDate = deadline;
         // If the project name was left blank, generates a project name
-        if (projectName == ""){
+        if (projectName.equals("")){
             projectName = customer.surname + " " + typeBuilding;
         }
         // Creates a new project object
@@ -62,10 +64,21 @@ public class PoisedPMS {
     }
     // Creates a new Person object for user's inputs for attributes
     public static Person newPerson (){
+        // Generates the role of the person using count
+        String role = "";
+        if (personCount == 0){
+            role = "Customer";
+            personCount ++;}
+        else if (personCount == 1) {
+            role = "Architect";
+            personCount++;}
+        else if(personCount == 2){
+            role = "Contractor";
+            personCount = 0;  // Resets personCount for next project
+        }
+
         // Takes user inputs for attributes for the person
         Scanner input = new Scanner(System.in);
-        System.out.println("What is this person's role?");
-        String role = input.nextLine();
         System.out.println("What is this person's first name?");
         String firstName = input.nextLine();
         System.out.println("What is this person's surname?");
