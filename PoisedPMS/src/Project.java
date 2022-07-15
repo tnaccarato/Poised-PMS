@@ -63,7 +63,7 @@ public class Project {
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
         System.out.println("What would you like to change the deadline to? Please enter in the " +
-                "format yyyy-mm-dd (i.e. 2022-07-15");
+                "format yyyy-mm-dd (i.e. 2022-07-15)");
         String newDeadlineS = input.nextLine();
         // Converts deadline into Date
         LocalDate newDeadline = LocalDate.parse(newDeadlineS);
