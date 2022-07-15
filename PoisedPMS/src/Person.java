@@ -22,7 +22,7 @@ public class Person {
 
     // toString
     public String toString (){
-        String output = "Role: " + role;
+        String output = "\nRole: " + role;
         output += "\nName: " + firstName + " " + surname;
         output += "\nPhone Number: " + phoneNum;
         output += "\nEmail: " + email;

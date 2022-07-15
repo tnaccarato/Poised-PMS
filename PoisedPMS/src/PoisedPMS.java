@@ -13,6 +13,8 @@ public class PoisedPMS {
     // Calls main method
     public static void main (String [] args){
         newProject();
+        Project.changeDeadline(projectList.get(0));
+        System.out.println(projectList.get(0));
     }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
@@ -37,7 +39,7 @@ public class PoisedPMS {
         double totalPaid = input.nextDouble();
         input.nextLine();
         System.out.println("When is the deadline for the project? Please enter as yyyy-mm-dd " +
-                "(i.e. 2022-12-10)");
+                "(i.e. 2022-07-15)");
         String deadlineS = input.nextLine();
         // Converts deadline into Date (3)
         LocalDate deadline = LocalDate.parse(deadlineS);

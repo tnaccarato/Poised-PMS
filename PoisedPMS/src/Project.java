@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Project {
     // Attributes
@@ -20,8 +21,9 @@ public class Project {
 
     // Constructor
     public Project(int projectNum, String projectName, String typeBuilding, String address,
-                   String erfNum, double cost, double totalPaid, LocalDate deadline, boolean finalised,
-                   Person customer, Person contractor, Person architect, LocalDate completeDate){
+                   String erfNum, double cost, double totalPaid, LocalDate deadline,
+                   boolean finalised, Person customer, Person contractor, Person architect,
+                   LocalDate completeDate){
     this.projectNum = projectNum;
     this.projectName = projectName;
     this.typeBuilding = typeBuilding;
@@ -50,10 +52,24 @@ public class Project {
         output += "\nFinalised?: " + finalised;
         if (finalised){
             output += "\nCompletion Date: " + completeDate;}
-        output += "\nCustomer Details:\n" + customer;
-        output += "\nArchitect Details:\n" + architect;
-        output += "\nContractor Details:\n" + contractor;
+        output += "\n\nCustomer Details:\n" + customer;
+        output += "\n\nArchitect Details:\n" + architect;
+        output += "\n\nContractor Details:\n" + contractor;
         return output;
+    }
+
+    // Change deadline
+    public static Project changeDeadline(Project activeProject){
+        // Asks the user what they would like to change the deadline to
+        Scanner input = new Scanner(System.in);
+        System.out.println("What would you like to change the deadline to? Please enter in the " +
+                "format yyyy-mm-dd (i.e. 2022-07-15");
+        String newDeadlineS = input.nextLine();
+        // Converts deadline into Date
+        LocalDate newDeadline = LocalDate.parse(newDeadlineS);
+        // Sets the new deadline to project deadline
+        activeProject.deadline = newDeadline;
+        return activeProject;
     }
 }
 
