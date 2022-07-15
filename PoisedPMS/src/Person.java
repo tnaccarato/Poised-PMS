@@ -26,7 +26,7 @@ public class Person {
         output += "\nName: " + firstName + " " + surname;
         output += "\nPhone Number: " + phoneNum;
         output += "\nEmail: " + email;
-        output += "\n Address: " + address;
+        output += "\nAddress: " + address;
         return output;
     }
 }
