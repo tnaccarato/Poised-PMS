@@ -22,7 +22,7 @@ public class Project {
     // Constructor
     public Project(int projectNum, String projectName, String typeBuilding, String address,
                    String erfNum, double cost, double totalPaid, LocalDate deadline,
-                   boolean finalised, Person customer, Person contractor, Person architect,
+                   boolean finalised, Person customer, Person architect, Person contractor,
                    LocalDate completeDate){
     this.projectNum = projectNum;
     this.projectName = projectName;
