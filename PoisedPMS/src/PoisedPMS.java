@@ -22,25 +22,28 @@ public class PoisedPMS {
             System.out.println("Welcome to the Poised Project Management System. What would you " +
                     "like to " + "do?\n");
             System.out.println("""
-                    a  - add a new project
-                    v  - view all projects
-                    cd - change the due date of the project
-                    cp - change the amount the client has paid to date
-                    uc - update the contact details of the contractor
-                    f  - finalise a project
-                    q  - quit
+                    a  - Add a new project
+                    v  - View all projects
+                    cd - Change the due date of the project
+                    cp - Change the amount the client has paid to date
+                    uc - Update the contact details of the contractor
+                    f  - Finalise a project
+                    q  - Quit the program
                     """);
             Scanner menuInputScanner = new Scanner(System.in);
             System.out.println("Please enter your selection below:");
             String userInput = menuInputScanner.nextLine();
+            // If the user enters a, allows them to add a new project
             if ("a".equals(userInput)){
                 newProject();
             }
+            // If the user enters v, allows them to view all projects
             else if ("v".equals(userInput)){
                 for (Project project: projectList){
                     System.out.println(project);
                 }
             }
+            // If the user enters cd, allows them to change the deadline of a project
             else if ("cd".equals(userInput)){
                 Scanner changeDeadlineScanner = new Scanner(System.in);
                 System.out.println("Which project would you like to change the deadline of?");
@@ -48,6 +51,7 @@ public class PoisedPMS {
                 changeDeadlineScanner.nextLine();
                 Project.changeDeadline(projectList.get(changeDeadlineNum));
             }
+            // If the user enters cp, allows them to change the amount paid for
             else if ("cp".equals(userInput)){
                 Scanner changePaidScanner = new Scanner(System.in);
                 System.out.println("Which project would you like to change the amount paid for?");
@@ -55,6 +59,7 @@ public class PoisedPMS {
                 changePaidScanner.nextLine();
                 Project.changePaid(projectList.get(changePaidNum));
             }
+            // If user enters uc, allows them to update contractor details
             else if ("uc".equals(userInput)){
                 Scanner changeDetailsScanner = new Scanner(System.in);
                 System.out.println("Which project would you like to change the contractor details " +
@@ -63,11 +68,17 @@ public class PoisedPMS {
                 changeDetailsScanner.nextLine();
                 Person.changeDetails(projectList.get(changeDetailsNum).contractor);
             }
+            // If user enters f, allows them to finalise all projects
             else if ("f".equals(userInput)){
                 finalise();
             }
+            // If user enters q, quits the program
             else if ("q".equals(userInput)) {
                 break;
+            }
+            // Otherwise, prints an error message and allows them to try again
+            else{
+                System.out.println("Input \"" + userInput + "\" not recognised, please try again.");
             }
         }
     }
