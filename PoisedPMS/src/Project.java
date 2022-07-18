@@ -69,6 +69,8 @@ public class Project {
         LocalDate newDeadline = LocalDate.parse(newDeadlineS);
         // Sets the new deadline to project deadline
         activeProject.deadline = newDeadline;
+        // Prints a confirmation
+        System.out.println("Deadline changed successfully.");
         return activeProject;
     }
 
@@ -79,6 +81,8 @@ public class Project {
         double newPaid = input.nextDouble();
         input.nextLine();
         activeProject.totalPaid = newPaid;
+        // Prints a confirmation
+        System.out.println("Amount paid changed successfully.");
         return activeProject;
     }
 }

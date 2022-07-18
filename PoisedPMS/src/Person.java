@@ -52,6 +52,8 @@ public class Person {
             String newSurname = changeDetailsScanner.nextLine();
             activePerson.firstName = newFirstName;
             activePerson.surname = newSurname;
+            // Prints a confirmation
+            System.out.println("Name changed successfully.");
             return activePerson;
         }
         // If user enters p, allow them to change person's phone number
@@ -59,6 +61,7 @@ public class Person {
             System.out.println("What would you like to change their phone number to?");
             String newPhoneNum = changeDetailsScanner.nextLine();
             activePerson.phoneNum = newPhoneNum;
+            System.out.println("Phone number changed successfully.");
             return activePerson;
         }
         // If user enters e, allows them to change person's email
@@ -66,6 +69,8 @@ public class Person {
             System.out.println("What would you like to change their email address to?");
             String newEmail = changeDetailsScanner.nextLine();
             activePerson.email = newEmail;
+            // Prints a confirmation
+            System.out.println("Email changed successfully.");
             return activePerson;
         }
         // If user enters a, allows them to change person's address
@@ -73,6 +78,8 @@ public class Person {
             System.out.println("What would you like to change their address to");
             String newAddress = changeDetailsScanner.nextLine();
             activePerson.address = newAddress;
+            // Prints a confirmation
+            System.out.println("Address changed successfully.");
             return activePerson;
         }
         else{

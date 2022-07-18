@@ -74,6 +74,8 @@ public class PoisedPMS {
             }
             // If user enters q, quits the program
             else if ("q".equals(userInput)) {
+                System.out.println("Thank you for using the Poised Project Management System. " +
+                        "Goodbye!");
                 break;
             }
             // Otherwise, prints an error message and allows them to try again
