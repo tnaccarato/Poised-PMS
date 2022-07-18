@@ -55,6 +55,9 @@ public class PoisedPMS {
             changeDetailsScanner.nextLine();
             Person.changeDetails(projectList.get(changeDetailsNum).contractor);
         }
+        else if ("f".equals(userInput)){
+            finalise();
+        }
     }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
@@ -133,6 +136,26 @@ public class PoisedPMS {
         String address = input.nextLine();
         return new Person(role, firstName, surname, phoneNum, email, address);
     }
+
+    // Finalises all projects and generates an invoice for them
+    public static void finalise(){
+        // For each project in projectList:
+        for (Project project: projectList){
+            // Sets finalised to true
+            project.finalised = true;
+            // Sets the current date to the complete date
+            project.completeDate = LocalDate.now();
+            // Calculates the amount the customer still has to pay
+            double stillToPay = project.cost - project.totalPaid;
+            // Prints an invoice if the amount still to pay is more than 0
+            if (stillToPay > 0){
+                System.out.println(project);
+            }
+
+
+        }
+    }
+
 }
 
 /*
