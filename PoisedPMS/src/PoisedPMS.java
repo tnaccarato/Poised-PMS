@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class PoisedPMS {
@@ -14,14 +15,6 @@ public class PoisedPMS {
 
     public static void main (String [] args){
         menu();
-        newProject();
-        // Asks user which project they want to edit
-        Scanner input = new Scanner(System.in);
-        System.out.println("Which project would you like to change the deadline of?");
-        int changeDeadlineNum = input.nextInt() - 1; // -1 as index starts at 0
-        input.nextLine();
-        Project.changeDeadline(projectList.get(changeDeadlineNum));
-
     }
 
     // Displays the main menu of the application
@@ -35,25 +28,33 @@ public class PoisedPMS {
                 uc - update the contact details of the contractor
                 f  - finalise a project
                 """);
-        Scanner menuInput = new Scanner(System.in);
+        Scanner menuInputScanner = new Scanner(System.in);
         System.out.println("Please enter your selection below:");
-        String userInput = menuInput.nextLine();
-        if (userInput == "a"){
+        String userInput = menuInputScanner.nextLine();
+        if ("a".equals(userInput)){
             newProject();
         }
-        else if (userInput == "cd"){
-            Scanner changeDeadlineInput = new Scanner(System.in);
+        else if ("cd".equals(userInput)){
+            Scanner changeDeadlineScanner = new Scanner(System.in);
             System.out.println("Which project would you like to change the deadline of?");
-            int changeDeadlineNum = changeDeadlineInput.nextInt() - 1; // -1 as index starts at 0
-            changeDeadlineInput.nextLine();
+            int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
+            changeDeadlineScanner.nextLine();
             Project.changeDeadline(projectList.get(changeDeadlineNum));
         }
-        else if (userInput == "cp"){
-            Scanner changePaidInput = new Scanner(System.in);
+        else if ("cp".equals(userInput)){
+            Scanner changePaidScanner = new Scanner(System.in);
             System.out.println("Which project would you like to change the amount paid for?");
-            int changePaidNum = changePaidInput.nextInt() - 1;
-            changePaidInput.nextLine();
+            int changePaidNum = changePaidScanner.nextInt() - 1;
+            changePaidScanner.nextLine();
             Project.changePaid(projectList.get(changePaidNum));
+        }
+        else if ("uc".equals(userInput)){
+            Scanner changeDetailsScanner = new Scanner(System.in);
+            System.out.println("Which project would you like to change the contractor details " +
+                    "for?");
+            int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
+            changeDetailsScanner.nextLine();
+            Person.changeDetails(projectList.get(changeDetailsNum).contractor);
         }
     }
 
