@@ -11,7 +11,9 @@ public class PoisedPMS {
     //Declares a count for project number
     static int projectNum = 0;
     // Calls main method
+
     public static void main (String [] args){
+        menu();
         newProject();
         // Asks user which project they want to edit
         Scanner input = new Scanner(System.in);
@@ -19,7 +21,41 @@ public class PoisedPMS {
         int changeDeadlineNum = input.nextInt() - 1; // -1 as index starts at 0
         input.nextLine();
         Project.changeDeadline(projectList.get(changeDeadlineNum));
-            }
+
+    }
+
+    // Displays the main menu of the application
+    public static void menu (){
+        System.out.println("Welcome to the Poised Project Management System. What would you like to " +
+                "do?\n");
+        System.out.println("""
+                a  - add a new project
+                cd - change the due date of the project
+                cp - change the amount the client has paid to date
+                uc - update the contact details of the contractor
+                f  - finalise a project
+                """);
+        Scanner menuInput = new Scanner(System.in);
+        System.out.println("Please enter your selection below:");
+        String userInput = menuInput.nextLine();
+        if (userInput == "a"){
+            newProject();
+        }
+        else if (userInput == "cd"){
+            Scanner changeDeadlineInput = new Scanner(System.in);
+            System.out.println("Which project would you like to change the deadline of?");
+            int changeDeadlineNum = changeDeadlineInput.nextInt() - 1; // -1 as index starts at 0
+            changeDeadlineInput.nextLine();
+            Project.changeDeadline(projectList.get(changeDeadlineNum));
+        }
+        else if (userInput == "cp"){
+            Scanner changePaidInput = new Scanner(System.in);
+            System.out.println("Which project would you like to change the amount paid for?");
+            int changePaidNum = changePaidInput.nextInt() - 1;
+            changePaidInput.nextLine();
+            Project.changePaid(projectList.get(changePaidNum));
+        }
+    }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
     public static void newProject (){
