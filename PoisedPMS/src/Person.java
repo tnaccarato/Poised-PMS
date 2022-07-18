@@ -44,6 +44,7 @@ public class Person {
     a - Address
     """);
         String changeDetailsInput = changeDetailsScanner.nextLine();
+        // If user enters n, allow them to change the person's name
         if ("n".equals(changeDetailsInput)){
             System.out.println("What would you like to change their first name to?");
             String newFirstName = changeDetailsScanner.nextLine();
@@ -53,18 +54,21 @@ public class Person {
             activePerson.surname = newSurname;
             return activePerson;
         }
+        // If user enters p, allow them to change person's phone number
         else if ("p".equals(changeDetailsInput)){
             System.out.println("What would you like to change their phone number to?");
             String newPhoneNum = changeDetailsScanner.nextLine();
             activePerson.phoneNum = newPhoneNum;
             return activePerson;
         }
+        // If user enters e, allows them to change person's email
         else if ("e".equals(changeDetailsInput)){
             System.out.println("What would you like to change their email address to?");
             String newEmail = changeDetailsScanner.nextLine();
             activePerson.email = newEmail;
             return activePerson;
         }
+        // If user enters a, allows them to change person's address
         else if ("a".equals(changeDetailsInput)){
             System.out.println("What would you like to change their address to");
             String newAddress = changeDetailsScanner.nextLine();
