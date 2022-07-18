@@ -41,7 +41,7 @@ public class PoisedPMS {
             // If the user enters v, allows them to view all projects
             else if ("v".equals(userInput)){
                 // If there are no projects, print a statement saying that
-                if (projectList.size() == 0){
+                if (projectList.isEmpty()){
                     System.out.println("There are currently no projects.");
                 }
                 // Otherwise, prints the project information

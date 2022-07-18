@@ -33,7 +33,7 @@ public class Person {
     }
 
     // Update Person details
-    public static Person changeDetails(Person activePerson){
+    public static void changeDetails(Person activePerson){
         // Asks which details the user wants to change
         Scanner changeDetailsScanner = new Scanner(System.in);
         System.out.println("""
@@ -54,7 +54,6 @@ public class Person {
             activePerson.surname = newSurname;
             // Prints a confirmation
             System.out.println("Name changed successfully.");
-            return activePerson;
         }
         // If user enters p, allow them to change person's phone number
         else if ("p".equals(changeDetailsInput)){
@@ -62,7 +61,6 @@ public class Person {
             String newPhoneNum = changeDetailsScanner.nextLine();
             activePerson.phoneNum = newPhoneNum;
             System.out.println("Phone number changed successfully.");
-            return activePerson;
         }
         // If user enters e, allows them to change person's email
         else if ("e".equals(changeDetailsInput)){
@@ -71,7 +69,6 @@ public class Person {
             activePerson.email = newEmail;
             // Prints a confirmation
             System.out.println("Email changed successfully.");
-            return activePerson;
         }
         // If user enters a, allows them to change person's address
         else if ("a".equals(changeDetailsInput)){
@@ -80,12 +77,10 @@ public class Person {
             activePerson.address = newAddress;
             // Prints a confirmation
             System.out.println("Address changed successfully.");
-            return activePerson;
         }
         else{
             System.out.println("Sorry, your choice \"" + changeDetailsInput +
                     "\" was not recognised," + "please try again.");
-            return activePerson;
         }
     }
 }

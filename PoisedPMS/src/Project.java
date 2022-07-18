@@ -64,7 +64,7 @@ public class Project {
     }
 
     // Change deadline
-    public static Project changeDeadline(Project activeProject){
+    public static void changeDeadline(Project activeProject){
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
         System.out.println("What would you like to change the deadline to? Please enter in the " +
@@ -76,10 +76,9 @@ public class Project {
         activeProject.deadline = newDeadline;
         // Prints a confirmation
         System.out.println("Deadline changed successfully.");
-        return activeProject;
     }
 
-    public static Project changePaid(Project activeProject){
+    public static void changePaid(Project activeProject){
         // Asks the user what they would like set the total fee paid to
         Scanner input = new Scanner(System.in);
         System.out.println("What would you like to change the total amount paid to?");
@@ -88,6 +87,5 @@ public class Project {
         activeProject.totalPaid = newPaid;
         // Prints a confirmation
         System.out.println("Amount paid changed successfully.");
-        return activeProject;
     }
 }
