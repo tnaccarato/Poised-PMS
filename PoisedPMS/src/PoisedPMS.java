@@ -18,45 +18,57 @@ public class PoisedPMS {
 
     // Displays the main menu of the application
     public static void menu (){
-        System.out.println("Welcome to the Poised Project Management System. What would you like to " +
-                "do?\n");
-        System.out.println("""
-                a  - add a new project
-                cd - change the due date of the project
-                cp - change the amount the client has paid to date
-                uc - update the contact details of the contractor
-                f  - finalise a project
-                """);
-        Scanner menuInputScanner = new Scanner(System.in);
-        System.out.println("Please enter your selection below:");
-        String userInput = menuInputScanner.nextLine();
-        if ("a".equals(userInput)){
-            newProject();
-        }
-        else if ("cd".equals(userInput)){
-            Scanner changeDeadlineScanner = new Scanner(System.in);
-            System.out.println("Which project would you like to change the deadline of?");
-            int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
-            changeDeadlineScanner.nextLine();
-            Project.changeDeadline(projectList.get(changeDeadlineNum));
-        }
-        else if ("cp".equals(userInput)){
-            Scanner changePaidScanner = new Scanner(System.in);
-            System.out.println("Which project would you like to change the amount paid for?");
-            int changePaidNum = changePaidScanner.nextInt() - 1;
-            changePaidScanner.nextLine();
-            Project.changePaid(projectList.get(changePaidNum));
-        }
-        else if ("uc".equals(userInput)){
-            Scanner changeDetailsScanner = new Scanner(System.in);
-            System.out.println("Which project would you like to change the contractor details " +
-                    "for?");
-            int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
-            changeDetailsScanner.nextLine();
-            Person.changeDetails(projectList.get(changeDetailsNum).contractor);
-        }
-        else if ("f".equals(userInput)){
-            finalise();
+        while (true){
+            System.out.println("Welcome to the Poised Project Management System. What would you " +
+                    "like to " + "do?\n");
+            System.out.println("""
+                    a  - add a new project
+                    v  - view all projects
+                    cd - change the due date of the project
+                    cp - change the amount the client has paid to date
+                    uc - update the contact details of the contractor
+                    f  - finalise a project
+                    q  - quit
+                    """);
+            Scanner menuInputScanner = new Scanner(System.in);
+            System.out.println("Please enter your selection below:");
+            String userInput = menuInputScanner.nextLine();
+            if ("a".equals(userInput)){
+                newProject();
+            }
+            else if ("v".equals(userInput)){
+                for (Project project: projectList){
+                    System.out.println(project);
+                }
+            }
+            else if ("cd".equals(userInput)){
+                Scanner changeDeadlineScanner = new Scanner(System.in);
+                System.out.println("Which project would you like to change the deadline of?");
+                int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
+                changeDeadlineScanner.nextLine();
+                Project.changeDeadline(projectList.get(changeDeadlineNum));
+            }
+            else if ("cp".equals(userInput)){
+                Scanner changePaidScanner = new Scanner(System.in);
+                System.out.println("Which project would you like to change the amount paid for?");
+                int changePaidNum = changePaidScanner.nextInt() - 1;
+                changePaidScanner.nextLine();
+                Project.changePaid(projectList.get(changePaidNum));
+            }
+            else if ("uc".equals(userInput)){
+                Scanner changeDetailsScanner = new Scanner(System.in);
+                System.out.println("Which project would you like to change the contractor details " +
+                        "for?");
+                int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
+                changeDetailsScanner.nextLine();
+                Person.changeDetails(projectList.get(changeDetailsNum).contractor);
+            }
+            else if ("f".equals(userInput)){
+                finalise();
+            }
+            else if ("q".equals(userInput)) {
+                break;
+            }
         }
     }
 
@@ -106,6 +118,8 @@ public class PoisedPMS {
                 totalPaid, deadline, finalised, customer, architect, contractor, completionDate);
         // Adds new project to list
         projectList.add(project);
+        // Prints a confirmation that the project has been added successfully
+        System.out.println("Project added to system. Returning to menu...");
     }
 
     // Creates a new Person object for user's inputs for attributes
@@ -149,6 +163,7 @@ public class PoisedPMS {
             double stillToPay = project.cost - project.totalPaid;
             // Prints an invoice if the amount still to pay is more than 0
             if (stillToPay > 0){
+                System.out.println("Customer still has to pay £" + stillToPay);
                 System.out.println(project);
             }
 
