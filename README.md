@@ -52,7 +52,7 @@ list in an easy to read format.
 If the user selects 'cd', allows the user to choose a project number to change
 the deadline for.
 
-## Change Amount Paid
+### Change Amount Paid
 
 If the user selects 'cp', allows the user to change the amount the client has
 paid for.
