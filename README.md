@@ -26,20 +26,20 @@ q  - Quit the program
 If the user enters 'a', allow the user to enter new details about a project.
 The user is asked for the following:
 
--Project number
--Project name
--What type of building is being designed? E.g. House, apartment block or
+- Project number
+- Project name
+- What type of building is being designed? E.g. House, apartment block or
 store, etc
--The physical address for the project
--ERF number
--The total fee being charged for the project
--The total amount paid to date
--Deadline for the project
--The name, telephone number, email address and physical address of the
+- The physical address for the project
+- ERF number
+- The total fee being charged for the project
+- The total amount paid to date
+- Deadline for the project
+- The name, telephone number, email address and physical address of the
 architect for the project
--The name, telephone number, email address and physical address of the
+- The name, telephone number, email address and physical address of the
 contractor for the project
--The name, telephone number, email address and physical address of the
+- The name, telephone number, email address and physical address of the
 customer for the project
 
 ### View All Projects
