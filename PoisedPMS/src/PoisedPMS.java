@@ -68,6 +68,7 @@ public class PoisedPMS {
         // Adds new project to list
         projectList.add(project);
     }
+
     // Creates a new Person object for user's inputs for attributes
     public static Person newPerson (){
         // Generates the role of the person using count
@@ -82,7 +83,6 @@ public class PoisedPMS {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
-
         // Takes user inputs for attributes for the person
         Scanner input = new Scanner(System.in);
         System.out.println("What is this person's first name?");
