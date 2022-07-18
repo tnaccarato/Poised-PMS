@@ -39,8 +39,16 @@ public class PoisedPMS {
             }
             // If the user enters v, allows them to view all projects
             else if ("v".equals(userInput)){
-                for (Project project: projectList){
-                    System.out.println(project);
+                // If there are no projects, print a statement saying that
+                if (projectList.size() == 0){
+                    System.out.println("There are currently no projects.");
+                }
+                // Otherwise, prints the project information
+                else for (Project project: projectList){
+                    System.out.println(
+"-----------------------------------------------------------------------------------------------\n" +
+project +
+"-----------------------------------------------------------------------------------------------\n");
                 }
             }
             // If the user enters cd, allows them to change the deadline of a project
@@ -176,14 +184,15 @@ public class PoisedPMS {
             double stillToPay = project.cost - project.totalPaid;
             // Prints an invoice if the amount still to pay is more than 0
             if (stillToPay > 0){
+                System.out.println(
+"-----------------------------------------------------------------------------------------------\n");
                 System.out.println("Customer still has to pay £" + stillToPay);
                 System.out.println(project);
+                System.out.println(
+"\n-----------------------------------------------------------------------------------------------\n");
             }
-
-
         }
     }
-
 }
 
 /*
