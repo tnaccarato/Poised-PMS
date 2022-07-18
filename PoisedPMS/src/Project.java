@@ -71,5 +71,15 @@ public class Project {
         activeProject.deadline = newDeadline;
         return activeProject;
     }
+
+    public static Project changePaid(Project activeProject){
+        // Asks the user what they would like set the total fee paid to
+        Scanner input = new Scanner(System.in);
+        System.out.println("What would you like to change the total amount paid to?");
+        double newPaid = input.nextDouble();
+        input.nextLine();
+        activeProject.totalPaid = newPaid;
+        return activeProject;
+    }
 }
 
