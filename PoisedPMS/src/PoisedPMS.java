@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class PoisedPMS {
                 // Otherwise, prints the project information
                 else for (Project project: projectList){
                     System.out.println(
-"-----------------------------------------------------------------------------------------------\n" +
+"\n-----------------------------------------------------------------------------------------------\n" +
 project +
 "-----------------------------------------------------------------------------------------------\n");
                 }
@@ -184,9 +185,11 @@ project +
             double stillToPay = project.cost - project.totalPaid;
             // Prints an invoice if the amount still to pay is more than 0
             if (stillToPay > 0){
+                // Declares a decimal format for cost
+                DecimalFormat df = new DecimalFormat("#.##");
                 System.out.println(
 "-----------------------------------------------------------------------------------------------\n");
-                System.out.println("Customer still has to pay £" + stillToPay);
+                System.out.println("Customer still has to pay £" + df.format(stillToPay));
                 System.out.println(project);
                 System.out.println(
 "\n-----------------------------------------------------------------------------------------------\n");

@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -41,17 +42,21 @@ public class Project {
 
     //toString
     public String toString(){
+        DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
         String output = "Project Number: " + projectNum;
         output += "\nProject Name: " + projectName;
         output += "\nType of Building: " + typeBuilding;
         output += "\nAddress: " + address;
         output += "\nERF Number: " + erfNum;
-        output += "\nTotal Cost: " + cost;
-        output += "\nAmount Paid: " + totalPaid;
+        output += "\nTotal Cost: " + df.format(cost);
+        output += "\nAmount Paid: " + df.format(totalPaid);
         output += "\nDeadline: " + deadline;
-        output += "\nFinalised?: " + finalised;
+        // If the project is finalised, adds the completion date
         if (finalised){
+            output += "\nFinalised?: Yes";
             output += "\nCompletion Date: " + completeDate;}
+        else{
+            output += "\nFinalised?: No";}
         output += "\n\nCustomer Details:\n" + customer;
         output += "\n\nArchitect Details:\n" + architect;
         output += "\n\nContractor Details:\n" + contractor;
