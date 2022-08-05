@@ -8,6 +8,7 @@ public class Building {
     private String erfNum;
     private double cost;
 
+    // Constructor
     public Building(String typeBuilding, String address,
                     String erfNum, double cost){
         this.setTypeBuilding(typeBuilding);
@@ -15,7 +16,7 @@ public class Building {
         this.setErfNum(erfNum);
         this.setCost(cost);
     }
-
+    // toString
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
         String output = "";
@@ -25,7 +26,7 @@ public class Building {
         output += "\nTotal Cost: " + df.format(getCost());
         return output;
     }
-
+    // Getters and Setters
     public String getTypeBuilding() {
         return typeBuilding;
     }

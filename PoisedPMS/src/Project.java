@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -54,14 +55,25 @@ public class Project {
     }
 
     // Change deadline
-    public static void changeDeadline(Project activeProject){
+    public static void changeDeadline(Project activeProject) {
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
-        System.out.println("What would you like to change the deadline to? Please enter in the " +
-                "format yyyy-mm-dd (i.e. 2022-07-15)");
-        String newDeadlineS = input.nextLine();
-        // Converts deadline into Date
-        LocalDate newDeadline = LocalDate.parse(newDeadlineS);
+        LocalDate newDeadline;
+        while (true) {
+            System.out.println("What would you like to change the deadline to? Please enter in the " +
+                    "format yyyy-mm-dd (i.e. 2022-07-15)");
+            String newDeadlineS = input.nextLine();
+            try {
+                // Converts deadline into Date
+                newDeadline = LocalDate.parse(newDeadlineS);
+                break;
+            }
+            catch (DateTimeException e) {
+                System.out.println("Your input was not recognised, please make sure that you" +
+                        "enter a date in the format provided.");
+                input.nextLine();
+            }
+        }
         // Sets the new deadline to project deadline
         activeProject.setDeadline(newDeadline);
         // Prints a confirmation
@@ -79,6 +91,7 @@ public class Project {
         System.out.println("Amount paid changed successfully.");
     }
 
+    // Getters and Setters
     public int getProjectNum() {
         return projectNum;
     }

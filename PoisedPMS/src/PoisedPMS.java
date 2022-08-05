@@ -1,5 +1,7 @@
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -126,9 +128,9 @@ public class PoisedPMS {
     }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
-    public static void newProject (){
+    public static void newProject () {
         // Increases project number count
-        projectNum ++;
+        projectNum++;
         // Takes user inputs for attributes of the project
         Scanner input = new Scanner(System.in);
         System.out.println("What is the name of this project? If this is left blank, " +
@@ -140,19 +142,54 @@ public class PoisedPMS {
         String address = input.nextLine();
         System.out.println("What is the ERF number of the project?");
         String erfNum = input.nextLine();
-        System.out.println("What is the total cost of the project?");
-        double cost = input.nextDouble();
-        input.nextLine(); // Consumes rest of line so scanner works correctly (2)
+        double cost;
+        while (true) {
+            System.out.println("What is the total cost of the project?");
+            try {
+                cost = input.nextDouble();
+                input.nextLine(); // Consumes rest of line so scanner works correctly (2)
+                break;
+            }
+            // If the user doesn't enter a number, throws an error and allows them to try again
+            catch (InputMismatchException e) {
+                System.out.println("You did not enter a number, please try again.");
+                input.nextLine();
+            }
+        }
         // Creates a new Building object
         Building building = new Building(typeBuilding, address, erfNum, cost);
-        System.out.println("How much has the customer already paid?");
-        double totalPaid = input.nextDouble();
-        input.nextLine();
-        System.out.println("When is the deadline for the project? Please enter as yyyy-mm-dd " +
-                "(i.e. 2022-07-15)");
-        String deadlineS = input.nextLine();
-        // Converts deadline into Date (3)
-        LocalDate deadline = LocalDate.parse(deadlineS);
+        double totalPaid;
+        while (true) {
+            System.out.println("How much has the customer already paid?");
+            try {
+                totalPaid = input.nextDouble();
+                input.nextLine();
+                break;
+            }
+            // If the user doesn't enter a number, throws an error and allows them to try again
+            catch (InputMismatchException e) {
+                System.out.println("You did not enter a number, please try again.");
+                input.nextLine();
+            }
+        }
+        LocalDate deadline;
+        while (true) {
+            System.out.println("When is the deadline for the project? Please enter as yyyy-mm-dd " +
+                    "(i.e. 2022-07-15)");
+            String deadlineS = input.nextLine();
+            try {
+                // Converts deadline into Date (3)
+                deadline = LocalDate.parse(deadlineS);
+                break;
+            }
+            // If the user, didn't enter a date, tries again until they enter a properly formatted
+            // date
+            catch (DateTimeParseException e) {
+                System.out.println("Your input was not recognised, please make sure that you" +
+                        "enter a date in the format provided.");
+                input.nextLine();
+            }
+        }
         // Defaults finalised to false
         boolean finalised = false;
         // Sets a placeholder date for completion date as deadline
@@ -166,11 +203,11 @@ public class PoisedPMS {
         Person contractor = newPerson();
 
         // If the project name was left blank, generates a project name
-        if (projectName.equals("")){
+        if (projectName.equals("")) {
             projectName = customer.getSurname() + " " + typeBuilding;
         }
         // Creates a new project object
-        Project project = new Project(projectNum, projectName,building,
+        Project project = new Project(projectNum, projectName, building,
                 totalPaid, deadline, finalised, customer, architect, contractor, completionDate);
         // Adds new project to list
         projectList.add(project);

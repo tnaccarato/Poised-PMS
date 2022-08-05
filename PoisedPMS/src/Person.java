@@ -84,6 +84,7 @@ public class Person {
         }
     }
 
+    // Getters and Setters
     public String getRole() {
         return role;
     }
