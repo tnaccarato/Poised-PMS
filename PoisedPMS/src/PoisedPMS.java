@@ -101,10 +101,54 @@ public class PoisedPMS {
     // Changes the deadline of a project
     private static void changeDeadline() {
         Scanner changeDeadlineScanner = new Scanner(System.in);
-        System.out.println("Which project would you like to change the deadline of?");
-        int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
-        changeDeadlineScanner.nextLine();
-        Project.changeDeadline(projectList.get(changeDeadlineNum));
+        int changeDeadlineNum;
+        while(true) {
+            System.out.println("Which project would you like to change the deadline of?");
+            try {
+                changeDeadlineNum = changeDeadlineScanner.nextInt() - 1;
+                changeDeadlineScanner.nextLine();
+                break;
+            }
+            // If the user didn't enter a number, throw error and allow them to try again
+            catch (InputMismatchException notANum) {
+                System.out.println("You did not enter a number please try again.");
+                changeDeadlineScanner.nextLine();
+            }
+        }
+        while(true) {
+            try {
+                Project.changeDeadline(projectList.get(changeDeadlineNum));
+                break;
+            }
+            // If the index is not recognised gives an error and allows them to try again or
+            // return to menu
+            catch (IndexOutOfBoundsException outOfBounds) {
+                System.out.println("The project with the index you entered (" +
+                        (changeDeadlineNum) + ") " + "was not found. Would you like to try " +
+                        "again? (y/n)");
+                invalidIndex(changeDeadlineScanner);
+            }
+        }
+    }
+
+    // Provides a menu for retrying changeDeadline after invalid index
+    private static void invalidIndex(Scanner changeDeadlineScanner) {
+        try {
+            var userResponse = changeDeadlineScanner.nextLine();
+            if (userResponse.equals("y")) {
+                changeDeadline();
+            }
+            else if (userResponse.equals("n")) {
+                System.out.println("Returning to menu...");
+                menu();
+            }
+            else throw new InputMismatchException();
+        }
+        // If the user didn't enter y or n, allows them to try again
+        catch (InputMismatchException yesOrNo){
+            System.out.println("Input not recognised please enter either y or n:");
+            invalidIndex(changeDeadlineScanner);
+        }
     }
 
     // Prints a project
