@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PoisedPMS {
+    public static final String DIVIDER = """
+
+-----------------------------------------------------------------------------------------------
+    """;
     // Creates an empty project list (1)
     static List<Project> projectList = new LinkedList<>();
     // Declares a count for the contact details
@@ -103,10 +107,7 @@ public class PoisedPMS {
 
     // Prints a project
     private static void printProject(Project project) {
-        System.out.println(
-"\n-----------------------------------------------------------------------------------------------\n" +
-        project +
-"\n-----------------------------------------------------------------------------------------------\n");
+        System.out.println(DIVIDER + project + DIVIDER);
     }
 
     // Prints the menu options
@@ -225,12 +226,10 @@ public class PoisedPMS {
             if (stillToPay > 0){
                 // Declares a decimal format for cost
                 DecimalFormat df = new DecimalFormat("#.##");
-                System.out.println(
-"-----------------------------------------------------------------------------------------------\n");
+                System.out.println(DIVIDER);
                 System.out.println("Customer still has to pay £" + df.format(stillToPay));
                 System.out.println(project);
-                System.out.println(
-"\n-----------------------------------------------------------------------------------------------\n");
+                System.out.println(DIVIDER);
             }
         }
     }

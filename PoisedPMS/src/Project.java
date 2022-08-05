@@ -18,9 +18,9 @@ public class Project {
     // Methods
 
     // Constructor
-    public Project(int projectNum, String projectName, Building building, double totalPaid, LocalDate deadline,
-                   boolean finalised, Person customer, Person architect, Person contractor,
-                   LocalDate completeDate){
+    public Project(int projectNum, String projectName, Building building, double totalPaid,
+                   LocalDate deadline, boolean finalised, Person customer, Person architect,
+                   Person contractor, LocalDate completeDate){
     this.setProjectNum(projectNum);
     this.setProjectName(projectName);
     this.setBuilding(building);
