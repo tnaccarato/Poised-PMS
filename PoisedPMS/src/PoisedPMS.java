@@ -20,17 +20,7 @@ public class PoisedPMS {
     // Displays the main menu of the application
     public static void menu (){
         while (true){
-            System.out.println("Welcome to the Poised Project Management System. What would you " +
-                    "like to " + "do?\n");
-            System.out.println("""
-                    a  - Add a new project
-                    v  - View all projects
-                    cd - Change the due date of the project
-                    cp - Change the amount the client has paid to date
-                    uc - Update the contact details of the contractor
-                    f  - Finalise a project
-                    q  - Quit the program
-                    """);
+            printMenu();
             Scanner menuInputScanner = new Scanner(System.in);
             System.out.println("Please enter your selection below:");
             String userInput = menuInputScanner.nextLine();
@@ -40,42 +30,19 @@ public class PoisedPMS {
             }
             // If the user enters v, allows them to view all projects
             else if ("v".equals(userInput)){
-                // If there are no projects, print a statement saying that
-                if (projectList.isEmpty()){
-                    System.out.println("There are currently no projects.");
-                }
-                // Otherwise, prints the project information
-                else for (Project project: projectList){
-                    System.out.println(
-"\n-----------------------------------------------------------------------------------------------\n" +
-project +
-"-----------------------------------------------------------------------------------------------\n");
-                }
+                viewAll();
             }
             // If the user enters cd, allows them to change the deadline of a project
             else if ("cd".equals(userInput)){
-                Scanner changeDeadlineScanner = new Scanner(System.in);
-                System.out.println("Which project would you like to change the deadline of?");
-                int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
-                changeDeadlineScanner.nextLine();
-                Project.changeDeadline(projectList.get(changeDeadlineNum));
+                changeDeadline();
             }
             // If the user enters cp, allows them to change the amount paid for
             else if ("cp".equals(userInput)){
-                Scanner changePaidScanner = new Scanner(System.in);
-                System.out.println("Which project would you like to change the amount paid for?");
-                int changePaidNum = changePaidScanner.nextInt() - 1;
-                changePaidScanner.nextLine();
-                Project.changePaid(projectList.get(changePaidNum));
+                changeAmountPaid();
             }
             // If user enters uc, allows them to update contractor details
             else if ("uc".equals(userInput)){
-                Scanner changeDetailsScanner = new Scanner(System.in);
-                System.out.println("Which project would you like to change the contractor details " +
-                        "for?");
-                int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
-                changeDetailsScanner.nextLine();
-                Person.changeDetails(projectList.get(changeDetailsNum).contractor);
+                updateContractor();
             }
             // If user enters f, allows them to finalise all projects
             else if ("f".equals(userInput)){
@@ -92,6 +59,69 @@ project +
                 System.out.println("Input \"" + userInput + "\" not recognised, please try again.");
             }
         }
+    }
+
+    // Views all projects
+    private static void viewAll() {
+        // If there are no projects, print a statement saying that
+        if (projectList.isEmpty()){
+            System.out.println("There are currently no projects.");
+        }
+        // Otherwise, prints the project information
+        else for (Project project: projectList){
+            printProject(project);
+        }
+    }
+
+    // Updates contractors information
+    private static void updateContractor() {
+        Scanner changeDetailsScanner = new Scanner(System.in);
+        System.out.println("Which project would you like to change the contractor details " +
+                "for?");
+        int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
+        changeDetailsScanner.nextLine();
+        Person.changeDetails(projectList.get(changeDetailsNum).contractor);
+    }
+
+    // Changes the amount paid for
+    private static void changeAmountPaid() {
+        Scanner changePaidScanner = new Scanner(System.in);
+        System.out.println("Which project would you like to change the amount paid for?");
+        int changePaidNum = changePaidScanner.nextInt() - 1;
+        changePaidScanner.nextLine();
+        Project.changePaid(projectList.get(changePaidNum));
+    }
+
+    // Changes the deadline of a project
+    private static void changeDeadline() {
+        Scanner changeDeadlineScanner = new Scanner(System.in);
+        System.out.println("Which project would you like to change the deadline of?");
+        int changeDeadlineNum = changeDeadlineScanner.nextInt() - 1; // -1 as index starts at 0
+        changeDeadlineScanner.nextLine();
+        Project.changeDeadline(projectList.get(changeDeadlineNum));
+    }
+
+    // Prints a project
+    private static void printProject(Project project) {
+        System.out.println(
+"\n-----------------------------------------------------------------------------------------------\n" +
+        project +
+"-----------------------------------------------------------------------------------------------\n");
+    }
+
+    // Prints the menu options
+    private static void printMenu() {
+        System.out.println("Welcome to the Poised Project Management System. What would you " +
+                "like to " + "do?\n");
+        System.out.println("""
+                a  - Add a new project
+                v  - View all projects
+                cd - Change the due date of the project
+                cp - Change the amount the client has paid to date
+                uc - Update the contact details of the contractor
+                f  - Finalise a project
+                q  - Quit the program
+                """);
     }
 
     // Creates a new Project object from user's inputs for attributes and adds it to a list
