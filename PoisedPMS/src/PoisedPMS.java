@@ -185,7 +185,7 @@ public class PoisedPMS {
             // If the user, didn't enter a date, tries again until they enter a properly formatted
             // date
             catch (DateTimeParseException e) {
-                System.out.println("Your input was not recognised, please make sure that you" +
+                System.out.println("Your input was not recognised, please make sure that you " +
                         "enter a date in the format provided.");
                 input.nextLine();
             }
