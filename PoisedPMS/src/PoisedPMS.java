@@ -106,7 +106,7 @@ public class PoisedPMS {
         System.out.println(
 "\n-----------------------------------------------------------------------------------------------\n" +
         project +
-"-----------------------------------------------------------------------------------------------\n");
+"\n-----------------------------------------------------------------------------------------------\n");
     }
 
     // Prints the menu options
@@ -142,6 +142,8 @@ public class PoisedPMS {
         System.out.println("What is the total cost of the project?");
         double cost = input.nextDouble();
         input.nextLine(); // Consumes rest of line so scanner works correctly (2)
+        // Creates a new Building object
+        Building building = new Building(typeBuilding, address, erfNum, cost);
         System.out.println("How much has the customer already paid?");
         double totalPaid = input.nextDouble();
         input.nextLine();
@@ -167,7 +169,7 @@ public class PoisedPMS {
             projectName = customer.getSurname() + " " + typeBuilding;
         }
         // Creates a new project object
-        Project project = new Project(projectNum, projectName, typeBuilding, address, erfNum, cost,
+        Project project = new Project(projectNum, projectName,building,
                 totalPaid, deadline, finalised, customer, architect, contractor, completionDate);
         // Adds new project to list
         projectList.add(project);
@@ -218,7 +220,7 @@ public class PoisedPMS {
             // Sets the current date to the complete date
             project.setCompleteDate(LocalDate.now());
             // Calculates the amount the customer still has to pay
-            double stillToPay = project.getCost() - project.getTotalPaid();
+            double stillToPay = project.getBuilding().getCost() - project.getTotalPaid();
             // Prints an invoice if the amount still to pay is more than 0
             if (stillToPay > 0){
                 // Declares a decimal format for cost

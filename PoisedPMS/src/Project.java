@@ -6,10 +6,7 @@ public class Project {
     // Attributes
     private int projectNum;
     private String projectName;
-    private String typeBuilding;
-    private String address;
-    private String erfNum;
-    private double cost;
+    private Building building;
     private double totalPaid;
     private LocalDate deadline;
     private boolean finalised;
@@ -21,23 +18,19 @@ public class Project {
     // Methods
 
     // Constructor
-    public Project(int projectNum, String projectName, String typeBuilding, String address,
-                   String erfNum, double cost, double totalPaid, LocalDate deadline,
+    public Project(int projectNum, String projectName, Building building, double totalPaid, LocalDate deadline,
                    boolean finalised, Person customer, Person architect, Person contractor,
                    LocalDate completeDate){
     this.setProjectNum(projectNum);
     this.setProjectName(projectName);
-    this.setTypeBuilding(typeBuilding);
-    this.setAddress(address);
-    this.setErfNum(erfNum);
-    this.setCost(cost);
+    this.setBuilding(building);
     this.setTotalPaid(totalPaid);
     this.setDeadline(deadline);
+    this.setCompleteDate(completeDate);
     this.setFinalised(finalised);
     this.setCustomer(customer);
     this.setArchitect(architect);
     this.setContractor(contractor);
-    this.setCompleteDate(completeDate);
     }
 
     //toString
@@ -45,10 +38,7 @@ public class Project {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
         String output = "Project Number: " + getProjectNum();
         output += "\nProject Name: " + getProjectName();
-        output += "\nType of Building: " + getTypeBuilding();
-        output += "\nAddress: " + getAddress();
-        output += "\nERF Number: " + getErfNum();
-        output += "\nTotal Cost: " + df.format(getCost());
+        output += getBuilding();
         output += "\nAmount Paid: " + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
         // If the project is finalised, adds the completion date
@@ -105,37 +95,6 @@ public class Project {
         this.projectName = projectName;
     }
 
-    public String getTypeBuilding() {
-        return typeBuilding;
-    }
-
-    public void setTypeBuilding(String typeBuilding) {
-        this.typeBuilding = typeBuilding;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getErfNum() {
-        return erfNum;
-    }
-
-    public void setErfNum(String erfNum) {
-        this.erfNum = erfNum;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
 
     public double getTotalPaid() {
         return totalPaid;
@@ -191,5 +150,13 @@ public class Project {
 
     public void setCompleteDate(LocalDate completeDate) {
         this.completeDate = completeDate;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 }
