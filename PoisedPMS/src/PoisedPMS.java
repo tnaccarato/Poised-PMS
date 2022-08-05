@@ -11,13 +11,13 @@ public class PoisedPMS {
     static int personCount = 0;
     //Declares a count for project number
     static int projectNum = 0;
-    // Calls main method
 
+    // Calls main method
     public static void main (String [] args){
         menu();
     }
 
-    // Displays the main menu of the application
+    // Displays the main menu of the application and allows for user input for selection
     public static void menu (){
         while (true){
             printMenu();
@@ -80,7 +80,7 @@ public class PoisedPMS {
                 "for?");
         int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
         changeDetailsScanner.nextLine();
-        Person.changeDetails(projectList.get(changeDetailsNum).contractor);
+        Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
     }
 
     // Changes the amount paid for
@@ -152,6 +152,8 @@ public class PoisedPMS {
         LocalDate deadline = LocalDate.parse(deadlineS);
         // Defaults finalised to false
         boolean finalised = false;
+        // Sets a placeholder date for completion date as deadline
+        LocalDate completionDate = deadline;
         // Calls the newPerson method to generate information about person
         System.out.println("Please enter the details for the customer:");
         Person customer = newPerson();
@@ -159,11 +161,10 @@ public class PoisedPMS {
         Person architect = newPerson();
         System.out.println("Please enter the details for the contractor");
         Person contractor = newPerson();
-        // Sets a placeholder date for completion date as deadline
-        LocalDate completionDate = deadline;
+
         // If the project name was left blank, generates a project name
         if (projectName.equals("")){
-            projectName = customer.surname + " " + typeBuilding;
+            projectName = customer.getSurname() + " " + typeBuilding;
         }
         // Creates a new project object
         Project project = new Project(projectNum, projectName, typeBuilding, address, erfNum, cost,
@@ -188,6 +189,11 @@ public class PoisedPMS {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
+        // Asks user for input and creates a new Person object
+        return newPersonInput(role);
+    }
+
+    private static Person newPersonInput(String role) {
         // Takes user inputs for attributes for the person
         Scanner input = new Scanner(System.in);
         System.out.println("What is this person's first name?");
@@ -208,11 +214,11 @@ public class PoisedPMS {
         // For each project in projectList:
         for (Project project: projectList){
             // Sets finalised to true
-            project.finalised = true;
+            project.setFinalised(true);
             // Sets the current date to the complete date
-            project.completeDate = LocalDate.now();
+            project.setCompleteDate(LocalDate.now());
             // Calculates the amount the customer still has to pay
-            double stillToPay = project.cost - project.totalPaid;
+            double stillToPay = project.getCost() - project.getTotalPaid();
             // Prints an invoice if the amount still to pay is more than 0
             if (stillToPay > 0){
                 // Declares a decimal format for cost
