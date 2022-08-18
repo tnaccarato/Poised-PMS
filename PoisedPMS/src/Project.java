@@ -1,6 +1,7 @@
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Project {
@@ -70,7 +71,8 @@ public class Project {
             }
             catch (DateTimeException e) {
                 System.out.println("Your input was not recognised, please make sure that you" +
-                        "enter a date in the format provided.");
+                        " enter a date in the format provided.");
+                System.out.println("Press Enter to try again:");
                 input.nextLine();
             }
         }
@@ -80,12 +82,24 @@ public class Project {
         System.out.println("Deadline changed successfully.");
     }
 
-    public static void changePaid(Project activeProject){
+    public static void changePaid(Project activeProject) {
         // Asks the user what they would like set the total fee paid to
         Scanner input = new Scanner(System.in);
-        System.out.println("What would you like to change the total amount paid to?");
-        double newPaid = input.nextDouble();
-        input.nextLine();
+        double newPaid;
+        while (true) {
+            try {
+                System.out.println("What would you like to change the total amount paid to?");
+                newPaid = input.nextDouble();
+                input.nextLine();
+                break;
+            }
+            // If the user doesn't enter a number, gives an error and allows them to try again
+            catch (InputMismatchException e) {
+                System.out.println("Your input was not recognised. Please enter a number and " +
+                        "try again");
+                input.nextLine();
+            }
+        }
         activeProject.setTotalPaid(newPaid);
         // Prints a confirmation
         System.out.println("Amount paid changed successfully.");

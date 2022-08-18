@@ -231,6 +231,7 @@ public class PoisedPMS {
             catch (DateTimeParseException e) {
                 System.out.println("Your input was not recognised, please make sure that you " +
                         "enter a date in the format provided.");
+                System.out.println("Press Enter to try again:");
                 input.nextLine();
             }
         }
