@@ -1,5 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+## Cleans up languages
 *.html linguist-vendored
 *.js linguist-vendored
+*.css linguist-vendored
