@@ -5,7 +5,7 @@ This will be updated later on in the course to add more functionality.
 
 ## UML
 
-![UML](/Poised%20UML.jpg "UML")
+![UML](/Poised%20UML.png "UML")
 
 ## Menu
 
