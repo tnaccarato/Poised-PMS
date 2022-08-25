@@ -21,8 +21,8 @@ public class Project {
 
     // Constructor
     public Project(int projectNum, String projectName, Building building, double totalPaid,
-                   LocalDate deadline, boolean finalised, Person customer, Person architect,
-                   Person contractor, LocalDate completeDate){
+                   LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer, Person architect,
+                   Person contractor){
     this.setProjectNum(projectNum);
     this.setProjectName(projectName);
     this.setBuilding(building);

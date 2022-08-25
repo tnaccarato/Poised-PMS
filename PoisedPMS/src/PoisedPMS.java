@@ -1,10 +1,14 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class PoisedPMS {
     public static final String DIVIDER = """
@@ -19,8 +23,73 @@ public class PoisedPMS {
     static int projectNum = 0;
 
     // Calls main method
-    public static void main (String [] args){
+    public static void main (String [] args) {
+        // Creates a new projects.txt text file
+        readWriteFile();
         menu();
+    }
+
+    private static void readWriteFile() {
+        try {
+            File projectsFile = new File("src\\projects.txt");
+            if (projectsFile.createNewFile()) {
+                // Appends a line with the fields of the project and prints a confirmation
+                Files.write(Paths.get("src\\projects.txt"), ("projectNum,projectName," +
+                                "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
+                                "totalPaid,deadline,completeDate,finalised,customerRole, " +
+                                "customerFirstName,customerSurname,customerTelephone," +
+                                "customerEmail,customerAddress,architectRole,architectFirstName," +
+                                "architectLastName,architectTel,architectEmail,architectAddress," +
+                                "contractorRole,contractorFirstName,contractorLastName," +
+                                "contractorTel,contractorEmail,contractorAddress").getBytes(),
+                        StandardOpenOption.APPEND);
+                System.out.println("New projects.txt file has been created in src directory.");
+            }
+
+            // If file already exists, adds each line as a project to projectList
+            else{
+                System.out.println("projects.txt file already exists. Reading from file.");
+                Scanner fileReader = new Scanner(projectsFile);
+                fileReader.nextLine();  // Skips the first line (fields)
+                while(fileReader.hasNext()){
+                    String line = fileReader.nextLine();
+                    // Splits each line into a list of parameters and adds to a new ArrayList
+                    String[] projectParameters = line.split(",");
+                    ArrayList<String> projectParametersList = new ArrayList<>();
+                    Collections.addAll(projectParametersList, projectParameters);
+                    // Creates a project using the parameters given
+                    Building building = new Building(projectParametersList.get(2),
+                            projectParametersList.get(3), projectParametersList.get(4),
+                            Double.parseDouble(projectParametersList.get(5)));
+                    Person customer = new Person(projectParametersList.get(10),
+                            projectParametersList.get(11), projectParametersList.get(12),
+                            projectParametersList.get(13), projectParametersList.get(14),
+                            projectParametersList.get(15));
+                    Person architect = new Person(projectParametersList.get(16),
+                            projectParametersList.get(17), projectParametersList.get(18),
+                            projectParametersList.get(19), projectParametersList.get(20),
+                            projectParametersList.get(21));
+                    Person contractor = new Person(projectParametersList.get(22),
+                            projectParametersList.get(23), projectParametersList.get(24),
+                            projectParametersList.get(25), projectParametersList.get(26),
+                            projectParametersList.get(27));
+                    Project project = new Project(parseInt(projectParametersList.get(0)),
+                            projectParametersList.get(1), building,
+                            Double.parseDouble(projectParametersList.get(6)),
+                            LocalDate.parse(projectParametersList.get(7)),
+                            LocalDate.parse(projectParametersList.get(8)),
+                            Boolean.parseBoolean(projectParametersList.get(9)),
+                            customer, architect, contractor);
+                    // Adds project to projectList
+                    projectList.add(project);
+                }
+                fileReader.close();
+            }
+        }
+        // If an error occurs, prints the stack
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Displays the main menu of the application and allows for user input for selection
@@ -253,7 +322,7 @@ public class PoisedPMS {
         }
         // Creates a new project object
         Project project = new Project(projectNum, projectName, building,
-                totalPaid, deadline, finalised, customer, architect, contractor, completionDate);
+                totalPaid, deadline, completionDate, finalised, customer, architect, contractor);
         // Adds new project to list
         projectList.add(project);
         // Prints a confirmation that the project has been added successfully
