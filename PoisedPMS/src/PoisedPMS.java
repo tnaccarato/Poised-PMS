@@ -14,6 +14,7 @@ public class PoisedPMS {
 
 -----------------------------------------------------------------------------------------------
     """;
+    public static final String PROJECTS_TXT = "src\\projects.txt";
     // Creates an empty project list (1)
     static List<Project> projectList = new LinkedList<>();
     // Declares a count for the contact details
@@ -33,11 +34,11 @@ public class PoisedPMS {
      */
     private static void readWriteFile(){
         try {
-            File projectsFile = new File("src\\projects.txt");
+            File projectsFile = new File(PROJECTS_TXT);
             // If a new file is created
             if (projectsFile.createNewFile()) {
                 // Appends a line with the fields of the project and prints a confirmation
-                Files.write(Paths.get("src\\projects.txt"), ("projectNum,projectName," +
+                Files.write(Paths.get(PROJECTS_TXT), ("projectNum,projectName," +
                                 "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
                                 "totalPaid,deadline,completeDate,finalised,customerRole, " +
                                 "customerFirstName,customerSurname,customerTelephone," +
@@ -332,7 +333,16 @@ public class PoisedPMS {
                 totalPaid, deadline, completionDate, finalised, customer, architect, contractor);
         // Adds new project to list
         projectList.add(project);
-        //
+        // Adds the project to text file
+        try {
+            Files.write(Paths.get(PROJECTS_TXT), project.getAttributes().getBytes(),
+                    StandardOpenOption.APPEND);
+        }
+        // If an error occurs prints the stack
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
     }
