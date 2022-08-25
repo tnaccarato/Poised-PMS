@@ -1,9 +1,14 @@
+package main;
+
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * The type Project.
+ */
 public class Project {
     // Attributes
     private int projectNum;
@@ -19,7 +24,34 @@ public class Project {
 
     // Methods
 
-    // Constructor
+    /**
+     * Gets the values of each field and writes them to a string.
+     *
+     * @return the string with the values of each attribute.
+     */
+    public String getAttributes(){
+        String attributes;
+        attributes = "\n"+getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
+                +getTotalPaid()+","+getDeadline()+","+getCompleteDate()+","+isFinalised()+","
+                +customer.getAttributes()+","+architect.getAttributes()+","
+                +contractor.getAttributes();
+        return attributes;
+    }
+
+    /**
+     * Instantiates a new Project.
+     *
+     * @param projectNum   the project num
+     * @param projectName  the project name
+     * @param building     the building
+     * @param totalPaid    the total paid
+     * @param deadline     the deadline
+     * @param completeDate the complete date
+     * @param finalised    the finalised
+     * @param customer     the customer
+     * @param architect    the architect
+     * @param contractor   the contractor
+     */
     public Project(int projectNum, String projectName, Building building, double totalPaid,
                    LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer,
                    Person architect, Person contractor){
@@ -35,21 +67,14 @@ public class Project {
     this.setContractor(contractor);
     }
 
-    // Gets the values of each field and writes them to a string
-    public String getAttributes(){
-        String attributes;
-        attributes = "\n"+getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
-                +getTotalPaid()+","+getDeadline()+","+getCompleteDate()+","+isFinalised()+","
-                +customer.getAttributes()+","+architect.getAttributes()+","
-                +contractor.getAttributes();
-        return attributes;
-    }
-
-    //toString
+    /**
+     * toString method.
+     * @return string
+     */
     public String toString(){
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
-        String output = "Project Number: " + getProjectNum();
-        output += "\nProject Name: " + getProjectName();
+        String output = "main.Project Number: " + getProjectNum();
+        output += "\nmain.Project Name: " + getProjectName();
         output += getBuilding();
         output += "\nAmount Paid: " + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
@@ -65,7 +90,11 @@ public class Project {
         return output;
     }
 
-    // Change deadline
+    /**
+     * Change deadline.
+     *
+     * @param activeProject the active project
+     */
     public static void changeDeadline(Project activeProject) {
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
@@ -92,6 +121,11 @@ public class Project {
         System.out.println("Deadline changed successfully.");
     }
 
+    /**
+     * Change amount paid by client.
+     *
+     * @param activeProject the active project
+     */
     public static void changePaid(Project activeProject) {
         // Asks the user what they would like set the total fee paid to
         Scanner input = new Scanner(System.in);
@@ -116,82 +150,183 @@ public class Project {
     }
 
     // Getters and Setters
+    /**
+     * Gets project num.
+     *
+     * @return the project num
+     */
+
     public int getProjectNum() {
         return projectNum;
     }
 
+    /**
+     * Sets project num.
+     *
+     * @param projectNum the project num
+     */
     public void setProjectNum(int projectNum) {
         this.projectNum = projectNum;
     }
 
+    /**
+     * Gets project name.
+     *
+     * @return the project name
+     */
     public String getProjectName() {
         return projectName;
     }
 
+    /**
+     * Sets project name.
+     *
+     * @param projectName the project name
+     */
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
 
+    /**
+     * Gets total paid.
+     *
+     * @return the total paid
+     */
     public double getTotalPaid() {
         return totalPaid;
     }
 
+    /**
+     * Sets total paid.
+     *
+     * @param totalPaid the total paid
+     */
     public void setTotalPaid(double totalPaid) {
         this.totalPaid = totalPaid;
     }
 
+    /**
+     * Gets deadline.
+     *
+     * @return the deadline
+     */
     public LocalDate getDeadline() {
         return deadline;
     }
 
+    /**
+     * Sets deadline.
+     *
+     * @param deadline the deadline
+     */
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
+    /**
+     * Is finalised boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFinalised() {
         return finalised;
     }
 
+    /**
+     * Sets finalised.
+     *
+     * @param finalised the finalised
+     */
     public void setFinalised(boolean finalised) {
         this.finalised = finalised;
     }
 
+    /**
+     * Gets customer.
+     *
+     * @return the customer
+     */
     public Person getCustomer() {
         return customer;
     }
 
+    /**
+     * Sets customer.
+     *
+     * @param customer the customer
+     */
     public void setCustomer(Person customer) {
         this.customer = customer;
     }
 
+    /**
+     * Gets architect.
+     *
+     * @return the architect
+     */
     public Person getArchitect() {
         return architect;
     }
 
+    /**
+     * Sets architect.
+     *
+     * @param architect the architect
+     */
     public void setArchitect(Person architect) {
         this.architect = architect;
     }
 
+    /**
+     * Gets contractor.
+     *
+     * @return the contractor
+     */
     public Person getContractor() {
         return contractor;
     }
 
+    /**
+     * Sets contractor.
+     *
+     * @param contractor the contractor
+     */
     public void setContractor(Person contractor) {
         this.contractor = contractor;
     }
 
+    /**
+     * Gets complete date.
+     *
+     * @return the complete date
+     */
     public LocalDate getCompleteDate() {
         return completeDate;
     }
 
+    /**
+     * Sets complete date.
+     *
+     * @param completeDate the complete date
+     */
     public void setCompleteDate(LocalDate completeDate) {
         this.completeDate = completeDate;
     }
 
+    /**
+     * Gets building.
+     *
+     * @return the building
+     */
     public Building getBuilding() {
         return building;
     }
 
+    /**
+     * Sets building.
+     *
+     * @param building the building
+     */
     public void setBuilding(Building building) {
         this.building = building;
     }

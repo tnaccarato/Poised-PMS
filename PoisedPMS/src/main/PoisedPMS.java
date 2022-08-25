@@ -1,3 +1,5 @@
+package main;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,12 +12,24 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import static java.lang.Integer.parseInt;
 
+/**
+ * The main class of the program.
+ */
 public class PoisedPMS {
+    /**
+     * The constant DIVIDER.
+     */
     public static final String DIVIDER = """
 
 -----------------------------------------------------------------------------------------------
     """;
-    public static final String PROJECTS_TXT = "src\\projects.txt";
+    /**
+     * The constant PROJECTS_TXT for storing the projects.txt file path.
+     */
+    public static final String PROJECTS_TXT = "src\\main\\projects.txt";
+    /**
+     * The constant FIELDHEADERS for storing the headings for each field of the project.
+     */
     public static final String FIELDHEADERS = "projectNum,projectName," +
             "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
             "totalPaid,deadline,completeDate,finalised,customerRole, " +
@@ -24,14 +38,25 @@ public class PoisedPMS {
             "architectLastName,architectTel,architectEmail,architectAddress," +
             "contractorRole,contractorFirstName,contractorLastName," +
             "contractorTel,contractorEmail,contractorAddress";
-    // Creates an empty project list (1)
+    /**
+     * The constant projectList for storing the project objects.
+     */
     static List<Project> projectList = new LinkedList<>();
-    // Declares a count for the contact details
+    /**
+     * The constant personCount for use in determining the role of Person object.
+     */
     static int personCount = 0;
-    //Declares a count for project number
+    /**
+     * The constant projectNum for increasing the projectNum after each project is added.
+     */
     static int projectNum = 0;
 
-    // Calls main method
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+// Calls main method
     public static void main (String [] args) {
         // Creates a new projects.txt text file
         readWriteFile();
@@ -99,7 +124,9 @@ public class PoisedPMS {
         }
     }
 
-    // Displays the main menu of the application and allows for user input for selection
+    /**
+     * Displays the main menu of the application and allows for user input for selection.
+     */
     public static void menu (){
         while (true){
             printMenu();
@@ -134,7 +161,7 @@ public class PoisedPMS {
             else if ("q".equals(userInput)) {
                 // Rewrites the project txt file
                 updateTextFile();
-                System.out.println("Thank you for using the Poised Project Management System. " +
+                System.out.println("Thank you for using the Poised main.Project Management System. " +
                         "Goodbye!");
                 break;
             }
@@ -164,7 +191,9 @@ public class PoisedPMS {
         }
     }
 
-    // Views all projects
+    /**
+     * Views all the projects and prints them in an easy-to-read format.
+     */
     private static void viewAll() {
         // If there are no projects, print a statement saying that
         if (projectList.isEmpty()){
@@ -186,7 +215,9 @@ public class PoisedPMS {
         Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
     }
 
-    // Changes the amount paid for
+    /**
+     * Changes the amount paid for by the client.
+     */
     private static void changeAmountPaid() {
         Scanner changePaidScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the amount paid for?");
@@ -195,7 +226,9 @@ public class PoisedPMS {
         Project.changePaid(projectList.get(changePaidNum));
     }
 
-    // Changes the deadline of a project
+    /**
+     * Changes the deadline of a project.
+     */
     private static void changeDeadline() {
         Scanner changeDeadlineScanner = new Scanner(System.in);
         int changeDeadlineNum;
@@ -228,7 +261,9 @@ public class PoisedPMS {
         }
     }
 
-    // Provides a menu for retrying changeDeadline after invalid index
+    /**
+     * Provides a menu for retrying changeDeadline after invalid index
+     */
     private static void invalidIndex(Scanner changeDeadlineScanner) {
         try {
             var userResponse = changeDeadlineScanner.nextLine();
@@ -248,14 +283,19 @@ public class PoisedPMS {
         }
     }
 
-    // Prints a project
+    /**
+     * Prints a project.
+     * @param project The selected project object.
+     */
     private static void printProject(Project project) {
         System.out.println(DIVIDER + project + DIVIDER);
     }
 
-    // Prints the menu options
+    /**
+     * Prints the menu options
+     */
     private static void printMenu() {
-        System.out.println("Welcome to the Poised Project Management System. What would you " +
+        System.out.println("Welcome to the Poised main.Project Management System. What would you " +
                 "like to " + "do?\n");
         System.out.println("""
                 a  - Add a new project
@@ -269,9 +309,8 @@ public class PoisedPMS {
     }
 
     /**
-     * Creates a new Project object from user's inputs for attributes and adds it to a list.
+     * Creates a new main.Project object from user's inputs for attributes and adds it to a list.
      */
-// Creates a new Project object from user's inputs for attributes and adds it to a list
     public static void newProject () {
         // Increases project number count
         projectNum++;
@@ -300,7 +339,7 @@ public class PoisedPMS {
                 input.nextLine();
             }
         }
-        // Creates a new Building object
+        // Creates a new main.Building object
         Building building = new Building(typeBuilding, address, erfNum, cost);
         double totalPaid;
         while (true) {
@@ -367,10 +406,13 @@ public class PoisedPMS {
         }
 
         // Prints a confirmation that the project has been added successfully
-        System.out.println("Project added to system. Returning to menu...");
+        System.out.println("main.Project added to system. Returning to menu...");
     }
 
-    // Creates a new Person object for user's inputs for attributes
+    /**
+     * Creates a new main.Person object for user's inputs for attributes.
+     * @return New Person object.
+     */
     public static Person newPerson (){
         // Generates the role of the person using count
         String role = "";
@@ -384,12 +426,16 @@ public class PoisedPMS {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
-        // Asks user for input and creates a new Person object
+        // Asks user for input and creates a new main.Person object
         return newPersonInput(role);
     }
 
+    /**
+     * Takes user inputs for attributes for the person.
+     * @param role The role of the Person object.
+     * @return new Person object.
+     */
     private static Person newPersonInput(String role) {
-        // Takes user inputs for attributes for the person
         Scanner input = new Scanner(System.in);
         System.out.println("What is this person's first name?");
         String firstName = input.nextLine();
@@ -404,7 +450,9 @@ public class PoisedPMS {
         return new Person(role, firstName, surname, phoneNum, email, address);
     }
 
-    // Finalises all projects and generates an invoice for them
+    /**
+     * Finalises all projects and generates an invoice for them
+     */
     public static void finalise(){
         // For each project in projectList:
         for (Project project: projectList){

@@ -1,5 +1,10 @@
+package main;
+
 import java.util.Scanner;
 
+/**
+ * The type Person.
+ */
 public class Person {
     // Attributes
     private String role;
@@ -11,7 +16,17 @@ public class Person {
 
     // Methods
 
-    // Constructor
+    /**
+     * Instantiates a new Person.
+     *
+     * @param role      the role
+     * @param firstName the first name
+     * @param surname   the surname
+     * @param phoneNum  the phone num
+     * @param email     the email
+     * @param address   the address
+     */
+// Constructor
     public Person (String role, String firstName, String surname, String phoneNum, String email,
                    String address){
         this.setRole(role);
@@ -22,7 +37,12 @@ public class Person {
         this.setAddress(address);
     }
 
-    // Gets the values of each field and writes them to a string
+    /**
+     * Gets the values of each field and writes them to a string.
+     *
+     * @return the string
+     */
+//
     public String getAttributes(){
         String attributes;
         attributes = getRole()+","+getFirstName()+","+getSurname()+","+getPhoneNum()+","
@@ -39,7 +59,11 @@ public class Person {
         return output;
     }
 
-    // Update Person details
+    /**
+     * Update main.Person details.
+     *
+     * @param activePerson the active person
+     */
     public static void changeDetails(Person activePerson){
         // Asks which details the user wants to change
         Scanner changeDetailsScanner = new Scanner(System.in);
@@ -92,50 +116,111 @@ public class Person {
     }
 
     // Getters and Setters
+    /**
+     * Gets role.
+     *
+     * @return the role
+     */
+
     public String getRole() {
         return role;
     }
 
+    /**
+     * Sets role.
+     *
+     * @param role the role
+     */
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets first name.
+     *
+     * @param firstName the first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets surname.
+     *
+     * @return the surname
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     * Sets surname.
+     *
+     * @param surname the surname
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     * Gets phone num.
+     *
+     * @return the phone num
+     */
     public String getPhoneNum() {
         return phoneNum;
     }
 
+    /**
+     * Sets phone num.
+     *
+     * @param phoneNum the phone num
+     */
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets address.
+     *
+     * @return the address
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Sets address.
+     *
+     * @param address the address
+     */
     public void setAddress(String address) {
         this.address = address;
     }
