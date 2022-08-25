@@ -23,7 +23,7 @@ public class Building {
      */
 // Constructor
     public Building(String typeBuilding, String address,
-                    String erfNum, double cost){
+                    String erfNum, double cost) {
         this.setTypeBuilding(typeBuilding);
         this.setAddress(address);
         this.setErfNum(erfNum);
@@ -36,11 +36,12 @@ public class Building {
      * @return the string
      */
 // Gets the values of each field and writes them to a string
-    public String getAttributes(){
+    public String getAttributes() {
         String attributes;
-        attributes = getTypeBuilding()+","+getAddress()+","+getErfNum()+","+getCost();
+        attributes = getTypeBuilding() + "," + getAddress() + "," + getErfNum() + "," + getCost();
         return attributes;
     }
+
     // toString
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
@@ -53,6 +54,7 @@ public class Building {
     }
 
     // Getters and Setters
+
     /**
      * Gets type building.
      *

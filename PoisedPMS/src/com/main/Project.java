@@ -25,20 +25,6 @@ public class Project {
     // Methods
 
     /**
-     * Gets the values of each field and writes them to a string.
-     *
-     * @return the string with the values of each attribute.
-     */
-    public String getAttributes(){
-        String attributes;
-        attributes = "\n"+getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
-                +getTotalPaid()+","+getDeadline()+","+getCompleteDate()+","+isFinalised()+","
-                +customer.getAttributes()+","+architect.getAttributes()+","
-                +contractor.getAttributes();
-        return attributes;
-    }
-
-    /**
      * Instantiates a new Project.
      *
      * @param projectNum   the project num
@@ -54,40 +40,17 @@ public class Project {
      */
     public Project(int projectNum, String projectName, Building building, double totalPaid,
                    LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer,
-                   Person architect, Person contractor){
-    this.setProjectNum(projectNum);
-    this.setProjectName(projectName);
-    this.setBuilding(building);
-    this.setTotalPaid(totalPaid);
-    this.setDeadline(deadline);
-    this.setCompleteDate(completeDate);
-    this.setFinalised(finalised);
-    this.setCustomer(customer);
-    this.setArchitect(architect);
-    this.setContractor(contractor);
-    }
-
-    /**
-     * toString method.
-     * @return string
-     */
-    public String toString(){
-        DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
-        String output = "com.main.Project Number: " + getProjectNum();
-        output += "\ncom.main.Project Name: " + getProjectName();
-        output += getBuilding();
-        output += "\nAmount Paid: " + df.format(getTotalPaid());
-        output += "\nDeadline: " + getDeadline();
-        // If the project is finalised, adds the completion date
-        if (isFinalised()){
-            output += "\nFinalised?: Yes";
-            output += "\nCompletion Date: " + getCompleteDate();}
-        else{
-            output += "\nFinalised?: No";}
-        output += "\n\nCustomer Details:\n" + getCustomer();
-        output += "\n\nArchitect Details:\n" + getArchitect();
-        output += "\n\nContractor Details:\n" + getContractor();
-        return output;
+                   Person architect, Person contractor) {
+        this.setProjectNum(projectNum);
+        this.setProjectName(projectName);
+        this.setBuilding(building);
+        this.setTotalPaid(totalPaid);
+        this.setDeadline(deadline);
+        this.setCompleteDate(completeDate);
+        this.setFinalised(finalised);
+        this.setCustomer(customer);
+        this.setArchitect(architect);
+        this.setContractor(contractor);
     }
 
     /**
@@ -107,8 +70,7 @@ public class Project {
                 // Converts deadline into Date
                 newDeadline = LocalDate.parse(newDeadlineS);
                 break;
-            }
-            catch (DateTimeException e) {
+            } catch (DateTimeException e) {
                 System.out.println("Your input was not recognised, please make sure that you" +
                         " enter a date in the format provided.");
                 System.out.println("Press Enter to try again:");
@@ -149,7 +111,47 @@ public class Project {
         System.out.println("Amount paid changed successfully.");
     }
 
+    /**
+     * Gets the values of each field and writes them to a string.
+     *
+     * @return the string with the values of each attribute.
+     */
+    public String getAttributes() {
+        String attributes;
+        attributes = "\n" + getProjectNum() + "," + getProjectName() + "," + building.getAttributes() + ","
+                + getTotalPaid() + "," + getDeadline() + "," + getCompleteDate() + "," + isFinalised() + ","
+                + customer.getAttributes() + "," + architect.getAttributes() + ","
+                + contractor.getAttributes();
+        return attributes;
+    }
+
+    /**
+     * toString method.
+     *
+     * @return string
+     */
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
+        String output = "com.main.Project Number: " + getProjectNum();
+        output += "\ncom.main.Project Name: " + getProjectName();
+        output += getBuilding();
+        output += "\nAmount Paid: " + df.format(getTotalPaid());
+        output += "\nDeadline: " + getDeadline();
+        // If the project is finalised, adds the completion date
+        if (isFinalised()) {
+            output += "\nFinalised?: Yes";
+            output += "\nCompletion Date: " + getCompleteDate();
+        } else {
+            output += "\nFinalised?: No";
+        }
+        output += "\n\nCustomer Details:\n" + getCustomer();
+        output += "\n\nArchitect Details:\n" + getArchitect();
+        output += "\n\nContractor Details:\n" + getContractor();
+        return output;
+    }
+
     // Getters and Setters
+
     /**
      * Gets project num.
      *

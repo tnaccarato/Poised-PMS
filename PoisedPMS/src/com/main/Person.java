@@ -27,8 +27,8 @@ public class Person {
      * @param address   the address
      */
 // Constructor
-    public Person (String role, String firstName, String surname, String phoneNum, String email,
-                   String address){
+    public Person(String role, String firstName, String surname, String phoneNum, String email,
+                  String address) {
         this.setRole(role);
         this.setFirstName(firstName);
         this.setSurname(surname);
@@ -38,45 +38,23 @@ public class Person {
     }
 
     /**
-     * Gets the values of each field and writes them to a string.
-     *
-     * @return the string
-     */
-//
-    public String getAttributes(){
-        String attributes;
-        attributes = getRole()+","+getFirstName()+","+getSurname()+","+getPhoneNum()+","
-                +getEmail()+","+getAddress();
-        return attributes;
-    }
-    // toString
-    public String toString (){
-        String output = "\nRole: " + getRole();
-        output += "\nName: " + getFirstName() + " " + getSurname();
-        output += "\nPhone Number: " + getPhoneNum();
-        output += "\nEmail: " + getEmail();
-        output += "\nAddress: " + getAddress();
-        return output;
-    }
-
-    /**
      * Update com.main.Person details.
      *
      * @param activePerson the active person
      */
-    public static void changeDetails(Person activePerson){
+    public static void changeDetails(Person activePerson) {
         // Asks which details the user wants to change
         Scanner changeDetailsScanner = new Scanner(System.in);
         System.out.println("""
-    Which details would you like to change?
-    n - Name
-    p - Phone number
-    e - Email Address
-    a - Address
-    """);
+                Which details would you like to change?
+                n - Name
+                p - Phone number
+                e - Email Address
+                a - Address
+                """);
         String changeDetailsInput = changeDetailsScanner.nextLine();
         // If user enters n, allow them to change the person's name
-        if ("n".equals(changeDetailsInput)){
+        if ("n".equals(changeDetailsInput)) {
             System.out.println("What would you like to change their first name to?");
             String newFirstName = changeDetailsScanner.nextLine();
             System.out.println("What would you like to change their surname to?");
@@ -87,14 +65,14 @@ public class Person {
             System.out.println("Name changed successfully.");
         }
         // If user enters p, allow them to change person's phone number
-        else if ("p".equals(changeDetailsInput)){
+        else if ("p".equals(changeDetailsInput)) {
             System.out.println("What would you like to change their phone number to?");
             String newPhoneNum = changeDetailsScanner.nextLine();
             activePerson.setPhoneNum(newPhoneNum);
             System.out.println("Phone number changed successfully.");
         }
         // If user enters e, allows them to change person's email
-        else if ("e".equals(changeDetailsInput)){
+        else if ("e".equals(changeDetailsInput)) {
             System.out.println("What would you like to change their email address to?");
             String newEmail = changeDetailsScanner.nextLine();
             activePerson.setEmail(newEmail);
@@ -102,20 +80,43 @@ public class Person {
             System.out.println("Email changed successfully.");
         }
         // If user enters a, allows them to change person's address
-        else if ("a".equals(changeDetailsInput)){
+        else if ("a".equals(changeDetailsInput)) {
             System.out.println("What would you like to change their address to");
             String newAddress = changeDetailsScanner.nextLine();
             activePerson.setAddress(newAddress);
             // Prints a confirmation
             System.out.println("Address changed successfully.");
-        }
-        else{
+        } else {
             System.out.println("Sorry, your choice \"" + changeDetailsInput +
                     "\" was not recognised," + "please try again.");
         }
     }
 
+    /**
+     * Gets the values of each field and writes them to a string.
+     *
+     * @return the string
+     */
+//
+    public String getAttributes() {
+        String attributes;
+        attributes = getRole() + "," + getFirstName() + "," + getSurname() + "," + getPhoneNum() + ","
+                + getEmail() + "," + getAddress();
+        return attributes;
+    }
+
+    // toString
+    public String toString() {
+        String output = "\nRole: " + getRole();
+        output += "\nName: " + getFirstName() + " " + getSurname();
+        output += "\nPhone Number: " + getPhoneNum();
+        output += "\nEmail: " + getEmail();
+        output += "\nAddress: " + getAddress();
+        return output;
+    }
+
     // Getters and Setters
+
     /**
      * Gets role.
      *

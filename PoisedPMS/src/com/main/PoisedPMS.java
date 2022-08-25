@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+
 import static java.lang.Integer.parseInt;
 
 /**
@@ -21,8 +22,8 @@ public class PoisedPMS {
      */
     public static final String DIVIDER = """
 
------------------------------------------------------------------------------------------------
-    """;
+            -----------------------------------------------------------------------------------------------
+                """;
     /**
      * The constant PROJECTS_TXT for storing the projects.txt file path.
      */
@@ -57,16 +58,16 @@ public class PoisedPMS {
      * @param args the input arguments
      */
 // Calls main method
-    public static void main (String [] args) {
+    public static void main(String[] args) {
         // Creates a new projects.txt text file
         readWriteFile();
         menu();
     }
 
     /**
-    * Reads from the projects.txt file and if one does not exist, creates it.
+     * Reads from the projects.txt file and if one does not exist, creates it.
      */
-    private static void readWriteFile(){
+    private static void readWriteFile() {
         try {
             File projectsFile = new File(PROJECTS_TXT);
             // If a new file is created
@@ -79,11 +80,11 @@ public class PoisedPMS {
             }
 
             // If file already exists, adds each line as a project to projectList
-            else{
+            else {
                 System.out.println("projects.txt file already exists. Reading from file.");
                 Scanner fileReader = new Scanner(projectsFile);
                 fileReader.nextLine();  // Skips the first line (fields)
-                while(fileReader.hasNext()){
+                while (fileReader.hasNext()) {
                     String line = fileReader.nextLine();
                     // Splits each line into a list of parameters and adds to a new ArrayList
                     String[] projectParameters = line.split(",");
@@ -128,34 +129,34 @@ public class PoisedPMS {
     /**
      * Displays the main menu of the application and allows for user input for selection.
      */
-    public static void menu (){
-        while (true){
+    public static void menu() {
+        while (true) {
             printMenu();
             Scanner menuInputScanner = new Scanner(System.in);
             System.out.println("Please enter your selection below:");
             String userInput = menuInputScanner.nextLine();
             // If the user enters a, allows them to add a new project
-            if ("a".equals(userInput)){
+            if ("a".equals(userInput)) {
                 newProject();
             }
             // If the user enters v, allows them to view all projects
-            else if ("v".equals(userInput)){
+            else if ("v".equals(userInput)) {
                 viewAll();
             }
             // If the user enters cd, allows them to change the deadline of a project
-            else if ("cd".equals(userInput)){
+            else if ("cd".equals(userInput)) {
                 changeDeadline();
             }
             // If the user enters cp, allows them to change the amount paid for
-            else if ("cp".equals(userInput)){
+            else if ("cp".equals(userInput)) {
                 changeAmountPaid();
             }
             // If user enters uc, allows them to update contractor details
-            else if ("uc".equals(userInput)){
+            else if ("uc".equals(userInput)) {
                 updateContractor();
             }
             // If user enters f, allows them to finalise all projects
-            else if ("f".equals(userInput)){
+            else if ("f".equals(userInput)) {
                 finalise();
             }
             // If user enters q, quits the program
@@ -167,7 +168,7 @@ public class PoisedPMS {
                 break;
             }
             // Otherwise, prints an error message and allows them to try again
-            else{
+            else {
                 System.out.println("Input \"" + userInput + "\" not recognised, please try again.");
             }
         }
@@ -187,7 +188,7 @@ public class PoisedPMS {
             }
         }
         // If an error occurs, prints the stack
-        catch (IOException e){
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -197,11 +198,11 @@ public class PoisedPMS {
      */
     private static void viewAll() {
         // If there are no projects, print a statement saying that
-        if (projectList.isEmpty()){
+        if (projectList.isEmpty()) {
             System.out.println("There are currently no projects.");
         }
         // Otherwise, prints the project information
-        else for (Project project: projectList){
+        else for (Project project : projectList) {
             printProject(project);
         }
     }
@@ -233,7 +234,7 @@ public class PoisedPMS {
     private static void changeDeadline() {
         Scanner changeDeadlineScanner = new Scanner(System.in);
         int changeDeadlineNum;
-        while(true) {
+        while (true) {
             System.out.println("Which project would you like to change the deadline of?");
             try {
                 changeDeadlineNum = changeDeadlineScanner.nextInt() - 1;
@@ -246,7 +247,7 @@ public class PoisedPMS {
                 changeDeadlineScanner.nextLine();
             }
         }
-        while(true) {
+        while (true) {
             try {
                 Project.changeDeadline(projectList.get(changeDeadlineNum));
                 break;
@@ -270,15 +271,13 @@ public class PoisedPMS {
             var userResponse = changeDeadlineScanner.nextLine();
             if (userResponse.equals("y")) {
                 changeDeadline();
-            }
-            else if (userResponse.equals("n")) {
+            } else if (userResponse.equals("n")) {
                 System.out.println("Returning to menu...");
                 menu();
-            }
-            else throw new InputMismatchException();
+            } else throw new InputMismatchException();
         }
         // If the user didn't enter y or n, allows them to try again
-        catch (InputMismatchException yesOrNo){
+        catch (InputMismatchException yesOrNo) {
             System.out.println("Input not recognised please enter either y or n:");
             invalidIndex(changeDeadlineScanner);
         }
@@ -286,6 +285,7 @@ public class PoisedPMS {
 
     /**
      * Prints a project.
+     *
      * @param project The selected project object.
      */
     private static void printProject(Project project) {
@@ -312,7 +312,7 @@ public class PoisedPMS {
     /**
      * Creates a new com.main.Project object from user's inputs for attributes and adds it to a list.
      */
-    public static void newProject () {
+    public static void newProject() {
         // Increases project number count
         projectNum++;
         // Takes user inputs for attributes of the project
@@ -402,7 +402,7 @@ public class PoisedPMS {
                     StandardOpenOption.APPEND);
         }
         // If an error occurs, prints the stack
-        catch (IOException e){
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -412,18 +412,19 @@ public class PoisedPMS {
 
     /**
      * Creates a new com.main.Person object for user's inputs for attributes.
+     *
      * @return New Person object.
      */
-    public static Person newPerson (){
+    public static Person newPerson() {
         // Generates the role of the person using count
         String role = "";
-        if (personCount == 0){
+        if (personCount == 0) {
             role = "Customer";
-            personCount ++;}
-        else if (personCount == 1) {
+            personCount++;
+        } else if (personCount == 1) {
             role = "Architect";
-            personCount++;}
-        else if(personCount == 2){
+            personCount++;
+        } else if (personCount == 2) {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
@@ -433,6 +434,7 @@ public class PoisedPMS {
 
     /**
      * Takes user inputs for attributes for the person.
+     *
      * @param role The role of the Person object.
      * @return new Person object.
      */
@@ -454,9 +456,9 @@ public class PoisedPMS {
     /**
      * Finalises all projects and generates an invoice for them
      */
-    public static void finalise(){
+    public static void finalise() {
         // For each project in projectList:
-        for (Project project: projectList){
+        for (Project project : projectList) {
             // Sets finalised to true
             project.setFinalised(true);
             // Sets the current date to the complete date
@@ -464,7 +466,7 @@ public class PoisedPMS {
             // Calculates the amount the customer still has to pay
             double stillToPay = project.getBuilding().getCost() - project.getTotalPaid();
             // Prints an invoice if the amount still to pay is more than 0
-            if (stillToPay > 0){
+            if (stillToPay > 0) {
                 // Declares a decimal format for cost
                 DecimalFormat df = new DecimalFormat("#.##");
                 System.out.println(DIVIDER);
