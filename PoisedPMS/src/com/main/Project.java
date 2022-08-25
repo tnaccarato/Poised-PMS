@@ -1,4 +1,4 @@
-package main;
+package com.main;
 
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
@@ -73,8 +73,8 @@ public class Project {
      */
     public String toString(){
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
-        String output = "main.Project Number: " + getProjectNum();
-        output += "\nmain.Project Name: " + getProjectName();
+        String output = "com.main.Project Number: " + getProjectNum();
+        output += "\ncom.main.Project Name: " + getProjectName();
         output += getBuilding();
         output += "\nAmount Paid: " + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();

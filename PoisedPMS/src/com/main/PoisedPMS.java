@@ -1,4 +1,4 @@
-package main;
+package com.main;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class PoisedPMS {
     /**
      * The constant PROJECTS_TXT for storing the projects.txt file path.
      */
-    public static final String PROJECTS_TXT = "src\\main\\projects.txt";
+    public static final String PROJECTS_TXT = "src\\com\\main\\projects.txt";
     /**
      * The constant FIELDHEADERS for storing the headings for each field of the project.
      */
@@ -74,7 +74,8 @@ public class PoisedPMS {
                 // Appends a line with the fields of the project and prints a confirmation
                 Files.write(Paths.get(PROJECTS_TXT), FIELDHEADERS.getBytes(),
                         StandardOpenOption.APPEND);
-                System.out.println("New projects.txt file has been created in src directory.");
+                System.out.println("New projects.txt file has been created in" + PROJECTS_TXT +
+                        "directory.");
             }
 
             // If file already exists, adds each line as a project to projectList
@@ -161,7 +162,7 @@ public class PoisedPMS {
             else if ("q".equals(userInput)) {
                 // Rewrites the project txt file
                 updateTextFile();
-                System.out.println("Thank you for using the Poised main.Project Management System. " +
+                System.out.println("Thank you for using the Poised Project Management System. " +
                         "Goodbye!");
                 break;
             }
@@ -295,7 +296,7 @@ public class PoisedPMS {
      * Prints the menu options
      */
     private static void printMenu() {
-        System.out.println("Welcome to the Poised main.Project Management System. What would you " +
+        System.out.println("Welcome to the Poised Project Management System. What would you " +
                 "like to " + "do?\n");
         System.out.println("""
                 a  - Add a new project
@@ -309,7 +310,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Creates a new main.Project object from user's inputs for attributes and adds it to a list.
+     * Creates a new com.main.Project object from user's inputs for attributes and adds it to a list.
      */
     public static void newProject () {
         // Increases project number count
@@ -339,7 +340,7 @@ public class PoisedPMS {
                 input.nextLine();
             }
         }
-        // Creates a new main.Building object
+        // Creates a new com.main.Building object
         Building building = new Building(typeBuilding, address, erfNum, cost);
         double totalPaid;
         while (true) {
@@ -406,11 +407,11 @@ public class PoisedPMS {
         }
 
         // Prints a confirmation that the project has been added successfully
-        System.out.println("main.Project added to system. Returning to menu...");
+        System.out.println("com.main.Project added to system. Returning to menu...");
     }
 
     /**
-     * Creates a new main.Person object for user's inputs for attributes.
+     * Creates a new com.main.Person object for user's inputs for attributes.
      * @return New Person object.
      */
     public static Person newPerson (){
@@ -426,7 +427,7 @@ public class PoisedPMS {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
-        // Asks user for input and creates a new main.Person object
+        // Asks user for input and creates a new com.main.Person object
         return newPersonInput(role);
     }
 

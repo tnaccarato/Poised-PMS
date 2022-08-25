@@ -1,4 +1,4 @@
-package main;
+package com.main;
 
 import java.util.Scanner;
 
@@ -60,7 +60,7 @@ public class Person {
     }
 
     /**
-     * Update main.Person details.
+     * Update com.main.Person details.
      *
      * @param activePerson the active person
      */

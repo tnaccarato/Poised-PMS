@@ -1,4 +1,4 @@
-package main;
+package com.main;
 
 import java.text.DecimalFormat;
 
@@ -45,7 +45,7 @@ public class Building {
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
         String output = "";
-        output += "\nType of main.Building: " + getTypeBuilding();
+        output += "\nType of com.main.Building: " + getTypeBuilding();
         output += "\nAddress: " + getAddress();
         output += "\nERF Number: " + getErfNum();
         output += "\nTotal Cost: " + df.format(getCost());
