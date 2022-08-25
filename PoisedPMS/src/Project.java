@@ -38,12 +38,13 @@ public class Project {
     // Gets the values of each field and writes them to a string
     public String getAttributes(){
         String attributes;
-        attributes = getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
+        attributes = "\n"+getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
                 +getTotalPaid()+","+getDeadline()+","+getCompleteDate()+","+isFinalised()+","
                 +customer.getAttributes()+","+architect.getAttributes()+","
                 +contractor.getAttributes();
         return attributes;
     }
+
     //toString
     public String toString(){
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
