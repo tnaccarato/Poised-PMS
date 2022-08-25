@@ -16,6 +16,13 @@ public class Building {
         this.setErfNum(erfNum);
         this.setCost(cost);
     }
+
+    // Gets the values of each field and writes them to a string
+    public String getAttributes(){
+        String attributes;
+        attributes = getTypeBuilding()+","+getAddress()+","+getErfNum()+","+getCost();
+        return attributes;
+    }
     // toString
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs

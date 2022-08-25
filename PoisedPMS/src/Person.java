@@ -22,6 +22,13 @@ public class Person {
         this.setAddress(address);
     }
 
+    // Gets the values of each field and writes them to a string
+    public String getAttributes(){
+        String attributes;
+        attributes = getRole()+","+getFirstName()+","+getSurname()+","+getPhoneNum()+","
+                +getEmail()+","+getAddress();
+        return attributes;
+    }
     // toString
     public String toString (){
         String output = "\nRole: " + getRole();

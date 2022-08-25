@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-
 import static java.lang.Integer.parseInt;
 
 public class PoisedPMS {
@@ -29,9 +28,13 @@ public class PoisedPMS {
         menu();
     }
 
-    private static void readWriteFile() {
+    /**
+    * Reads from the projects.txt file and if one does not exist, creates it.
+     */
+    private static void readWriteFile(){
         try {
             File projectsFile = new File("src\\projects.txt");
+            // If a new file is created
             if (projectsFile.createNewFile()) {
                 // Appends a line with the fields of the project and prints a confirmation
                 Files.write(Paths.get("src\\projects.txt"), ("projectNum,projectName," +
@@ -83,6 +86,7 @@ public class PoisedPMS {
                     // Adds project to projectList
                     projectList.add(project);
                 }
+                // Closes the scanner
                 fileReader.close();
             }
         }
@@ -240,7 +244,10 @@ public class PoisedPMS {
                 """);
     }
 
-    // Creates a new Project object from user's inputs for attributes and adds it to a list
+    /**
+     * Creates a new Project object from user's inputs for attributes and adds it to a list.
+     */
+// Creates a new Project object from user's inputs for attributes and adds it to a list
     public static void newProject () {
         // Increases project number count
         projectNum++;
@@ -325,6 +332,7 @@ public class PoisedPMS {
                 totalPaid, deadline, completionDate, finalised, customer, architect, contractor);
         // Adds new project to list
         projectList.add(project);
+        //
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
     }

@@ -21,8 +21,8 @@ public class Project {
 
     // Constructor
     public Project(int projectNum, String projectName, Building building, double totalPaid,
-                   LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer, Person architect,
-                   Person contractor){
+                   LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer,
+                   Person architect, Person contractor){
     this.setProjectNum(projectNum);
     this.setProjectName(projectName);
     this.setBuilding(building);
@@ -35,6 +35,15 @@ public class Project {
     this.setContractor(contractor);
     }
 
+    // Gets the values of each field and writes them to a string
+    public String getAttributes(){
+        String attributes;
+        attributes = getProjectNum()+","+getProjectName()+","+building.getAttributes()+","
+                +getTotalPaid()+","+getDeadline()+","+getCompleteDate()+","+isFinalised()+","
+                +customer.getAttributes()+","+architect.getAttributes()+","
+                +contractor.getAttributes();
+        return attributes;
+    }
     //toString
     public String toString(){
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
@@ -121,7 +130,6 @@ public class Project {
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
-
 
     public double getTotalPaid() {
         return totalPaid;
