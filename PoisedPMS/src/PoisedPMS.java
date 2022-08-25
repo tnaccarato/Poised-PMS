@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
@@ -15,6 +16,14 @@ public class PoisedPMS {
 -----------------------------------------------------------------------------------------------
     """;
     public static final String PROJECTS_TXT = "src\\projects.txt";
+    public static final String FIELDHEADERS = "projectNum,projectName," +
+            "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
+            "totalPaid,deadline,completeDate,finalised,customerRole, " +
+            "customerFirstName,customerSurname,customerTelephone," +
+            "customerEmail,customerAddress,architectRole,architectFirstName," +
+            "architectLastName,architectTel,architectEmail,architectAddress," +
+            "contractorRole,contractorFirstName,contractorLastName," +
+            "contractorTel,contractorEmail,contractorAddress";
     // Creates an empty project list (1)
     static List<Project> projectList = new LinkedList<>();
     // Declares a count for the contact details
@@ -38,14 +47,7 @@ public class PoisedPMS {
             // If a new file is created
             if (projectsFile.createNewFile()) {
                 // Appends a line with the fields of the project and prints a confirmation
-                Files.write(Paths.get(PROJECTS_TXT), ("projectNum,projectName," +
-                                "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
-                                "totalPaid,deadline,completeDate,finalised,customerRole, " +
-                                "customerFirstName,customerSurname,customerTelephone," +
-                                "customerEmail,customerAddress,architectRole,architectFirstName," +
-                                "architectLastName,architectTel,architectEmail,architectAddress," +
-                                "contractorRole,contractorFirstName,contractorLastName," +
-                                "contractorTel,contractorEmail,contractorAddress").getBytes(),
+                Files.write(Paths.get(PROJECTS_TXT), FIELDHEADERS.getBytes(),
                         StandardOpenOption.APPEND);
                 System.out.println("New projects.txt file has been created in src directory.");
             }
@@ -130,6 +132,8 @@ public class PoisedPMS {
             }
             // If user enters q, quits the program
             else if ("q".equals(userInput)) {
+                // Rewrites the project txt file
+                updateTextFile();
                 System.out.println("Thank you for using the Poised Project Management System. " +
                         "Goodbye!");
                 break;
@@ -138,6 +142,25 @@ public class PoisedPMS {
             else{
                 System.out.println("Input \"" + userInput + "\" not recognised, please try again.");
             }
+        }
+    }
+
+    /**
+     * Updates the projects.txt file using the projectsList data.
+     */
+    private static void updateTextFile() {
+        try {
+            Path getTextPath = Paths.get(PROJECTS_TXT);
+            Files.write(getTextPath, FIELDHEADERS.getBytes());
+            for (Project project : projectList) {
+                Files.write(getTextPath,
+                        project.getAttributes().getBytes(),
+                        StandardOpenOption.APPEND);
+            }
+        }
+        // If an error occurs, prints the stack
+        catch (IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -338,7 +361,7 @@ public class PoisedPMS {
             Files.write(Paths.get(PROJECTS_TXT), project.getAttributes().getBytes(),
                     StandardOpenOption.APPEND);
         }
-        // If an error occurs prints the stack
+        // If an error occurs, prints the stack
         catch (IOException e){
             e.printStackTrace();
         }
