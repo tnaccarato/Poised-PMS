@@ -33,16 +33,18 @@ public class Building {
     /**
      * Gets the values of each field and writes them to a string.
      *
-     * @return the string
+     * @return the string with the attributes of the object
      */
-// Gets the values of each field and writes them to a string
     public String getAttributes() {
         String attributes;
         attributes = getTypeBuilding() + "," + getAddress() + "," + getErfNum() + "," + getCost();
         return attributes;
     }
 
-    // toString
+    /**
+     * Overrides toString method to print the details of the object for viewing
+     * @return string with object details for use in print statements
+     */
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
         String output = "";
