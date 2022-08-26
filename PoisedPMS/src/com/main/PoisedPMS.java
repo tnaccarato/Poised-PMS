@@ -65,6 +65,15 @@ public class PoisedPMS {
     }
 
     /**
+     * Generates a summary of projects for viewing when asked to choose a project
+     */
+    public static void projectSummary(){
+        for(Project project:projectList){
+            System.out.println(project.getProjectNum() + " - " + project.getProjectName());
+        }
+    }
+
+    /**
      * Reads from the projects.txt file and if one does not exist, creates it.
      */
     private static void readWriteFile() {
@@ -310,7 +319,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Creates a new com.main.Project object from user's inputs for attributes and adds it to a list.
+     * Creates a new Project object from user's inputs for attributes and adds it to a list.
      */
     public static void newProject() {
         // Increases project number count
@@ -454,7 +463,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Finalises all projects and generates an invoice for them
+     * Asks user to select a project they want to finalise and generates an invoice for them.
      */
     public static void finalise() {
         // Asks user which project they want to finalise
@@ -483,6 +492,7 @@ public class PoisedPMS {
                 finaliseInput.nextLine();
             }
         }
+
         // Changes project details for the selected project
         // Sets finalised to true
         projectList.get(finaliseChoice).setFinalised(true);
