@@ -457,23 +457,37 @@ public class PoisedPMS {
      * Finalises all projects and generates an invoice for them
      */
     public static void finalise() {
-        // For each project in projectList:
-        for (Project project : projectList) {
-            // Sets finalised to true
-            project.setFinalised(true);
-            // Sets the current date to the complete date
-            project.setCompleteDate(LocalDate.now());
-            // Calculates the amount the customer still has to pay
-            double stillToPay = project.getBuilding().getCost() - project.getTotalPaid();
-            // Prints an invoice if the amount still to pay is more than 0
-            if (stillToPay > 0) {
-                // Declares a decimal format for cost
-                DecimalFormat df = new DecimalFormat("#.##");
-                System.out.println(DIVIDER);
-                System.out.println("Customer still has to pay £" + df.format(stillToPay));
-                System.out.println(project);
-                System.out.println(DIVIDER);
+        // Asks user which project they want to finalise
+        System.out.println("Which project would you like to finalise?");
+        Scanner finaliseInput = new Scanner(System.in);
+        int finaliseChoice;
+        while (true) {
+            try {
+                finaliseChoice = finaliseInput.nextInt() - 1;
+                finaliseInput.nextLine();
+                finaliseInput.close();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("You did not enter an integer, please try again.");
+                finaliseInput.nextLine();
             }
+        }
+        // Changes project details for the selected project
+        // Sets finalised to true
+        projectList.get(finaliseChoice).setFinalised(true);
+        // Sets the current date to the complete date
+        projectList.get(finaliseChoice).setCompleteDate(LocalDate.now());
+        // Calculates the amount the customer still has to pay
+        double stillToPay = projectList.get(finaliseChoice).getBuilding().getCost()
+                - projectList.get(finaliseChoice).getTotalPaid();
+        // Prints an invoice if the amount still to pay is more than 0
+        if (stillToPay > 0) {
+            // Declares a decimal format for cost
+            DecimalFormat df = new DecimalFormat("#.##");
+            System.out.println(DIVIDER);
+            System.out.println("Customer still has to pay £" + df.format(stillToPay));
+            System.out.println(projectList.get(finaliseChoice));
+            System.out.println(DIVIDER);
         }
     }
 }
