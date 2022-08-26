@@ -464,11 +464,22 @@ public class PoisedPMS {
         while (true) {
             try {
                 finaliseChoice = finaliseInput.nextInt() - 1;
+                if(finaliseChoice > projectList.size()){
+                    throw new IllegalArgumentException();
+                }
                 finaliseInput.nextLine();
                 finaliseInput.close();
                 break;
-            } catch (InputMismatchException e) {
+            }
+            // If the user did not enter an integer, throws an error and allows them to try again
+            catch (InputMismatchException e) {
                 System.out.println("You did not enter an integer, please try again.");
+                finaliseInput.nextLine();
+            }
+            // If the project index will be out of range, throws an error and allows the user to try
+            // again
+            catch(IllegalArgumentException e){
+                System.out.println("Project index was out of range, please try again.");
                 finaliseInput.nextLine();
             }
         }
