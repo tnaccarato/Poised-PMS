@@ -33,7 +33,7 @@ public class PoisedPMS {
     /**
      * The constant FIELDHEADERS for storing the headings for each field of the project.
      */
-    public static final String FIELDHEADERS = "projectNum,projectName," +
+    public static final String FIELD_HEADERS = "projectNum,projectName," +
             "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
             "totalPaid,deadline,completeDate,finalised,customerRole, " +
             "customerFirstName,customerSurname,customerTelephone," +
@@ -41,6 +41,12 @@ public class PoisedPMS {
             "architectLastName,architectTel,architectEmail,architectAddress," +
             "contractorRole,contractorFirstName,contractorLastName," +
             "contractorTel,contractorEmail,contractorAddress";
+
+    /**
+     * The constant NOT_AN_INTEGER_ERROR for use in non-integer errors.
+     */
+    public static final String NOT_AN_INTEGER_ERROR = "You did not enter an integer, please try " +
+            "again.";
 
     /**
      * The constant projectList for storing the project objects.
@@ -87,7 +93,7 @@ public class PoisedPMS {
             // If a new file is created
             if (projectsFile.createNewFile()) {
                 // Appends a line with the fields of the project and prints a confirmation
-                Files.write(Paths.get(PROJECTS_TXT), FIELDHEADERS.getBytes(),
+                Files.write(Paths.get(PROJECTS_TXT), FIELD_HEADERS.getBytes(),
                         StandardOpenOption.APPEND);
                 System.out.println("New projects.txt file has been created in" + PROJECTS_TXT +
                         "directory.");
@@ -153,6 +159,9 @@ public class PoisedPMS {
             if ("a".equals(userInput)) {
                 newProject();
             }
+            else if("s".equals(userInput)){
+                searchProject();
+            }
             // If the user enters v, allows them to view all projects
             else if ("v".equals(userInput)) {
                 viewAll();
@@ -190,12 +199,99 @@ public class PoisedPMS {
     }
 
     /**
+     * Allows user to view the details of a project based on either the project number or the
+     * project name.
+     */
+    public static void searchProject() {
+        noProjects();
+        // Asks the user how they would like to search for a project
+        Scanner searchProjectScanner = new Scanner(System.in);
+        int searchProjectMethod;
+        searchProjectMethod = chooseSearchMethod(searchProjectScanner);
+        if (searchProjectMethod == 1){
+            searchByNum(searchProjectScanner);
+        }
+        else if(searchProjectMethod == 2){
+            searchProjectName(searchProjectScanner);
+        }
+    }
+
+    private static void searchProjectName(Scanner searchProjectScanner) {
+        // Asks the user for the name of the project they want to search for
+        System.out.println("What is the name of the project you would like to search?");
+        String searchProjectName = searchProjectScanner.nextLine();
+        boolean projectFound = false;
+        for (Project project : projectList) {
+            // If a project can be found with that name, prints it
+            if (project.getProjectName().equals(searchProjectName)) {
+                System.out.println(project + "\n");
+                projectFound = true;
+            }
+        }
+        // If it can't, prints an error message and allows the user to try again
+        if (!projectFound) {
+            System.out.println("A project with that name could not be found. Please try again.");
+            searchProjectName(searchProjectScanner);
+        }
+    }
+
+    private static void searchByNum(Scanner searchProjectScanner) {
+        while(true){
+            // Asks user for the project number they want to search for
+            System.out.println("Which project number would you like to select?");
+            try{
+                int searchProjectNum = searchProjectScanner.nextInt() - 1;
+                searchProjectScanner.nextLine();
+                System.out.println(projectList.get(searchProjectNum) + "\n");
+                break;
+            }
+            // If the user doesn't enter an integer, allows them to try again
+            catch(InputMismatchException e){
+                System.out.println(NOT_AN_INTEGER_ERROR);
+                searchProjectScanner.nextLine();
+            }
+            // If the project index is out of bounds, allows the user to try again
+            catch(IndexOutOfBoundsException e){
+                System.out.println("A project in that index could not be found, please try again.");
+            }
+        }
+    }
+
+    private static int chooseSearchMethod(Scanner searchProjectScanner) {
+        int searchProjectMethod;
+        while (true) {
+            System.out.println("""
+                    1 - By Project Number
+                    2 - By Project Name""");
+            try {
+                searchProjectMethod = searchProjectScanner.nextInt();
+                if (searchProjectMethod > 2 || searchProjectMethod <= 0) {
+                    throw new IllegalArgumentException();
+                }
+                searchProjectScanner.nextLine();
+                break;
+            }
+            // If user didn't enter an integer, allows them to try again
+            catch (InputMismatchException e) {
+                System.out.println(NOT_AN_INTEGER_ERROR);
+                searchProjectScanner.nextLine();
+            }
+            // If the user enters an integer other than 1 or 2, allows them to try again
+            catch (IllegalArgumentException e) {
+                System.out.println("Input not recognised, please try again.");
+                searchProjectScanner.nextLine();
+            }
+        }
+        return searchProjectMethod;
+    }
+
+    /**
      * Updates the projects.txt file using the projectsList data.
      */
     private static void updateTextFile() {
         try {
             Path getTextPath = Paths.get(PROJECTS_TXT);
-            Files.write(getTextPath, FIELDHEADERS.getBytes());
+            Files.write(getTextPath, FIELD_HEADERS.getBytes());
             for (Project project : projectList) {
                 Files.write(getTextPath,
                         project.getAttributes().getBytes(),
@@ -246,7 +342,7 @@ public class PoisedPMS {
             }
             // If the user didn't enter an integer, throws an error and allows the user to try again
             catch (InputMismatchException e) {
-                System.out.println("You did not enter an integer, please try again.");
+                System.out.println(NOT_AN_INTEGER_ERROR);
                 changeDetailsScanner.nextLine();
             }
             // If the project index will be out of range, throws an error and allows the user to try
@@ -378,6 +474,7 @@ public class PoisedPMS {
                 "like to " + "do?\n");
         System.out.println("""
                 a  - Add a new project
+                s  - Search for a particular project
                 v  - View all projects
                 cd - Change the due date of the project
                 cp - Change the amount the client has paid to date
@@ -564,7 +661,7 @@ public class PoisedPMS {
             }
             // If the user did not enter an integer, throws an error and allows them to try again
             catch (InputMismatchException e) {
-                System.out.println("You did not enter an integer, please try again.");
+                System.out.println(NOT_AN_INTEGER_ERROR);
                 finaliseInput.nextLine();
             }
             // If the project index will be out of range, throws an error and allows the user to try
