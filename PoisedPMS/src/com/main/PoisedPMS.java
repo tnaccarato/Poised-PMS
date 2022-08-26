@@ -328,6 +328,44 @@ public class PoisedPMS {
                 "for?");
         projectSummary();
         int changeDetailsNum;
+        changeDetailsNum = selectChangeDetailsNum(changeDetailsScanner);
+
+        // Asks the user which person they would like to change the details for
+        while(true) {
+            System.out.println("Which person would you like to change the details for?");
+            System.out.println("""
+                    1 - Customer
+                    2 - Architect
+                    3 - Contractor""");
+            int changeDetailsPerson = changeDetailsScanner.nextInt();
+
+            // Calls Person changeDetails method on the selected Person object
+            boolean inputRecognised = false;
+            if (changeDetailsPerson == 1) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
+                changeDetailsScanner.nextLine();
+                inputRecognised = true;
+            } else if (changeDetailsPerson == 2) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
+                changeDetailsScanner.nextLine();
+                inputRecognised = true;
+            } else if (changeDetailsPerson == 3) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
+                changeDetailsScanner.nextLine();
+                inputRecognised = true;
+            } else {
+                System.out.println("Input was not recognised, please try again.");
+                changeDetailsScanner.nextLine();
+            }
+            // If the input is recognised, breaks the loop
+            if(inputRecognised){
+                break;
+            }
+        }
+    }
+
+    private static int selectChangeDetailsNum(Scanner changeDetailsScanner) {
+        int changeDetailsNum;
         while (true) {
             try {
                 changeDetailsNum = changeDetailsScanner.nextInt() - 1;
@@ -357,34 +395,7 @@ public class PoisedPMS {
                 changeDetailsScanner.nextLine();
             }
         }
-
-        // Asks the user which person they would like to change the details for
-        while(true) {
-            System.out.println("Which person would you like to change the details for?");
-            System.out.println("""
-                    1 - Customer
-                    2 - Architect
-                    3 - Contractor""");
-            int changeDetailsPerson = changeDetailsScanner.nextInt();
-
-            // Calls Person changeDetails method on the selected Person object
-            if (changeDetailsPerson == 1) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
-                changeDetailsScanner.nextLine();
-                break;
-            } else if (changeDetailsPerson == 2) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
-                changeDetailsScanner.nextLine();
-                break;
-            } else if (changeDetailsPerson == 3) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
-                changeDetailsScanner.nextLine();
-                break;
-            } else {
-                System.out.println("Input was not recognised, please try again.");
-                changeDetailsScanner.nextLine();
-            }
-        }
+        return changeDetailsNum;
     }
 
     /**
