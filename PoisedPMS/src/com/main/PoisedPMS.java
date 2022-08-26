@@ -213,7 +213,7 @@ public class PoisedPMS {
         boolean incompleteProjectsFound = false;
         for(Project project: projectList){
             if(!project.isFinalised()){
-                System.out.println(project);
+                System.out.println(project + "\n");
                 incompleteProjectsFound = true;
             }
         }
@@ -232,7 +232,7 @@ public class PoisedPMS {
         // Searches for overdue projects and prints them
         for(Project project:projectList){
             if(project.getDeadline().isBefore(LocalDate.now())){
-                System.out.println();
+                System.out.println(project + "\n");
                 overdueProjectsFound = true;
             }
         }
