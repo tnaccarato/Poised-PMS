@@ -265,7 +265,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Allows user to seach for a project by name
+     * Allows user to search for a project by name
      * @param searchProjectScanner input scanner
      */
     private static void searchProjectName(Scanner searchProjectScanner) {
@@ -427,7 +427,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Allows user to pick an project number for use in changeDetails method.
+     * Allows user to pick a project number for use in changeDetails method.
      * @param changeDetailsScanner input scanner
      * @return int project number
      */
