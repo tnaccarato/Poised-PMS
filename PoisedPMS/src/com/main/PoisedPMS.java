@@ -168,12 +168,13 @@ public class PoisedPMS {
             else if ("f".equals(userInput)) {
                 finalise();
             }
-            // If user enters q, quits the program
+            // If user enters q, saves the project list to file and quits the program
             else if ("q".equals(userInput)) {
                 // Rewrites the project txt file
                 updateTextFile();
                 System.out.println("Thank you for using the Poised Project Management System. " +
                         "Goodbye!");
+                System.exit(0);
                 break;
             }
             // Otherwise, prints an error message and allows them to try again
@@ -207,11 +208,9 @@ public class PoisedPMS {
      */
     private static void viewAll() {
         // If there are no projects, print a statement saying that
-        if (projectList.isEmpty()) {
-            System.out.println("There are currently no projects.");
-        }
+        noProjects();
         // Otherwise, prints the project information
-        else for (Project project : projectList) {
+        for (Project project : projectList) {
             printProject(project);
         }
     }
