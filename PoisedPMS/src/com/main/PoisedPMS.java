@@ -167,7 +167,7 @@ public class PoisedPMS {
             }
             // If user enters uc, allows them to update contractor details
             else if ("uc".equals(userInput)) {
-                updateContractor();
+                updateContact();
             }
             // If user enters f, allows them to finalise all projects
             else if ("f".equals(userInput)) {
@@ -220,16 +220,75 @@ public class PoisedPMS {
         }
     }
 
-    // Updates contractors information
-    private static void updateContractor() {
+    /**
+     * Updates contact details for Person object
+      */
+
+    private static void updateContact() {
         noProjects();
         Scanner changeDetailsScanner = new Scanner(System.in);
-        System.out.println("Which project would you like to change the contractor details " +
+        // Asks the user which project they would like to change details for
+        System.out.println("Which project would you like to change the contact details " +
                 "for?");
         projectSummary();
-        int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
-        changeDetailsScanner.nextLine();
-        Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
+        int changeDetailsNum;
+        while (true) {
+            try {
+                changeDetailsNum = changeDetailsScanner.nextInt() - 1;
+                if(changeDetailsNum > projectList.size()){
+                    throw new IllegalArgumentException();
+                }
+                else if(changeDetailsNum < 0){
+                    throw new IndexOutOfBoundsException();
+                }
+                changeDetailsScanner.nextLine();
+                break;
+            }
+            // If the user didn't enter an integer, throws an error and allows the user to try again
+            catch (InputMismatchException e) {
+                System.out.println("You did not enter an integer, please try again.");
+                changeDetailsScanner.nextLine();
+            }
+            // If the project index will be out of range, throws an error and allows the user to try
+            // again
+            catch (IllegalArgumentException e) {
+                System.out.println("Project index was out of range, please try again.");
+                changeDetailsScanner.nextLine();
+            }
+            // If the user enters 0, throws an error and allows the user to try again
+            catch (IndexOutOfBoundsException e) {
+                System.out.println("Project number must be greater than 0. Please try again.");
+                changeDetailsScanner.nextLine();
+            }
+        }
+
+        // Asks the user which person they would like to change the details for
+        while(true) {
+            System.out.println("Which person would you like to change the details for?");
+            System.out.println("""
+                    1 - Customer
+                    2 - Architect
+                    3 - Contractor""");
+            int changeDetailsPerson = changeDetailsScanner.nextInt();
+
+            // Calls Person changeDetails method on the selected Person object
+            if (changeDetailsPerson == 1) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
+                changeDetailsScanner.nextLine();
+                break;
+            } else if (changeDetailsPerson == 2) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
+                changeDetailsScanner.nextLine();
+                break;
+            } else if (changeDetailsPerson == 3) {
+                Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
+                changeDetailsScanner.nextLine();
+                break;
+            } else {
+                System.out.println("Input was not recognised, please try again.");
+                changeDetailsScanner.nextLine();
+            }
+        }
     }
 
     /**
@@ -322,7 +381,7 @@ public class PoisedPMS {
                 v  - View all projects
                 cd - Change the due date of the project
                 cp - Change the amount the client has paid to date
-                uc - Update the contact details of the contractor
+                uc - Update the contact details
                 f  - Finalise a project
                 q  - Quit the program
                 """);
