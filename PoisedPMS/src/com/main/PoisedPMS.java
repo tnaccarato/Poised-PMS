@@ -352,7 +352,7 @@ public class PoisedPMS {
                 input.nextLine();
             }
         }
-        // Creates a new com.main.Building object
+        // Creates a new Building object
         Building building = new Building(typeBuilding, address, erfNum, cost);
         double totalPaid;
         while (true) {
@@ -419,11 +419,11 @@ public class PoisedPMS {
         }
 
         // Prints a confirmation that the project has been added successfully
-        System.out.println("com.main.Project added to system. Returning to menu...");
+        System.out.println("Project added to system. Returning to menu...");
     }
 
     /**
-     * Creates a new com.main.Person object for user's inputs for attributes.
+     * Creates a new Person object for user's inputs for attributes.
      *
      * @return New Person object.
      */
@@ -440,7 +440,7 @@ public class PoisedPMS {
             role = "Contractor";
             personCount = 0;  // Resets personCount for next project
         }
-        // Asks user for input and creates a new com.main.Person object
+        // Asks user for input and creates a new Person object
         return newPersonInput(role);
     }
 
@@ -466,22 +466,32 @@ public class PoisedPMS {
     }
 
     /**
+     * Prints a statement if there are currently no projects to edit
+     */
+    public static void noProjects(){
+        if(projectList.isEmpty()){
+            System.out.println("There are currently no projects.");
+        }
+    }
+    /**
      * Asks user to select a project they want to finalise and generates an invoice for them.
      */
     public static void finalise() {
         // Asks user which project they want to finalise
-        System.out.println("Which project would you like to finalise?");
-        projectSummary();
         Scanner finaliseInput = new Scanner(System.in);
         int finaliseChoice;
         while (true) {
             try {
+                System.out.println("Which project would you like to finalise?");
+                projectSummary();
                 finaliseChoice = finaliseInput.nextInt() - 1;
                 if(finaliseChoice > projectList.size()){
                     throw new IllegalArgumentException();
                 }
+                else if(finaliseChoice < 0){
+                    throw new IndexOutOfBoundsException();
+                }
                 finaliseInput.nextLine();
-                finaliseInput.close();
                 break;
             }
             // If the user did not enter an integer, throws an error and allows them to try again
@@ -494,6 +504,9 @@ public class PoisedPMS {
             catch(IllegalArgumentException e){
                 System.out.println("Project index was out of range, please try again.");
                 finaliseInput.nextLine();
+            }
+            catch(IndexOutOfBoundsException e){
+                System.out.println("Project number must be greater than 0. Please try again.");
             }
         }
 

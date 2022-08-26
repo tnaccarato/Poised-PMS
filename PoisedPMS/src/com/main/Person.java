@@ -38,7 +38,7 @@ public class Person {
     }
 
     /**
-     * Update com.main.Person details.
+     * Update Person details.
      *
      * @param activePerson the active person
      */
