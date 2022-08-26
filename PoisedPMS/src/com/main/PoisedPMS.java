@@ -213,7 +213,9 @@ public class PoisedPMS {
         boolean incompleteProjectsFound = false;
         for(Project project: projectList){
             if(!project.isFinalised()){
+                System.out.println(DIVIDER);
                 System.out.println(project + "\n");
+                System.out.println(DIVIDER);
                 incompleteProjectsFound = true;
             }
         }
@@ -232,7 +234,9 @@ public class PoisedPMS {
         // Searches for overdue projects and prints them
         for(Project project:projectList){
             if(project.getDeadline().isBefore(LocalDate.now())){
+                System.out.println(DIVIDER);
                 System.out.println(project + "\n");
+                System.out.println(DIVIDER);
                 overdueProjectsFound = true;
             }
         }
@@ -260,6 +264,10 @@ public class PoisedPMS {
         }
     }
 
+    /**
+     * Allows user to seach for a project by name
+     * @param searchProjectScanner input scanner
+     */
     private static void searchProjectName(Scanner searchProjectScanner) {
         // Asks the user for the name of the project they want to search for
         System.out.println("What is the name of the project you would like to search?");
@@ -279,6 +287,10 @@ public class PoisedPMS {
         }
     }
 
+    /**
+     * Allows user to search by project number
+     * @param searchProjectScanner input scanner
+     */
     private static void searchByNum(Scanner searchProjectScanner) {
         while(true){
             // Asks user for the project number they want to search for
@@ -363,7 +375,6 @@ public class PoisedPMS {
     /**
      * Updates contact details for a selected Person object.
       */
-
     private static void updateContact() {
         noProjects();
         Scanner changeDetailsScanner = new Scanner(System.in);
@@ -388,15 +399,22 @@ public class PoisedPMS {
             if (changeDetailsPerson == 1) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
                 changeDetailsScanner.nextLine();
+                // Changes the project name to match the new name of the customer
+                projectList.get(changeDetailsNum).setProjectName(projectList.get(changeDetailsNum)
+                        .getCustomer().getSurname()
+                        + " " + projectList.get(changeDetailsNum).getBuilding().getTypeBuilding());
                 inputRecognised = true;
+
             } else if (changeDetailsPerson == 2) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
+
             } else if (changeDetailsPerson == 3) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
+
             } else {
                 System.out.println("Input was not recognised, please try again.");
                 changeDetailsScanner.nextLine();
@@ -408,6 +426,11 @@ public class PoisedPMS {
         }
     }
 
+    /**
+     * Allows user to pick an project number for use in changeDetails method.
+     * @param changeDetailsScanner input scanner
+     * @return int project number
+     */
     private static int selectChangeDetailsNum(Scanner changeDetailsScanner) {
         int changeDetailsNum;
         while (true) {
@@ -462,6 +485,7 @@ public class PoisedPMS {
         noProjects();
         Scanner changeDeadlineScanner = new Scanner(System.in);
         int changeDeadlineNum;
+        // Asks the user which project they want to change the deadline for
         while (true) {
             System.out.println("Which project would you like to change the deadline of?");
             projectSummary();
