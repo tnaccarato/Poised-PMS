@@ -163,8 +163,14 @@ public class PoisedPMS {
                 searchProject();
             }
             // If the user enters v, allows them to view all projects
-            else if ("v".equals(userInput)) {
+            else if ("va".equals(userInput)) {
                 viewAll();
+            }
+            else if("vi".equals(userInput)){
+                incompleteProjects();
+            }
+            else if("vo".equals(userInput)){
+                overdueProjects();
             }
             // If the user enters cd, allows them to change the deadline of a project
             else if ("cd".equals(userInput)) {
@@ -195,6 +201,44 @@ public class PoisedPMS {
             else {
                 System.out.println("Input \"" + userInput + "\" not recognised, please try again.");
             }
+        }
+    }
+
+    /**
+     * Allows user to view incomplete projects and prints them.
+     */
+    public static void incompleteProjects(){
+        noProjects();
+        // Searches for incomplete projects and prints them
+        boolean incompleteProjectsFound = false;
+        for(Project project: projectList){
+            if(!project.isFinalised()){
+                System.out.println(project);
+                incompleteProjectsFound = true;
+            }
+        }
+        // If no incomplete projects were found, prints a statement
+        if(!incompleteProjectsFound){
+            System.out.println("No incomplete projects were found. Great work!");
+        }
+    }
+
+    /**
+     * Allows user to search for overdue projects and prints them.
+     */
+    public static void overdueProjects(){
+        noProjects();
+        boolean overdueProjectsFound = false;
+        // Searches for overdue projects and prints them
+        for(Project project:projectList){
+            if(project.getDeadline().isBefore(LocalDate.now())){
+                System.out.println();
+                overdueProjectsFound = true;
+            }
+        }
+        // If no overdue projects were found, prints a statement
+        if(!overdueProjectsFound){
+            System.out.println("No overdue projects were found. Keep it up!");
         }
     }
 
@@ -317,7 +361,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Updates contact details for Person object
+     * Updates contact details for a selected Person object.
       */
 
     private static void updateContact() {
@@ -486,7 +530,9 @@ public class PoisedPMS {
         System.out.println("""
                 a  - Add a new project
                 s  - Search for a particular project
-                v  - View all projects
+                va - View all projects
+                vi - View incomplete projects
+                vo - View overdue projects
                 cd - Change the due date of the project
                 cp - Change the amount the client has paid to date
                 uc - Update the contact details
