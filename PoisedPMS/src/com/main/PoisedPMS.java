@@ -218,6 +218,7 @@ public class PoisedPMS {
 
     // Updates contractors information
     private static void updateContractor() {
+        noProjects();
         Scanner changeDetailsScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the contractor details " +
                 "for?");
@@ -231,6 +232,7 @@ public class PoisedPMS {
      * Changes the amount paid for by the client.
      */
     private static void changeAmountPaid() {
+        noProjects();
         Scanner changePaidScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the amount paid for?");
         projectSummary();
@@ -243,6 +245,7 @@ public class PoisedPMS {
      * Changes the deadline of a project.
      */
     private static void changeDeadline() {
+        noProjects();
         Scanner changeDeadlineScanner = new Scanner(System.in);
         int changeDeadlineNum;
         while (true) {
@@ -466,17 +469,19 @@ public class PoisedPMS {
     }
 
     /**
-     * Prints a statement if there are currently no projects to edit
+     * Prints a statement if there are currently no projects to edit and returns to menu.
      */
     public static void noProjects(){
         if(projectList.isEmpty()){
             System.out.println("There are currently no projects.");
+            menu();
         }
     }
     /**
      * Asks user to select a project they want to finalise and generates an invoice for them.
      */
     public static void finalise() {
+        noProjects();
         // Asks user which project they want to finalise
         Scanner finaliseInput = new Scanner(System.in);
         int finaliseChoice;
