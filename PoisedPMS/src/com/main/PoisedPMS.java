@@ -221,6 +221,7 @@ public class PoisedPMS {
         Scanner changeDetailsScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the contractor details " +
                 "for?");
+        projectSummary();
         int changeDetailsNum = changeDetailsScanner.nextInt() - 1;
         changeDetailsScanner.nextLine();
         Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
@@ -232,6 +233,7 @@ public class PoisedPMS {
     private static void changeAmountPaid() {
         Scanner changePaidScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the amount paid for?");
+        projectSummary();
         int changePaidNum = changePaidScanner.nextInt() - 1;
         changePaidScanner.nextLine();
         Project.changePaid(projectList.get(changePaidNum));
@@ -245,6 +247,7 @@ public class PoisedPMS {
         int changeDeadlineNum;
         while (true) {
             System.out.println("Which project would you like to change the deadline of?");
+            projectSummary();
             try {
                 changeDeadlineNum = changeDeadlineScanner.nextInt() - 1;
                 changeDeadlineScanner.nextLine();
@@ -468,6 +471,7 @@ public class PoisedPMS {
     public static void finalise() {
         // Asks user which project they want to finalise
         System.out.println("Which project would you like to finalise?");
+        projectSummary();
         Scanner finaliseInput = new Scanner(System.in);
         int finaliseChoice;
         while (true) {

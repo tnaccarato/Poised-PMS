@@ -132,8 +132,8 @@ public class Project {
      */
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
-        String output = "com.main.Project Number: " + getProjectNum();
-        output += "\ncom.main.Project Name: " + getProjectName();
+        String output = "Project Number: " + getProjectNum();
+        output += "\nProject Name: " + getProjectName();
         output += getBuilding();
         output += "\nAmount Paid: " + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
