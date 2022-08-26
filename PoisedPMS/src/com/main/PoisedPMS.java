@@ -24,10 +24,12 @@ public class PoisedPMS {
 
             -----------------------------------------------------------------------------------------------
                 """;
+
     /**
      * The constant PROJECTS_TXT for storing the projects.txt file path.
      */
     public static final String PROJECTS_TXT = "src\\com\\main\\projects.txt";
+
     /**
      * The constant FIELDHEADERS for storing the headings for each field of the project.
      */
@@ -39,14 +41,17 @@ public class PoisedPMS {
             "architectLastName,architectTel,architectEmail,architectAddress," +
             "contractorRole,contractorFirstName,contractorLastName," +
             "contractorTel,contractorEmail,contractorAddress";
+
     /**
      * The constant projectList for storing the project objects.
      */
     static List<Project> projectList = new LinkedList<>();
+
     /**
      * The constant personCount for use in determining the role of Person object.
      */
     static int personCount = 0;
+
     /**
      * The constant projectNum for increasing the projectNum after each project is added.
      */
