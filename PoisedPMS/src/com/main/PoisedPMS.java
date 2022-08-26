@@ -313,6 +313,11 @@ public class PoisedPMS {
         }
     }
 
+    /**
+     * Allows chooses the input method for search method.
+     * @param searchProjectScanner input scanner
+     * @return int user choice
+     */
     private static int chooseSearchMethod(Scanner searchProjectScanner) {
         int searchProjectMethod;
         while (true) {

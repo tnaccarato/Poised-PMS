@@ -105,7 +105,10 @@ public class Person {
         return attributes;
     }
 
-    // toString
+    /**
+     * Overrides toString method for the object to print attributes
+     * @return easy-to-read string of attributes
+     */
     public String toString() {
         String output = "\nRole: " + getRole();
         output += "\nName: " + getFirstName() + " " + getSurname();
