@@ -180,11 +180,11 @@ public class PoisedPMS {
             else if ("cp".equals(userInput)) {
                 changeAmountPaid();
             }
-            // If user enters uc, allows them to update contractor details
+            // If user enters uc, allows them to update contact details
             else if ("uc".equals(userInput)) {
                 updateContact();
             }
-            // If user enters f, allows them to finalise all projects
+            // If user enters f, allows them to finalise a project
             else if ("f".equals(userInput)) {
                 finalise();
             }
