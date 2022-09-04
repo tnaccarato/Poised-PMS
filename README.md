@@ -55,7 +55,7 @@ list in an easy to read format.
 If the user selects 'vi', displays the information about any projects that have
 not been marked as finalised.
 
-## View Overdue Projects
+### View Overdue Projects
 
 If the user selects 'vo', displays the information about any projects that are
 past their due date.
