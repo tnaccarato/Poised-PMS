@@ -56,7 +56,7 @@ public class PoisedPMS {
         // Creates a direct line from the database for queries
         Statement statement = connection.createStatement();
         readWriteDatabase(statement);
-        menu();
+        menu(statement);
         }
         // Prints the stack, if an SQLException occurs
         catch(SQLException e){
@@ -138,6 +138,7 @@ public class PoisedPMS {
                 + " CONTRACTOR_ID=" + contractorID + ";");
         contractorResults.next();
         return new Person("Contractor",
+                contractorResults.getString("CONTRACTOR_ID"),
                 contractorResults.getString("CONTRACTOR_FNAME"),
                 contractorResults.getString("CONTRACTOR_LNAME"),
                 contractorResults.getString("CONTRACTOR_PHONE"),
@@ -159,6 +160,7 @@ public class PoisedPMS {
                 "ARCHITECT_ID=" + architectID + ";");
         architectResults.next();
         return new Person("Architect",
+                architectResults.getString("ARCHITECT_ID"),
                 architectResults.getString("ARCHITECT_FNAME"),
                 architectResults.getString("ARCHITECT_LNAME"),
                 architectResults.getString("ARCHITECT_PHONE"),
@@ -179,6 +181,7 @@ public class PoisedPMS {
                 "CUSTOMER_ID=" + customerID + ";");
         customerResults.next();
         return new Person("Customer",
+                customerResults.getString("CUSTOMER_ID"),
                 customerResults.getString("CUSTOMER_FNAME"),
                 customerResults.getString("CUSTOMER_LNAME"),
                 customerResults.getString("CUSTOMER_PHONE"),
@@ -207,7 +210,7 @@ public class PoisedPMS {
     /**
      * Displays the main menu of the application and allows for user input for selection.
      */
-    public static void menu() {
+    public static void menu(Statement statement) throws SQLException{
         while (true) {
             printMenu();
             Scanner menuInputScanner = new Scanner(System.in);
@@ -218,33 +221,33 @@ public class PoisedPMS {
                 newProject();
             }
             else if("s".equals(userInput)){
-                searchProject();
+                searchProject(statement);
             }
             // If the user enters v, allows them to view all projects
             else if ("va".equals(userInput)) {
-                viewAll();
+                viewAll(statement);
             }
             else if("vi".equals(userInput)){
-                incompleteProjects();
+                incompleteProjects(statement);
             }
             else if("vo".equals(userInput)){
-                overdueProjects();
+                overdueProjects(statement);
             }
             // If the user enters cd, allows them to change the deadline of a project
             else if ("cd".equals(userInput)) {
-                changeDeadline();
+                changeDeadline(statement);
             }
             // If the user enters cp, allows them to change the amount paid for
             else if ("cp".equals(userInput)) {
-                changeAmountPaid();
+                changeAmountPaid(statement);
             }
             // If user enters uc, allows them to update contact details
             else if ("uc".equals(userInput)) {
-                updateContact();
+                updateContact(statement);
             }
             // If user enters f, allows them to finalise a project
             else if ("f".equals(userInput)) {
-                finalise();
+                finalise(statement);
             }
             // If user enters q,  quits the program
             else if ("q".equals(userInput)) {
@@ -263,8 +266,8 @@ public class PoisedPMS {
     /**
      * Allows user to view incomplete projects and prints them.
      */
-    public static void incompleteProjects(){
-        noProjects();
+    public static void incompleteProjects(Statement statement) throws SQLException{
+        noProjects(statement);
         // Searches for incomplete projects and prints them
         boolean incompleteProjectsFound = false;
         for(Project project: projectList){
@@ -284,8 +287,8 @@ public class PoisedPMS {
     /**
      * Allows user to search for overdue projects and prints them.
      */
-    public static void overdueProjects(){
-        noProjects();
+    public static void overdueProjects(Statement statement) throws SQLException {
+        noProjects(statement);
         boolean overdueProjectsFound = false;
         // Searches for overdue projects and prints them
         for(Project project:projectList){
@@ -306,8 +309,8 @@ public class PoisedPMS {
      * Allows user to view the details of a project based on either the project number or the
      * project name.
      */
-    public static void searchProject() {
-        noProjects();
+    public static void searchProject(Statement statement) throws SQLException {
+        noProjects(statement);
         // Asks the user how they would like to search for a project
         Scanner searchProjectScanner = new Scanner(System.in);
         int searchProjectMethod;
@@ -406,9 +409,9 @@ public class PoisedPMS {
     /**
      * Views all the projects and prints them in an easy-to-read format.
      */
-    private static void viewAll() {
+    private static void viewAll(Statement statement) throws SQLException {
         // If there are no projects, print a statement saying that
-        noProjects();
+        noProjects(statement);
         // Otherwise, prints the project information
         for (Project project : projectList) {
             printProject(project);
@@ -418,8 +421,8 @@ public class PoisedPMS {
     /**
      * Updates contact details for a selected Person object.
       */
-    private static void updateContact() {
-        noProjects();
+    private static void updateContact(Statement statement) throws SQLException{
+        noProjects(statement);
         Scanner changeDetailsScanner = new Scanner(System.in);
         // Asks the user which project they would like to change details for
         System.out.println("Which project would you like to change the contact details " +
@@ -441,24 +444,28 @@ public class PoisedPMS {
             boolean inputRecognised = false;
             // Customer
             if (changeDetailsPerson == 1) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
+                Person.changeDetails(projectList.get(changeDetailsNum).getCustomer(), statement);
                 changeDetailsScanner.nextLine();
                 // Changes the project name to match the new name of the customer
-                projectList.get(changeDetailsNum).setProjectName(projectList.get(changeDetailsNum)
+                String newProjectName = projectList.get(changeDetailsNum)
                         .getCustomer().getSurname()
-                        + " " + projectList.get(changeDetailsNum).getBuilding().getTypeBuilding());
+                        + " " + projectList.get(changeDetailsNum).getBuilding().getTypeBuilding();
+                projectList.get(changeDetailsNum).setProjectName(newProjectName);
                 inputRecognised = true;
+                // Changes the corresponding database entry
+                statement.executeUpdate("UPDATE project SET PROJECT_NAME=\""
+                        + newProjectName+ "\" WHERE  PROJECT_NUM="+changeDetailsNum+";");
             }
             // Architect
             else if (changeDetailsPerson == 2) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
+                Person.changeDetails(projectList.get(changeDetailsNum).getArchitect(), statement);
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
 
             }
             // Contractor
             else if (changeDetailsPerson == 3) {
-                Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
+                Person.changeDetails(projectList.get(changeDetailsNum).getContractor(), statement);
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
             }
@@ -516,8 +523,8 @@ public class PoisedPMS {
     /**
      * Changes the amount paid for by the client.
      */
-    private static void changeAmountPaid() {
-        noProjects();
+    private static void changeAmountPaid(Statement statement) throws SQLException {
+        noProjects(statement);
         Scanner changePaidScanner = new Scanner(System.in);
         System.out.println("Which project would you like to change the amount paid for?");
         projectSummary();
@@ -529,8 +536,8 @@ public class PoisedPMS {
     /**
      * Changes the deadline of a project.
      */
-    private static void changeDeadline() {
-        noProjects();
+    private static void changeDeadline(Statement statement) throws SQLException {
+        noProjects(statement);
         Scanner changeDeadlineScanner = new Scanner(System.in);
         int changeDeadlineNum;
         // Asks the user which project they want to change the deadline for
@@ -559,7 +566,7 @@ public class PoisedPMS {
                 System.out.println("The project with the index you entered (" +
                         (changeDeadlineNum) + ") " + "was not found. Would you like to try " +
                         "again? (y/n)");
-                invalidIndex(changeDeadlineScanner);
+                invalidIndex(changeDeadlineScanner, statement);
             }
         }
     }
@@ -567,20 +574,20 @@ public class PoisedPMS {
     /**
      * Provides a menu for retrying changeDeadline after invalid index
      */
-    private static void invalidIndex(Scanner changeDeadlineScanner) {
+    private static void invalidIndex(Scanner changeDeadlineScanner, Statement statement) throws SQLException {
         try {
             var userResponse = changeDeadlineScanner.nextLine();
             if (userResponse.equals("y")) {
-                changeDeadline();
+                changeDeadline(statement);
             } else if (userResponse.equals("n")) {
                 System.out.println("Returning to menu...");
-                menu();
+                menu(statement);
             } else throw new InputMismatchException();
         }
         // If the user didn't enter y or n, allows them to try again
         catch (InputMismatchException yesOrNo) {
             System.out.println("Input not recognised please enter either y or n:");
-            invalidIndex(changeDeadlineScanner);
+            invalidIndex(changeDeadlineScanner, statement);
         }
     }
 
@@ -737,6 +744,8 @@ public class PoisedPMS {
      */
     private static Person newPersonInput(String role) {
         Scanner input = new Scanner(System.in);
+        System.out.println("What is this person's ID number?");
+        String id = input.nextLine();
         System.out.println("What is this person's first name?");
         String firstName = input.nextLine();
         System.out.println("What is this person's surname?");
@@ -747,23 +756,23 @@ public class PoisedPMS {
         String email = input.nextLine();
         System.out.println("What is this person's address?");
         String address = input.nextLine();
-        return new Person(role, firstName, surname, phoneNum, email, address);
+        return new Person(role,id, firstName, surname, phoneNum, email, address);
     }
 
     /**
      * Prints a statement if there are currently no projects to edit and returns to menu.
      */
-    public static void noProjects(){
+    public static void noProjects(Statement statement)throws SQLException{
         if(projectList.isEmpty()){
             System.out.println("There are currently no projects.");
-            menu();
+            menu(statement);
         }
     }
     /**
      * Asks user to select a project they want to finalise and generates an invoice for them.
      */
-    public static void finalise() {
-        noProjects();
+    public static void finalise(Statement statement) throws SQLException{
+        noProjects(statement);
         // Asks user which project they want to finalise
         Scanner finaliseInput = new Scanner(System.in);
         int finaliseChoice;
