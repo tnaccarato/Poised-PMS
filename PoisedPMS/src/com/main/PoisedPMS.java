@@ -592,7 +592,8 @@ public class PoisedPMS {
     /**
      * Provides a menu for retrying changeDeadline after invalid index
      */
-    private static void invalidIndex(Scanner changeDeadlineScanner, Statement statement) throws SQLException {
+    private static void invalidIndex(Scanner changeDeadlineScanner, Statement statement)
+            throws SQLException {
         try {
             var userResponse = changeDeadlineScanner.nextLine();
             if (userResponse.equals("y")) {
@@ -885,13 +886,16 @@ public class PoisedPMS {
         projectList.get(finaliseChoice).setFinalised(true);
         // Sets the current date to the complete date
         projectList.get(finaliseChoice).setCompleteDate(LocalDate.now());
+        // Updates the database
+        statement.executeUpdate("UPDATE project SET FINALISED=TRUE, COMPLETE_DATE=\""
+                + LocalDate.now() + "\" WHERE PROJECT_NUM=" + (finaliseChoice + 1) + ";");
         // Calculates the amount the customer still has to pay
         double stillToPay = projectList.get(finaliseChoice).getCost()
                 - projectList.get(finaliseChoice).getTotalPaid();
         // Prints an invoice if the amount still to pay is more than 0
         if (stillToPay > 0) {
             // Declares a decimal format for cost
-            DecimalFormat df = new DecimalFormat("#.##");
+            DecimalFormat df = new DecimalFormat("#,##0.00");
             System.out.println(DIVIDER);
             System.out.println("Customer still has to pay £" + df.format(stillToPay));
             System.out.println(projectList.get(finaliseChoice));
