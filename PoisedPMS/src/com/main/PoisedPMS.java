@@ -80,7 +80,7 @@ public class PoisedPMS {
         // Runs an SQL query selecting each row of the table
         ResultSet projectResults = statement.executeQuery("SELECT * FROM project;");
         LocalDate completeDate;
-        // Declares a second statement for use inside the method
+        // Declares a second statement for use inside the method (1)
         Statement statement2 = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
         "tom",
@@ -439,6 +439,7 @@ public class PoisedPMS {
 
             // Calls Person changeDetails method on the selected Person object
             boolean inputRecognised = false;
+            // Customer
             if (changeDetailsPerson == 1) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getCustomer());
                 changeDetailsScanner.nextLine();
@@ -447,18 +448,22 @@ public class PoisedPMS {
                         .getCustomer().getSurname()
                         + " " + projectList.get(changeDetailsNum).getBuilding().getTypeBuilding());
                 inputRecognised = true;
-
-            } else if (changeDetailsPerson == 2) {
+            }
+            // Architect
+            else if (changeDetailsPerson == 2) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getArchitect());
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
 
-            } else if (changeDetailsPerson == 3) {
+            }
+            // Contractor
+            else if (changeDetailsPerson == 3) {
                 Person.changeDetails(projectList.get(changeDetailsNum).getContractor());
                 changeDetailsScanner.nextLine();
                 inputRecognised = true;
-
-            } else {
+            }
+            // Otherwise, prints an error and allows them to try again.
+            else {
                 System.out.println("Input was not recognised, please try again.");
                 changeDetailsScanner.nextLine();
             }
@@ -815,8 +820,9 @@ public class PoisedPMS {
 /*
 References
 
-(1) Used info from here on creating an empty list:
-https://stackoverflow.com/questions/8325507/adding-to-empty-list
+(1) Used info from here on using multiple statements to prevent errors from the ResultSet being
+closed when the loop starts again.
+https://www.ibm.com/mysupport/s/question/0D50z00005q84FBCAY/invalid-operation-result-set-is-closed?language=en_US
 
 (2) Used info from here on getting scanner to work correctly:
 https://stackoverflow.com/questions/13102045/scanner-is-skipping-nextline-after-using-next-or-nextfoo
