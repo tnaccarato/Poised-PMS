@@ -119,12 +119,12 @@ public class Project {
      * @return string
      */
     public String toString() {
-        DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
+        DecimalFormat df = new DecimalFormat("#,##0.00"); // Declares a DecimalFormat for costs
         String output = "Project Number: " + getProjectNum();
         output += "\nProject Name: " + getProjectName();
         output += getBuilding();
-        output += "\nTotal Cost: " + df.format(getCost());
-        output += "\nAmount Paid: " + df.format(getTotalPaid());
+        output += "\nTotal Cost: £" + df.format(getCost());
+        output += "\nAmount Paid: £" + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
         // If the project is finalised, adds the completion date
         if (isFinalised()) {
