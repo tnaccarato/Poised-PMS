@@ -74,7 +74,7 @@ public class PoisedPMS {
     }
 
     /**
-     * Reads from the poisepms database and adds each row as projects to projectList.
+     * Reads from the poisepms database and adds each record as projects to projectList.
      */
     public static void readWriteDatabase(Statement statement) throws SQLException {
         // Runs an SQL query selecting each row of the table
@@ -124,9 +124,18 @@ public class PoisedPMS {
                 " projects have been added.");
     }
 
-    private static Person readContractorTable(Statement statement2, String contractorID) throws SQLException {
-        ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE" +
-                " CONTRACTOR_ID=" + contractorID + ";");
+    /**
+     * Reads the contractor table record with the matching constructorID and returns a new Person
+     * object.
+     * @param statement2 A temporary statement for use within the readWriteDatabase method.
+     * @param contractorID The ID and primary key of the contractor.
+     * @return new Person object.
+     * @throws SQLException if there is an issue with the SQL query.
+     */
+    private static Person readContractorTable(Statement statement2, String contractorID)
+            throws SQLException {
+        ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE"
+                + " CONTRACTOR_ID=" + contractorID + ";");
         contractorResults.next();
         return new Person("Contractor",
                 contractorResults.getString("CONTRACTOR_FNAME"),
@@ -136,7 +145,16 @@ public class PoisedPMS {
                 contractorResults.getString("CONTRACTOR_ADDRESS"));
     }
 
-    private static Person readArchitectTable(Statement statement2, String architectID) throws SQLException {
+    /**
+     * Reads the architect table record with the matching architectID and returns a new Person
+     * object.
+     * @param statement2 A temporary statement for use within the readWriteDatabase method
+     * @param architectID The ID and primary key of the architect
+     * @return new Person object.
+     * @throws SQLException if there is an issue with the SQL query.
+     */
+    private static Person readArchitectTable(Statement statement2, String architectID)
+            throws SQLException {
         ResultSet architectResults = statement2.executeQuery("SELECT * FROM architect WHERE " +
                 "ARCHITECT_ID=" + architectID + ";");
         architectResults.next();
@@ -148,7 +166,15 @@ public class PoisedPMS {
                 architectResults.getString("ARCHITECT_ADDRESS"));
     }
 
-    private static Person readCustomerTable(Statement statement2, String customerID) throws SQLException {
+    /**
+     * Reads the customer table record with the matching customerID and returns a new Person object.
+     * @param statement2 A temporary statement for use within the readWriteDatabase method.
+     * @param customerID The ID and primary key of the architect.
+     * @return new Person object.
+     * @throws SQLException if there is an issue with the SQL query.
+     */
+    private static Person readCustomerTable(Statement statement2, String customerID)
+            throws SQLException {
         ResultSet customerResults = statement2.executeQuery("SELECT * FROM customer WHERE " +
                 "CUSTOMER_ID=" + customerID + ";");
         customerResults.next();
@@ -160,7 +186,16 @@ public class PoisedPMS {
                 customerResults.getString("CUSTOMER_ADDRESS"));
     }
 
-    private static Building readBuildingTable(Statement statement2, String erfNumber) throws SQLException {
+    /**
+     * Reads the building table record with the matching erfNumber and returns a new Building
+     * object.
+     * @param statement2 A temporary statement for use within the readWriteDatabase method.
+     * @param erfNumber The ID and primary key of the building.
+     * @return new Building object.
+     * @throws SQLException if there is an issue with the SQL query.
+     */
+    private static Building readBuildingTable(Statement statement2, String erfNumber)
+            throws SQLException {
         ResultSet buildingResults = statement2.executeQuery("SELECT * FROM building WHERE " +
                 "ERF_NUMBER=" + erfNumber + ";");
         buildingResults.next();
