@@ -75,6 +75,9 @@ public class PoisedPMS {
 
     /**
      * Reads from the poisepms database and adds each record as projects to projectList.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void readWriteDatabase(Statement statement) throws SQLException {
         // Runs an SQL query selecting each row of the table
@@ -209,6 +212,9 @@ public class PoisedPMS {
 
     /**
      * Displays the main menu of the application and allows for user input for selection.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void menu(Statement statement) throws SQLException{
         while (true) {
@@ -265,6 +271,9 @@ public class PoisedPMS {
 
     /**
      * Allows user to view incomplete projects and prints them.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void incompleteProjects(Statement statement) throws SQLException{
         noProjects(statement);
@@ -286,6 +295,9 @@ public class PoisedPMS {
 
     /**
      * Allows user to search for overdue projects and prints them.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void overdueProjects(Statement statement) throws SQLException {
         noProjects(statement);
@@ -308,6 +320,9 @@ public class PoisedPMS {
     /**
      * Allows user to view the details of a project based on either the project number or the
      * project name.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void searchProject(Statement statement) throws SQLException {
         noProjects(statement);
@@ -761,6 +776,9 @@ public class PoisedPMS {
 
     /**
      * Prints a statement if there are currently no projects to edit and returns to menu.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void noProjects(Statement statement)throws SQLException{
         if(projectList.isEmpty()){
@@ -768,8 +786,12 @@ public class PoisedPMS {
             menu(statement);
         }
     }
+
     /**
      * Asks user to select a project they want to finalise and generates an invoice for them.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void finalise(Statement statement) throws SQLException{
         noProjects(statement);
