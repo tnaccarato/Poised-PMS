@@ -98,7 +98,7 @@ public class Project {
      *
      * @param activeProject the active project
      */
-    public static void changePaid(Project activeProject) {
+    public static void changePaid(Project activeProject, Statement statement) throws SQLException {
         // Asks the user what they would like set the total fee paid to
         Scanner input = new Scanner(System.in);
         double newPaid;
@@ -117,6 +117,9 @@ public class Project {
             }
         }
         activeProject.setTotalPaid(newPaid);
+        // Updates the database
+        statement.executeUpdate("UPDATE project SET AMOUNT_PAID="
+                + newPaid + " WHERE PROJECT_NUM=" + activeProject.getProjectNum() + ";");
         // Prints a confirmation
         System.out.println("Amount paid changed successfully.");
     }
