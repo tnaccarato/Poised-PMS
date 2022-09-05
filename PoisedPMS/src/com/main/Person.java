@@ -1,5 +1,7 @@
 package com.main;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 /**
@@ -13,8 +15,7 @@ public class Person {
     private String phoneNum;
     private String email;
     private String address;
-
-    // Methods
+    private String id;
 
     /**
      * Instantiates a new Person.
@@ -27,9 +28,10 @@ public class Person {
      * @param address   the address
      */
 // Constructor
-    public Person(String role, String firstName, String surname, String phoneNum, String email,
+    public Person(String role, String id, String firstName, String surname, String phoneNum, String email,
                   String address) {
         this.setRole(role);
+        this.setId(id);
         this.setFirstName(firstName);
         this.setSurname(surname);
         this.setPhoneNum(phoneNum);
@@ -40,9 +42,11 @@ public class Person {
     /**
      * Update Person details.
      *
+     * @param statement    the statement
      * @param activePerson the active person
+     * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void changeDetails(Person activePerson) {
+    public static void changeDetails(Person activePerson, Statement statement) throws SQLException {
         // Asks which details the user wants to change
         Scanner changeDetailsScanner = new Scanner(System.in);
         System.out.println("""
@@ -61,6 +65,15 @@ public class Person {
             String newSurname = changeDetailsScanner.nextLine();
             activePerson.setFirstName(newFirstName);
             activePerson.setSurname(newSurname);
+            // Gets Person objects role and ID type
+            // (which is capitalised to match column in table)
+            String role = activePerson.getRole();
+            String idType = role.toUpperCase() + "_ID";
+            // Updates the corresponding database entry
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_FNAME=\""
+                    + newFirstName + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_LNAME=\""
+                    + newSurname + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Name changed successfully.");
         }
@@ -69,6 +82,13 @@ public class Person {
             System.out.println("What would you like to change their phone number to?");
             String newPhoneNum = changeDetailsScanner.nextLine();
             activePerson.setPhoneNum(newPhoneNum);
+            // Gets Person objects role and ID type
+            // (which is capitalised to match column in table)
+            String role = activePerson.getRole();
+            String idType = role.toUpperCase() + "_ID";
+            // Changes the corresponding database entry
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_PHONE=\""
+                    + newPhoneNum + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             System.out.println("Phone number changed successfully.");
         }
         // If user enters e, allows them to change person's email
@@ -76,6 +96,13 @@ public class Person {
             System.out.println("What would you like to change their email address to?");
             String newEmail = changeDetailsScanner.nextLine();
             activePerson.setEmail(newEmail);
+            // Gets Person objects role and ID type
+            // (which is capitalised to match column in table)
+            String role = activePerson.getRole();
+            String idType = role.toUpperCase() + "_ID";
+            // Changes the corresponding database entry
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_EMAIL=\""
+                    + newEmail + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Email changed successfully.");
         }
@@ -84,41 +111,59 @@ public class Person {
             System.out.println("What would you like to change their address to");
             String newAddress = changeDetailsScanner.nextLine();
             activePerson.setAddress(newAddress);
+            // Gets Person objects role and ID type
+            // (which is capitalised to match column in table)
+            String role = activePerson.getRole();
+            String idType = role.toUpperCase() + "_ID";
+            // Changes the corresponding database entry
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()
+                    + "_ADDRESS=\"" + newAddress + "\" WHERE " + idType + "="
+                    + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Address changed successfully.");
         } else {
             System.out.println("Sorry, your choice \"" + changeDetailsInput +
-                    "\" was not recognised," + "please try again.");
+                    "\" was not recognised, " + "please try again.");
         }
     }
 
-    /**
-     * Gets the values of each field and writes them to a string.
-     *
-     * @return the string
-     */
-//
-    public String getAttributes() {
-        String attributes;
-        attributes = getRole() + "," + getFirstName() + "," + getSurname() + "," + getPhoneNum() + ","
-                + getEmail() + "," + getAddress();
-        return attributes;
-    }
+    // Methods
+
 
     /**
      * Overrides toString method for the object to print attributes
+     *
      * @return easy-to-read string of attributes
      */
     public String toString() {
         String output = "\nRole: " + getRole();
+        output += "\nID: " + getId();
         output += "\nName: " + getFirstName() + " " + getSurname();
         output += "\nPhone Number: " + getPhoneNum();
         output += "\nEmail: " + getEmail();
         output += "\nAddress: " + getAddress();
         return output;
     }
+// Getters and Setters
 
-    // Getters and Setters
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
+
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Gets role.

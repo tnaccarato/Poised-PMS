@@ -1,5 +1,7 @@
 package com.main;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ public class Project {
     private int projectNum;
     private String projectName;
     private Building building;
+    private double cost;
     private double totalPaid;
     private LocalDate deadline;
     private boolean finalised;
@@ -38,12 +41,13 @@ public class Project {
      * @param architect    the architect
      * @param contractor   the contractor
      */
-    public Project(int projectNum, String projectName, Building building, double totalPaid,
+    public Project(int projectNum, String projectName, Building building, double cost, double totalPaid,
                    LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer,
                    Person architect, Person contractor) {
         this.setProjectNum(projectNum);
         this.setProjectName(projectName);
         this.setBuilding(building);
+        this.setCost(cost);
         this.setTotalPaid(totalPaid);
         this.setDeadline(deadline);
         this.setCompleteDate(completeDate);
@@ -57,8 +61,11 @@ public class Project {
      * Change deadline.
      *
      * @param activeProject the active project
+     * @param statement     the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void changeDeadline(Project activeProject) {
+    public static void changeDeadline(Project activeProject, Statement statement)
+            throws SQLException {
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
         LocalDate newDeadline;
@@ -79,6 +86,9 @@ public class Project {
         }
         // Sets the new deadline to project deadline
         activeProject.setDeadline(newDeadline);
+        // Updates the database
+        statement.executeUpdate("UPDATE project SET DEADLINE=\""
+                + newDeadline + "\" WHERE PROJECT_NUM=" + activeProject.getProjectNum() + ";");
         // Prints a confirmation
         System.out.println("Deadline changed successfully.");
     }
@@ -112,30 +122,17 @@ public class Project {
     }
 
     /**
-     * Gets the values of each field and writes them to a string.
-     *
-     * @return the string with the values of each attribute.
-     */
-    public String getAttributes() {
-        String attributes;
-        attributes = "\n" + getProjectNum() + "," + getProjectName() + "," + building.getAttributes() + ","
-                + getTotalPaid() + "," + getDeadline() + "," + getCompleteDate() + "," + isFinalised() + ","
-                + customer.getAttributes() + "," + architect.getAttributes() + ","
-                + contractor.getAttributes();
-        return attributes;
-    }
-
-    /**
      * toString method.
      *
      * @return string
      */
     public String toString() {
-        DecimalFormat df = new DecimalFormat("#.##"); // Declares a DecimalFormat for costs
+        DecimalFormat df = new DecimalFormat("#,##0.00"); // Declares a DecimalFormat for costs
         String output = "Project Number: " + getProjectNum();
         output += "\nProject Name: " + getProjectName();
         output += getBuilding();
-        output += "\nAmount Paid: " + df.format(getTotalPaid());
+        output += "\nTotal Cost: £" + df.format(getCost());
+        output += "\nAmount Paid: £" + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
         // If the project is finalised, adds the completion date
         if (isFinalised()) {
@@ -187,6 +184,24 @@ public class Project {
      */
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    /**
+     * Gets cost.
+     *
+     * @return the cost
+     */
+    public double getCost() {
+        return cost;
+    }
+
+    /**
+     * Sets cost.
+     *
+     * @param cost the cost
+     */
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     /**
