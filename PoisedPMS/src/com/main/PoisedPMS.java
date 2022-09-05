@@ -105,15 +105,23 @@ public class PoisedPMS {
             String customerID = projectResults.getString("CUSTOMER_ID");
             String architectID = projectResults.getString("ARCHITECT_ID");
             String contractorID = projectResults.getString("CONTRACTOR_ID");
+            // Reads the corresponding building table record
             Building building = readBuildingTable(statement2, erfNumber);
+            // Reads the corresponding customer table record
             Person customer = readCustomerTable(statement2, customerID);
+            // Reads the corresponding architect table record
             Person architect = readArchitectTable(statement2, architectID);
+            // Reads the corresponding contractor table record
             Person contractor = readContractorTable(statement2, contractorID);
+            // Declares a new project object using the record's attributes
             Project project = new Project(projectNum, projectName, building, totalCost, amountPaid,
                     deadline, completeDate, finalised, customer, architect, contractor);
+            // Adds the new object to projectList
             projectList.add(project);
-
         }
+        // Prints a confirmation
+        System.out.println("Database read successfully. " + projectList.size() +
+                " projects have been added.");
     }
 
     private static Person readContractorTable(Statement statement2, String contractorID) throws SQLException {
