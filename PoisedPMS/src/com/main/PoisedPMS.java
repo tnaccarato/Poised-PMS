@@ -4,7 +4,10 @@ import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * The main class of the program.
@@ -46,20 +49,20 @@ public class PoisedPMS {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        try{
-        // Connects to poisepms database
-        Connection connection = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
-            "tom",
-        "Suss3x225!"
-);
-        // Creates a direct line from the database for queries
-        Statement statement = connection.createStatement();
-        readWriteDatabase(statement);
-        menu(statement);
+        try {
+            // Connects to poisepms database
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
+                    "tom",
+                    "Suss3x225!"
+            );
+            // Creates a direct line from the database for queries
+            Statement statement = connection.createStatement();
+            readWriteDatabase(statement);
+            menu(statement);
         }
         // Prints the stack, if an SQLException occurs
-        catch(SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -67,8 +70,8 @@ public class PoisedPMS {
     /**
      * Generates a summary of projects for viewing when asked to choose a project
      */
-    public static void projectSummary(){
-        for(Project project:projectList){
+    public static void projectSummary() {
+        for (Project project : projectList) {
             System.out.println(project.getProjectNum() + " - " + project.getProjectName());
         }
     }
@@ -85,12 +88,12 @@ public class PoisedPMS {
         LocalDate completeDate;
         // Declares a second statement for use inside the method (1)
         Statement statement2 = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
-        "tom",
-    "Suss3x225!"
+                "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
+                "tom",
+                "Suss3x225!"
         ).createStatement();
         // Loops through the projectResultsSet, creating a project object from each row
-        while(projectResults.next()) {
+        while (projectResults.next()) {
             projectNum = projectResults.getInt("PROJECT_NUM");
             String projectName = projectResults.getString("PROJECT_NAME");
             LocalDate deadline = projectResults.getDate("DEADLINE").toLocalDate();
@@ -98,7 +101,7 @@ public class PoisedPMS {
                 completeDate = projectResults.getDate("COMPLETE_DATE").toLocalDate();
             }
             // If the complete date is null, gives an error and defaults completeDate to deadline
-            catch(NullPointerException e){
+            catch (NullPointerException e) {
                 completeDate = deadline;
             }
             float totalCost = projectResults.getFloat("TOTAL_COST");
@@ -130,7 +133,8 @@ public class PoisedPMS {
     /**
      * Reads the contractor table record with the matching constructorID and returns a new Person
      * object.
-     * @param statement2 A temporary statement for use within the readWriteDatabase method.
+     *
+     * @param statement2   A temporary statement for use within the readWriteDatabase method.
      * @param contractorID The ID and primary key of the contractor.
      * @return new Person object.
      * @throws SQLException if there is an issue with the SQL query.
@@ -152,7 +156,8 @@ public class PoisedPMS {
     /**
      * Reads the architect table record with the matching architectID and returns a new Person
      * object.
-     * @param statement2 A temporary statement for use within the readWriteDatabase method
+     *
+     * @param statement2  A temporary statement for use within the readWriteDatabase method
      * @param architectID The ID and primary key of the architect
      * @return new Person object.
      * @throws SQLException if there is an issue with the SQL query.
@@ -173,6 +178,7 @@ public class PoisedPMS {
 
     /**
      * Reads the customer table record with the matching customerID and returns a new Person object.
+     *
      * @param statement2 A temporary statement for use within the readWriteDatabase method.
      * @param customerID The ID and primary key of the architect.
      * @return new Person object.
@@ -195,8 +201,9 @@ public class PoisedPMS {
     /**
      * Reads the building table record with the matching erfNumber and returns a new Building
      * object.
+     *
      * @param statement2 A temporary statement for use within the readWriteDatabase method.
-     * @param erfNumber The ID and primary key of the building.
+     * @param erfNumber  The ID and primary key of the building.
      * @return new Building object.
      * @throws SQLException if there is an issue with the SQL query.
      */
@@ -216,7 +223,7 @@ public class PoisedPMS {
      * @param statement the statement
      * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void menu(Statement statement) throws SQLException{
+    public static void menu(Statement statement) throws SQLException {
         while (true) {
             printMenu();
             Scanner menuInputScanner = new Scanner(System.in);
@@ -225,18 +232,15 @@ public class PoisedPMS {
             // If the user enters a, allows them to add a new project
             if ("a".equals(userInput)) {
                 newProject(statement);
-            }
-            else if("s".equals(userInput)){
+            } else if ("s".equals(userInput)) {
                 searchProject(statement);
             }
             // If the user enters v, allows them to view all projects
             else if ("va".equals(userInput)) {
                 viewAll(statement);
-            }
-            else if("vi".equals(userInput)){
+            } else if ("vi".equals(userInput)) {
                 incompleteProjects(statement);
-            }
-            else if("vo".equals(userInput)){
+            } else if ("vo".equals(userInput)) {
                 overdueProjects(statement);
             }
             // If the user enters cd, allows them to change the deadline of a project
@@ -275,12 +279,12 @@ public class PoisedPMS {
      * @param statement the statement
      * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void incompleteProjects(Statement statement) throws SQLException{
+    public static void incompleteProjects(Statement statement) throws SQLException {
         noProjects(statement);
         // Searches for incomplete projects and prints them
         boolean incompleteProjectsFound = false;
-        for(Project project: projectList){
-            if(!project.isFinalised()){
+        for (Project project : projectList) {
+            if (!project.isFinalised()) {
                 System.out.println(DIVIDER);
                 System.out.println(project + "\n");
                 System.out.println(DIVIDER);
@@ -288,7 +292,7 @@ public class PoisedPMS {
             }
         }
         // If no incomplete projects were found, prints a statement
-        if(!incompleteProjectsFound){
+        if (!incompleteProjectsFound) {
             System.out.println("No incomplete projects were found. Great work!");
         }
     }
@@ -303,8 +307,8 @@ public class PoisedPMS {
         noProjects(statement);
         boolean overdueProjectsFound = false;
         // Searches for overdue projects and prints them
-        for(Project project:projectList){
-            if(project.getDeadline().isBefore(LocalDate.now())&&(!project.isFinalised())){
+        for (Project project : projectList) {
+            if (project.getDeadline().isBefore(LocalDate.now()) && (!project.isFinalised())) {
                 System.out.println(DIVIDER);
                 System.out.println(project + "\n");
                 System.out.println(DIVIDER);
@@ -312,7 +316,7 @@ public class PoisedPMS {
             }
         }
         // If no overdue projects were found, prints a statement
-        if(!overdueProjectsFound){
+        if (!overdueProjectsFound) {
             System.out.println("No overdue projects were found. Keep it up!");
         }
     }
@@ -330,16 +334,16 @@ public class PoisedPMS {
         Scanner searchProjectScanner = new Scanner(System.in);
         int searchProjectMethod;
         searchProjectMethod = chooseSearchMethod(searchProjectScanner);
-        if (searchProjectMethod == 1){
+        if (searchProjectMethod == 1) {
             searchByNum(searchProjectScanner);
-        }
-        else if(searchProjectMethod == 2){
+        } else if (searchProjectMethod == 2) {
             searchProjectName(searchProjectScanner);
         }
     }
 
     /**
      * Allows user to search for a project by name
+     *
      * @param searchProjectScanner input scanner
      */
     private static void searchProjectName(Scanner searchProjectScanner) {
@@ -363,25 +367,26 @@ public class PoisedPMS {
 
     /**
      * Allows user to search by project number
+     *
      * @param searchProjectScanner input scanner
      */
     private static void searchByNum(Scanner searchProjectScanner) {
-        while(true){
+        while (true) {
             // Asks user for the project number they want to search for
             System.out.println("Which project number would you like to select?");
-            try{
+            try {
                 int searchProjectNum = searchProjectScanner.nextInt() - 1;
                 searchProjectScanner.nextLine();
                 System.out.println(projectList.get(searchProjectNum) + "\n");
                 break;
             }
             // If the user doesn't enter an integer, allows them to try again
-            catch(InputMismatchException e){
+            catch (InputMismatchException e) {
                 System.out.println(NOT_AN_INTEGER_ERROR);
                 searchProjectScanner.nextLine();
             }
             // If the project index is out of bounds, allows the user to try again
-            catch(IndexOutOfBoundsException e){
+            catch (IndexOutOfBoundsException e) {
                 System.out.println("A project in that index could not be found, please try again.");
             }
         }
@@ -389,6 +394,7 @@ public class PoisedPMS {
 
     /**
      * Allows chooses the input method for search method.
+     *
      * @param searchProjectScanner input scanner
      * @return int user choice
      */
@@ -435,8 +441,8 @@ public class PoisedPMS {
 
     /**
      * Updates contact details for a selected Person object.
-      */
-    private static void updateContact(Statement statement) throws SQLException{
+     */
+    private static void updateContact(Statement statement) throws SQLException {
         noProjects(statement);
         Scanner changeDetailsScanner = new Scanner(System.in);
         // Asks the user which project they would like to change details for
@@ -447,7 +453,7 @@ public class PoisedPMS {
         changeDetailsNum = selectChangeDetailsNum(changeDetailsScanner);
 
         // Asks the user which person they would like to change the details for
-        while(true) {
+        while (true) {
             System.out.println("Which person would you like to change the details for?");
             System.out.println("""
                     1 - Customer
@@ -469,7 +475,7 @@ public class PoisedPMS {
                 inputRecognised = true;
                 // Changes the corresponding database entry
                 statement.executeUpdate("UPDATE project SET PROJECT_NAME=\""
-                        + newProjectName+ "\" WHERE  PROJECT_NUM="+changeDetailsNum+";");
+                        + newProjectName + "\" WHERE  PROJECT_NUM=" + changeDetailsNum + ";");
             }
             // Architect
             else if (changeDetailsPerson == 2) {
@@ -490,7 +496,7 @@ public class PoisedPMS {
                 changeDetailsScanner.nextLine();
             }
             // If the input is recognised, breaks the loop
-            if(inputRecognised){
+            if (inputRecognised) {
                 break;
             }
         }
@@ -498,6 +504,7 @@ public class PoisedPMS {
 
     /**
      * Allows user to pick a project number for use in changeDetails method.
+     *
      * @param changeDetailsScanner input scanner
      * @return int project number
      */
@@ -506,10 +513,9 @@ public class PoisedPMS {
         while (true) {
             try {
                 changeDetailsNum = changeDetailsScanner.nextInt() - 1;
-                if(changeDetailsNum > projectList.size()){
+                if (changeDetailsNum > projectList.size()) {
                     throw new IllegalArgumentException();
-                }
-                else if(changeDetailsNum < 0){
+                } else if (changeDetailsNum < 0) {
                     throw new IndexOutOfBoundsException();
                 }
                 changeDetailsScanner.nextLine();
@@ -642,7 +648,7 @@ public class PoisedPMS {
     /**
      * Creates a new Project object from user's inputs for attributes and adds it to a list.
      */
-    public static void newProject(Statement statement) throws SQLException{
+    public static void newProject(Statement statement) throws SQLException {
         // Increases project number count by one
         ResultSet results = statement.executeQuery("SELECT MAX(PROJECT_NUM) FROM project;");
         results.next();
@@ -676,7 +682,7 @@ public class PoisedPMS {
         Building building = new Building(typeBuilding, address, erfNum);
         // Adds building to database
         statement.executeUpdate("INSERT INTO building VALUES( \""
-                + erfNum + "\", \"" + address + "\", \""+typeBuilding+"\");");
+                + erfNum + "\", \"" + address + "\", \"" + typeBuilding + "\");");
         double amountPaid;
         while (true) {
             System.out.println("How much has the customer already paid?");
@@ -733,7 +739,7 @@ public class PoisedPMS {
         projectList.add(project);
         // Adds the project to database
         statement.executeUpdate("INSERT INTO project VALUES("
-                + projectNum + ",\""+ projectName + "\",\"" + deadline + "\", NULL," + cost + ","
+                + projectNum + ",\"" + projectName + "\",\"" + deadline + "\", NULL," + cost + ","
                 + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + customer.getId() + "\",\""
                 + architect.getId() + "\",\"" + contractor.getId() + "\");");
         // Prints a confirmation that the project has been added successfully
@@ -742,18 +748,16 @@ public class PoisedPMS {
 
     private static String inputERF(Scanner input) {
         String erfNum;
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.println("What is the ERF number of the project?");
                 erfNum = input.nextLine();
-                if(erfNum.length() > 10){
+                if (erfNum.length() > 10) {
                     throw new TooManyCharactersException("You have entered too many characters!");
-                }
-                else{
+                } else {
                     break;
                 }
-            }
-            catch (TooManyCharactersException e){
+            } catch (TooManyCharactersException e) {
                 System.out.println("You have entered too many characters, ERF number should " +
                         "only be up to 10 characters. Please try again.");
                 input.nextLine();
@@ -793,18 +797,16 @@ public class PoisedPMS {
     private static Person newPersonInput(String role, Statement statement) throws SQLException {
         Scanner input = new Scanner(System.in);
         String id;
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.println("What is this person's ID number?");
                 id = input.nextLine();
-                if(id.length() > 5){
+                if (id.length() > 5) {
                     throw new TooManyCharactersException("You have entered too many characters!");
-                }
-                else{
+                } else {
                     break;
                 }
-            }
-            catch (TooManyCharactersException e){
+            } catch (TooManyCharactersException e) {
                 System.out.println("You have entered too many characters, ID should only " +
                         "be up to 5 characters. Please try again.");
             }
@@ -823,7 +825,7 @@ public class PoisedPMS {
         statement.executeUpdate("INSERT INTO " + role.toLowerCase() + " VALUES(\""
                 + id + "\",\"" + firstName + "\",\"" + surname + "\",\"" + phoneNum
                 + "\",\"" + email + "\",\"" + address + "\");");
-        return new Person(role,id, firstName, surname, phoneNum, email, address);
+        return new Person(role, id, firstName, surname, phoneNum, email, address);
 
     }
 
@@ -833,8 +835,8 @@ public class PoisedPMS {
      * @param statement the statement
      * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void noProjects(Statement statement) throws SQLException{
-        if(projectList.isEmpty()){
+    public static void noProjects(Statement statement) throws SQLException {
+        if (projectList.isEmpty()) {
             System.out.println("There are currently no projects.");
             menu(statement);
         }
@@ -846,7 +848,7 @@ public class PoisedPMS {
      * @param statement the statement
      * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void finalise(Statement statement) throws SQLException{
+    public static void finalise(Statement statement) throws SQLException {
         noProjects(statement);
         // Asks user which project they want to finalise
         Scanner finaliseInput = new Scanner(System.in);
@@ -856,10 +858,9 @@ public class PoisedPMS {
                 System.out.println("Which project would you like to finalise?");
                 projectSummary();
                 finaliseChoice = finaliseInput.nextInt() - 1;
-                if(finaliseChoice > projectList.size()){
+                if (finaliseChoice > projectList.size()) {
                     throw new IllegalArgumentException();
-                }
-                else if(finaliseChoice < 0){
+                } else if (finaliseChoice < 0) {
                     throw new IndexOutOfBoundsException();
                 }
                 finaliseInput.nextLine();
@@ -872,11 +873,10 @@ public class PoisedPMS {
             }
             // If the project index will be out of range, throws an error and allows the user to try
             // again
-            catch(IllegalArgumentException e){
+            catch (IllegalArgumentException e) {
                 System.out.println("Project index was out of range, please try again.");
                 finaliseInput.nextLine();
-            }
-            catch(IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("Project number must be greater than 0. Please try again.");
             }
         }

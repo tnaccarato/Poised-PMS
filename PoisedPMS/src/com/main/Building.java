@@ -19,7 +19,7 @@ public class Building {
      */
 // Constructor
     public Building(String typeBuilding, String address,
-                    String erfNum){
+                    String erfNum) {
         this.setTypeBuilding(typeBuilding);
         this.setAddress(address);
         this.setErfNum(erfNum);
@@ -27,6 +27,7 @@ public class Building {
 
     /**
      * Overrides toString method to print the details of the object for viewing
+     *
      * @return string with object details for use in print statements
      */
     public String toString() {

@@ -15,18 +15,7 @@ public class Person {
     private String phoneNum;
     private String email;
     private String address;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     private String id;
-
-    // Methods
 
     /**
      * Instantiates a new Person.
@@ -77,12 +66,12 @@ public class Person {
             // Gets Person objects role and ID type
             // (which is capitalised to match column in table)
             String role = activePerson.getRole();
-            String idType = role.toUpperCase()+"_ID";
+            String idType = role.toUpperCase() + "_ID";
             // Updates the corresponding database entry
-            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()+"_FNAME=\""
-                    + newFirstName+"\" WHERE " + idType + "=" + activePerson.getId()+";");
-            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()+"_LNAME=\""
-                    +newSurname+"\" WHERE " + idType + "=" + activePerson.getId()+";");
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_FNAME=\""
+                    + newFirstName + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_LNAME=\""
+                    + newSurname + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Name changed successfully.");
         }
@@ -94,10 +83,10 @@ public class Person {
             // Gets Person objects role and ID type
             // (which is capitalised to match column in table)
             String role = activePerson.getRole();
-            String idType = role.toUpperCase()+"_ID";
+            String idType = role.toUpperCase() + "_ID";
             // Changes the corresponding database entry
-            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()+"_PHONE=\""
-                    + newPhoneNum + "\" WHERE " + idType + "=" + activePerson.getId()+";");
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_PHONE=\""
+                    + newPhoneNum + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             System.out.println("Phone number changed successfully.");
         }
         // If user enters e, allows them to change person's email
@@ -108,10 +97,10 @@ public class Person {
             // Gets Person objects role and ID type
             // (which is capitalised to match column in table)
             String role = activePerson.getRole();
-            String idType = role.toUpperCase()+"_ID";
+            String idType = role.toUpperCase() + "_ID";
             // Changes the corresponding database entry
-            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()+"_EMAIL=\""
-                    + newEmail + "\" WHERE " + idType + "=" + activePerson.getId()+";");
+            statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase() + "_EMAIL=\""
+                    + newEmail + "\" WHERE " + idType + "=" + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Email changed successfully.");
         }
@@ -123,11 +112,11 @@ public class Person {
             // Gets Person objects role and ID type
             // (which is capitalised to match column in table)
             String role = activePerson.getRole();
-            String idType = role.toUpperCase()+"_ID";
+            String idType = role.toUpperCase() + "_ID";
             // Changes the corresponding database entry
             statement.executeUpdate("UPDATE " + role + " SET " + role.toUpperCase()
                     + "_ADDRESS=\"" + newAddress + "\" WHERE " + idType + "="
-                    + activePerson.getId()+";");
+                    + activePerson.getId() + ";");
             // Prints a confirmation
             System.out.println("Address changed successfully.");
         } else {
@@ -136,9 +125,19 @@ public class Person {
         }
     }
 
+    // Methods
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Overrides toString method for the object to print attributes
+     *
      * @return easy-to-read string of attributes
      */
     public String toString() {
