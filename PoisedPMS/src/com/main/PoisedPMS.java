@@ -142,7 +142,7 @@ public class PoisedPMS {
     private static Person readContractorTable(Statement statement2, String contractorID)
             throws SQLException {
         ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE"
-                + " CONTRACTOR_ID=" + contractorID + ";");
+                + " CONTRACTOR_ID=\"" + contractorID + "\";");
         contractorResults.next();
         return new Person("Contractor",
                 contractorResults.getString("CONTRACTOR_ID"),
@@ -165,7 +165,7 @@ public class PoisedPMS {
     private static Person readArchitectTable(Statement statement2, String architectID)
             throws SQLException {
         ResultSet architectResults = statement2.executeQuery("SELECT * FROM architect WHERE " +
-                "ARCHITECT_ID=" + architectID + ";");
+                "ARCHITECT_ID=\"" + architectID + "\";");
         architectResults.next();
         return new Person("Architect",
                 architectResults.getString("ARCHITECT_ID"),
@@ -187,7 +187,7 @@ public class PoisedPMS {
     private static Person readCustomerTable(Statement statement2, String customerID)
             throws SQLException {
         ResultSet customerResults = statement2.executeQuery("SELECT * FROM customer WHERE " +
-                "CUSTOMER_ID=" + customerID + ";");
+                "CUSTOMER_ID=\"" + customerID + "\";");
         customerResults.next();
         return new Person("Customer",
                 customerResults.getString("CUSTOMER_ID"),
@@ -210,7 +210,7 @@ public class PoisedPMS {
     private static Building readBuildingTable(Statement statement2, String erfNumber)
             throws SQLException {
         ResultSet buildingResults = statement2.executeQuery("SELECT * FROM building WHERE " +
-                "ERF_NUMBER=" + erfNumber + ";");
+                "ERF_NUMBER=\"" + erfNumber + "\";");
         buildingResults.next();
         return new Building(buildingResults.getString("BUILDING_TYPE"),
                 buildingResults.getString("BUILDING_ADDRESS"),
@@ -557,10 +557,7 @@ public class PoisedPMS {
         projectSummary();
         int changePaidNum = changePaidScanner.nextInt() - 1;
         changePaidScanner.nextLine();
-        Project.changePaid(projectList.get(changePaidNum));
-        // Updates the database
-        statement.executeUpdate("UPDATE project SET AMOUNT_PAID WHERE PROJECT_NUM="
-                + changePaidNum + ";");
+        Project.changePaid(projectList.get(changePaidNum), statement);
     }
 
     /**
@@ -755,8 +752,8 @@ public class PoisedPMS {
         // Adds the project to database
         statement.executeUpdate("INSERT INTO project VALUES("
                 + projectNum + ",\"" + projectName + "\",\"" + deadline + "\", NULL," + cost + ","
-                + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + customer.getId() + "\",\""
-                + architect.getId() + "\",\"" + contractor.getId() + "\");");
+                + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + architect.getId() +  "\",\""
+                + customer.getId() +  "\",\"" + contractor.getId() + "\");");
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
     }
@@ -773,6 +770,12 @@ public class PoisedPMS {
             try {
                 System.out.println("What is the ERF number of the project?");
                 erfNum = input.nextLine();
+                // Checks that ERF isn't already in use
+                for(Project project:projectList){
+                    if(project.getBuilding().getErfNum().equals(erfNum)){
+                        throw new SQLIntegrityConstraintViolationException();
+                    }
+                }
                 if (erfNum.length() > 10) {
                     throw new TooManyCharactersException("You have entered too many characters!");
                 } else {
@@ -782,6 +785,10 @@ public class PoisedPMS {
                 System.out.println("You have entered too many characters, ERF number should " +
                         "only be up to 10 characters. Please try again.");
                 input.nextLine();
+            }
+            // If the ERF already exists, throws an error and allows the user to try again
+            catch (SQLIntegrityConstraintViolationException e) {
+                System.out.println("The ERF number you entered is in use. Please try again.");
             }
         }
         return erfNum;
@@ -826,14 +833,25 @@ public class PoisedPMS {
             try {
                 System.out.println("What is this person's ID number?");
                 id = input.nextLine();
+                // Checks that user hasn't entered more than 5 digits
                 if (id.length() > 5) {
                     throw new TooManyCharactersException("You have entered too many characters!");
-                } else {
-                    break;
                 }
+                // Checks that ID is not a duplicate by trying to create a record with it
+                statement.executeUpdate("INSERT INTO " + role.toLowerCase()
+                        + " VALUES(\"" + id + "\",\"IS\",\"THIS\",\"ID\",\"A\"," +
+                        "\"DUPLICATE?\");");
+                // Deletes the test record
+                statement.executeUpdate("DELETE FROM " + role.toLowerCase() + " WHERE "
+                        + role.toUpperCase() + "_ID=\"" + id + "\";");
+                break;
             } catch (TooManyCharactersException e) {
                 System.out.println("You have entered too many characters, ID should only " +
                         "be up to 5 characters. Please try again.");
+            }
+            // If the ID is a duplicate, asks them to enter something else
+            catch (SQLIntegrityConstraintViolationException e) {
+                System.out.println("This ID is already in use, please try again.");
             }
         }
         System.out.println("What is this person's first name?");
