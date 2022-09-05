@@ -42,7 +42,9 @@ public class Person {
     /**
      * Update Person details.
      *
+     * @param statement    the statement
      * @param activePerson the active person
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void changeDetails(Person activePerson, Statement statement) throws SQLException {
         // Asks which details the user wants to change
@@ -127,13 +129,6 @@ public class Person {
 
     // Methods
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     /**
      * Overrides toString method for the object to print attributes
@@ -149,8 +144,26 @@ public class Person {
         output += "\nAddress: " + getAddress();
         return output;
     }
+// Getters and Setters
 
-    // Getters and Setters
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
+
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Gets role.

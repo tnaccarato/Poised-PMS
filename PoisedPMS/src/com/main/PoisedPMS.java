@@ -441,6 +441,9 @@ public class PoisedPMS {
 
     /**
      * Updates contact details for a selected Person object.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is a problem with the SQL query.
      */
     private static void updateContact(Statement statement) throws SQLException {
         noProjects(statement);
@@ -543,6 +546,9 @@ public class PoisedPMS {
 
     /**
      * Changes the amount paid for by the client.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query
      */
     private static void changeAmountPaid(Statement statement) throws SQLException {
         noProjects(statement);
@@ -559,6 +565,9 @@ public class PoisedPMS {
 
     /**
      * Changes the deadline of a project.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     private static void changeDeadline(Statement statement) throws SQLException {
         noProjects(statement);
@@ -597,6 +606,9 @@ public class PoisedPMS {
 
     /**
      * Provides a menu for retrying changeDeadline after invalid index
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     private static void invalidIndex(Scanner changeDeadlineScanner, Statement statement)
             throws SQLException {
@@ -647,6 +659,9 @@ public class PoisedPMS {
 
     /**
      * Creates a new Project object from user's inputs for attributes and adds it to a list.
+     *
+     * @param statement the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void newProject(Statement statement) throws SQLException {
         // Increases project number count by one
@@ -746,6 +761,12 @@ public class PoisedPMS {
         System.out.println("Project added to system. Returning to menu...");
     }
 
+    /**
+     * Allows the user to input the ERF number
+     *
+     * @param input the ERF number
+     * @return the inputted ERF number
+     */
     private static String inputERF(Scanner input) {
         String erfNum;
         while (true) {
@@ -769,7 +790,9 @@ public class PoisedPMS {
     /**
      * Creates a new Person object for user's inputs for attributes.
      *
+     * @param statement the statement
      * @return New Person object.
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static Person newPerson(Statement statement) throws SQLException {
         // Generates the role of the person using count
@@ -791,8 +814,10 @@ public class PoisedPMS {
     /**
      * Takes user inputs for attributes for the person.
      *
-     * @param role The role of the Person object.
+     * @param statement the statement
+     * @param role      The role of the Person object.
      * @return new Person object.
+     * @throws SQLException if there is an issue with the SQL query.
      */
     private static Person newPersonInput(String role, Statement statement) throws SQLException {
         Scanner input = new Scanner(System.in);

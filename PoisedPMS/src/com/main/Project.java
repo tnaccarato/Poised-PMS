@@ -61,6 +61,8 @@ public class Project {
      * Change deadline.
      *
      * @param activeProject the active project
+     * @param statement     the statement
+     * @throws SQLException if there is an issue with the SQL query.
      */
     public static void changeDeadline(Project activeProject, Statement statement)
             throws SQLException {
