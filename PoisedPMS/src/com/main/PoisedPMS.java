@@ -18,22 +18,6 @@ public class PoisedPMS {
             -----------------------------------------------------------------------------------------------
                 """;
 
-    /**
-     * The constant PROJECTS_TXT for storing the projects.txt file path.
-     */
-    public static final String PROJECTS_TXT = "src\\com\\main\\projects.txt";
-
-    /**
-     * The constant FIELDHEADERS for storing the headings for each field of the project.
-     */
-    public static final String FIELD_HEADERS = "projectNum,projectName," +
-            "buildingType,buildingAddress,buildingERF,buildingTotalCost," +
-            "totalPaid,deadline,completeDate,finalised,customerRole, " +
-            "customerFirstName,customerSurname,customerTelephone," +
-            "customerEmail,customerAddress,architectRole,architectFirstName," +
-            "architectLastName,architectTel,architectEmail,architectAddress," +
-            "contractorRole,contractorFirstName,contractorLastName," +
-            "contractorTel,contractorEmail,contractorAddress";
 
     /**
      * The constant NOT_AN_INTEGER_ERROR for use in non-integer errors.
@@ -96,12 +80,13 @@ public class PoisedPMS {
         // Runs an SQL query selecting each row of the table
         ResultSet projectResults = statement.executeQuery("SELECT * FROM project;");
         LocalDate completeDate;
-        // Creates a second statement for use inside the method
+        // Declares a second statement for use inside the method
         Statement statement2 = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
         "tom",
     "Suss3x225!"
         ).createStatement();
+        // Loops through the projectResultsSet, creating a project object from each row
         while(projectResults.next()) {
             projectNum = projectResults.getInt("PROJECT_NUM");
             String projectName = projectResults.getString("PROJECT_NAME");
@@ -109,6 +94,7 @@ public class PoisedPMS {
             try {
                 completeDate = projectResults.getDate("COMPLETE_DATE").toLocalDate();
             }
+            // If the complete date is null, gives an error and defaults completeDate to deadline
             catch(NullPointerException e){
                 completeDate = deadline;
             }
@@ -119,44 +105,60 @@ public class PoisedPMS {
             String customerID = projectResults.getString("CUSTOMER_ID");
             String architectID = projectResults.getString("ARCHITECT_ID");
             String contractorID = projectResults.getString("CONTRACTOR_ID");
-            ResultSet buildingResults = statement2.executeQuery("SELECT * FROM building WHERE " +
-                    "ERF_NUMBER=" + erfNumber + ";");
-            buildingResults.next();
-            Building building = new Building(buildingResults.getString("BUILDING_TYPE"),
-                    buildingResults.getString("BUILDING_ADDRESS"),
-                    buildingResults.getString("ERF_NUMBER"));
-            ResultSet customerResults = statement2.executeQuery("SELECT * FROM customer WHERE " +
-                    "CUSTOMER_ID=" + customerID + ";");
-            customerResults.next();
-            Person customer = new Person("Customer",
-                    customerResults.getString("CUSTOMER_FNAME"),
-                    customerResults.getString("CUSTOMER_LNAME"),
-                    customerResults.getString("CUSTOMER_PHONE"),
-                    customerResults.getString("CUSTOMER_EMAIL"),
-                    customerResults.getString("CUSTOMER_ADDRESS"));
-            ResultSet architectResults = statement2.executeQuery("SELECT * FROM architect WHERE " +
-                    "ARCHITECT_ID=" + architectID + ";");
-            architectResults.next();
-            Person architect = new Person("Architect",
-                    architectResults.getString("ARCHITECT_FNAME"),
-                    architectResults.getString("ARCHITECT_LNAME"),
-                    architectResults.getString("ARCHITECT_PHONE"),
-                    architectResults.getString("ARCHITECT_EMAIL"),
-                    architectResults.getString("ARCHITECT_ADDRESS"));
-            ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE" +
-                    " CONTRACTOR_ID=" + contractorID + ";");
-            contractorResults.next();
-            Person contractor = new Person("Contractor",
-                    contractorResults.getString("CONTRACTOR_FNAME"),
-                    contractorResults.getString("CONTRACTOR_LNAME"),
-                    contractorResults.getString("CONTRACTOR_PHONE"),
-                    contractorResults.getString("CONTRACTOR_EMAIL"),
-                    contractorResults.getString("CONTRACTOR_ADDRESS"));
+            Building building = readBuildingTable(statement2, erfNumber);
+            Person customer = readCustomerTable(statement2, customerID);
+            Person architect = readArchitectTable(statement2, architectID);
+            Person contractor = readContractorTable(statement2, contractorID);
             Project project = new Project(projectNum, projectName, building, totalCost, amountPaid,
                     deadline, completeDate, finalised, customer, architect, contractor);
             projectList.add(project);
 
         }
+    }
+
+    private static Person readContractorTable(Statement statement2, String contractorID) throws SQLException {
+        ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE" +
+                " CONTRACTOR_ID=" + contractorID + ";");
+        contractorResults.next();
+        return new Person("Contractor",
+                contractorResults.getString("CONTRACTOR_FNAME"),
+                contractorResults.getString("CONTRACTOR_LNAME"),
+                contractorResults.getString("CONTRACTOR_PHONE"),
+                contractorResults.getString("CONTRACTOR_EMAIL"),
+                contractorResults.getString("CONTRACTOR_ADDRESS"));
+    }
+
+    private static Person readArchitectTable(Statement statement2, String architectID) throws SQLException {
+        ResultSet architectResults = statement2.executeQuery("SELECT * FROM architect WHERE " +
+                "ARCHITECT_ID=" + architectID + ";");
+        architectResults.next();
+        return new Person("Architect",
+                architectResults.getString("ARCHITECT_FNAME"),
+                architectResults.getString("ARCHITECT_LNAME"),
+                architectResults.getString("ARCHITECT_PHONE"),
+                architectResults.getString("ARCHITECT_EMAIL"),
+                architectResults.getString("ARCHITECT_ADDRESS"));
+    }
+
+    private static Person readCustomerTable(Statement statement2, String customerID) throws SQLException {
+        ResultSet customerResults = statement2.executeQuery("SELECT * FROM customer WHERE " +
+                "CUSTOMER_ID=" + customerID + ";");
+        customerResults.next();
+        return new Person("Customer",
+                customerResults.getString("CUSTOMER_FNAME"),
+                customerResults.getString("CUSTOMER_LNAME"),
+                customerResults.getString("CUSTOMER_PHONE"),
+                customerResults.getString("CUSTOMER_EMAIL"),
+                customerResults.getString("CUSTOMER_ADDRESS"));
+    }
+
+    private static Building readBuildingTable(Statement statement2, String erfNumber) throws SQLException {
+        ResultSet buildingResults = statement2.executeQuery("SELECT * FROM building WHERE " +
+                "ERF_NUMBER=" + erfNumber + ";");
+        buildingResults.next();
+        return new Building(buildingResults.getString("BUILDING_TYPE"),
+                buildingResults.getString("BUILDING_ADDRESS"),
+                buildingResults.getString("ERF_NUMBER"));
     }
 
     /**

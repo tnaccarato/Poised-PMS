@@ -25,7 +25,6 @@ public class Building {
         this.setErfNum(erfNum);
     }
 
-
     /**
      * Overrides toString method to print the details of the object for viewing
      * @return string with object details for use in print statements
