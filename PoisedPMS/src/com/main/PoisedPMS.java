@@ -546,6 +546,9 @@ public class PoisedPMS {
         int changePaidNum = changePaidScanner.nextInt() - 1;
         changePaidScanner.nextLine();
         Project.changePaid(projectList.get(changePaidNum));
+        // Updates the database
+        statement.executeUpdate("UPDATE project SET AMOUNT_PAID WHERE PROJECT_NUM="
+                + changePaidNum + ";");
     }
 
     /**
@@ -572,7 +575,7 @@ public class PoisedPMS {
         }
         while (true) {
             try {
-                Project.changeDeadline(projectList.get(changeDeadlineNum));
+                Project.changeDeadline(projectList.get(changeDeadlineNum), statement);
                 break;
             }
             // If the index is not recognised gives an error and allows them to try again or

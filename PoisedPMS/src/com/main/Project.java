@@ -1,5 +1,7 @@
 package com.main;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -60,7 +62,8 @@ public class Project {
      *
      * @param activeProject the active project
      */
-    public static void changeDeadline(Project activeProject) {
+    public static void changeDeadline(Project activeProject, Statement statement)
+            throws SQLException {
         // Asks the user what they would like to change the deadline to
         Scanner input = new Scanner(System.in);
         LocalDate newDeadline;
@@ -81,6 +84,9 @@ public class Project {
         }
         // Sets the new deadline to project deadline
         activeProject.setDeadline(newDeadline);
+        // Updates the database
+        statement.executeUpdate("UPDATE project SET DEADLINE=\""
+                + newDeadline + "\" WHERE PROJECT_NUM=" + activeProject.getProjectNum() + ";");
         // Prints a confirmation
         System.out.println("Deadline changed successfully.");
     }
