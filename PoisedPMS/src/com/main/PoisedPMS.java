@@ -246,7 +246,7 @@ public class PoisedPMS {
         boolean overdueProjectsFound = false;
         // Searches for overdue projects and prints them
         for(Project project:projectList){
-            if(project.getDeadline().isBefore(LocalDate.now())){
+            if(project.getDeadline().isBefore(LocalDate.now())&&(!project.isFinalised())){
                 System.out.println(DIVIDER);
                 System.out.println(project + "\n");
                 System.out.println(DIVIDER);
