@@ -631,7 +631,8 @@ public class PoisedPMS {
      * @param project The selected project object.
      */
     private static void printProject(Project project) {
-        System.out.println(DIVIDER + project + DIVIDER);
+        System.out.println(DIVIDER + project
+                + DIVIDER);
     }
 
     /**

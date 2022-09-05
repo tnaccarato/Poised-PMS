@@ -97,6 +97,7 @@ public class Project {
      * Change amount paid by client.
      *
      * @param activeProject the active project
+     * @throws SQLException if there is a problem with the SQL query
      */
     public static void changePaid(Project activeProject, Statement statement) throws SQLException {
         // Asks the user what they would like set the total fee paid to
