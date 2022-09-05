@@ -1,9 +1,13 @@
 # Poised Project Management System
 
 A project management system for a small structural engineering firm using OOP.
-The program reads data from a database (sql file to recreate it has been included) to generate a list of projects on which
-a number of functions can be performed.
+The program reads data from a database (sql file to recreate it has been
+included) to generate a list of projects on which a number of functions can be
+performed.
 
+## The Database
+![ERD](PoisedPMS%20ERD.png "ERD")
+![Dependency Diagrams](Dependency%20Diagrams.png "Dependency Diagrams")
 ## Menu
 
 On start, the user is given the following menu:
