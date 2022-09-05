@@ -224,7 +224,7 @@ public class PoisedPMS {
             String userInput = menuInputScanner.nextLine();
             // If the user enters a, allows them to add a new project
             if ("a".equals(userInput)) {
-                newProject();
+                newProject(statement);
             }
             else if("s".equals(userInput)){
                 searchProject(statement);
@@ -638,9 +638,11 @@ public class PoisedPMS {
     /**
      * Creates a new Project object from user's inputs for attributes and adds it to a list.
      */
-    public static void newProject() {
-        // Increases project number count
-        projectNum++;
+    public static void newProject(Statement statement) throws SQLException{
+        // Increases project number count by one
+        ResultSet results = statement.executeQuery("SELECT MAX(PROJECT_NUM) FROM project;");
+        results.next();
+        projectNum = results.getInt(1) + 1;
         // Takes user inputs for attributes of the project
         Scanner input = new Scanner(System.in);
         System.out.println("What is the name of this project? If this is left blank, " +
@@ -650,8 +652,8 @@ public class PoisedPMS {
         String typeBuilding = input.nextLine();
         System.out.println("What is the address of the building?");
         String address = input.nextLine();
-        System.out.println("What is the ERF number of the project?");
-        String erfNum = input.nextLine();
+        String erfNum;
+        erfNum = inputERF(input);
         double cost;
         while (true) {
             System.out.println("What is the total cost of the project?");
@@ -668,6 +670,9 @@ public class PoisedPMS {
         }
         // Creates a new Building object
         Building building = new Building(typeBuilding, address, erfNum);
+        // Adds building to database
+        statement.executeUpdate("INSERT INTO building VALUES( \""
+                + erfNum + "\", \"" + address + "\", \""+typeBuilding+"\");");
         double amountPaid;
         while (true) {
             System.out.println("How much has the customer already paid?");
@@ -707,11 +712,11 @@ public class PoisedPMS {
         LocalDate completionDate = deadline;
         // Calls the newPerson method to generate information about person
         System.out.println("Please enter the details for the customer:");
-        Person customer = newPerson();
+        Person customer = newPerson(statement);
         System.out.println("Please enter the details for the architect");
-        Person architect = newPerson();
+        Person architect = newPerson(statement);
         System.out.println("Please enter the details for the contractor");
-        Person contractor = newPerson();
+        Person contractor = newPerson(statement);
 
         // If the project name was left blank, generates a project name
         if (projectName.equals("")) {
@@ -723,10 +728,34 @@ public class PoisedPMS {
         // Adds new project to list
         projectList.add(project);
         // Adds the project to database
-
-
+        statement.executeUpdate("INSERT INTO project VALUES("
+                + projectNum + ",\""+ projectName + "\",\"" + deadline + "\", NULL," + cost + ","
+                + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + customer.getId() + "\",\""
+                + architect.getId() + "\",\"" + contractor.getId() + "\");");
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
+    }
+
+    private static String inputERF(Scanner input) {
+        String erfNum;
+        while(true){
+            try{
+                System.out.println("What is the ERF number of the project?");
+                erfNum = input.nextLine();
+                if(erfNum.length() > 10){
+                    throw new TooManyCharactersException("You have entered too many characters!");
+                }
+                else{
+                    break;
+                }
+            }
+            catch (TooManyCharactersException e){
+                System.out.println("You have entered too many characters, ERF number should " +
+                        "only be up to 10 characters. Please try again.");
+                input.nextLine();
+            }
+        }
+        return erfNum;
     }
 
     /**
@@ -734,7 +763,7 @@ public class PoisedPMS {
      *
      * @return New Person object.
      */
-    public static Person newPerson() {
+    public static Person newPerson(Statement statement) throws SQLException {
         // Generates the role of the person using count
         String role = "";
         if (personCount == 0) {
@@ -748,7 +777,7 @@ public class PoisedPMS {
             personCount = 0;  // Resets personCount for next project
         }
         // Asks user for input and creates a new Person object
-        return newPersonInput(role);
+        return newPersonInput(role, statement);
     }
 
     /**
@@ -757,10 +786,25 @@ public class PoisedPMS {
      * @param role The role of the Person object.
      * @return new Person object.
      */
-    private static Person newPersonInput(String role) {
+    private static Person newPersonInput(String role, Statement statement) throws SQLException {
         Scanner input = new Scanner(System.in);
-        System.out.println("What is this person's ID number?");
-        String id = input.nextLine();
+        String id;
+        while(true){
+            try{
+                System.out.println("What is this person's ID number?");
+                id = input.nextLine();
+                if(id.length() > 5){
+                    throw new TooManyCharactersException("You have entered too many characters!");
+                }
+                else{
+                    break;
+                }
+            }
+            catch (TooManyCharactersException e){
+                System.out.println("You have entered too many characters, ID should only " +
+                        "be up to 5 characters. Please try again.");
+            }
+        }
         System.out.println("What is this person's first name?");
         String firstName = input.nextLine();
         System.out.println("What is this person's surname?");
@@ -771,7 +815,12 @@ public class PoisedPMS {
         String email = input.nextLine();
         System.out.println("What is this person's address?");
         String address = input.nextLine();
+        // Adds the person to databases
+        statement.executeUpdate("INSERT INTO " + role.toLowerCase() + " VALUES(\""
+                + id + "\",\"" + firstName + "\",\"" + surname + "\",\"" + phoneNum
+                + "\",\"" + email + "\",\"" + address + "\");");
         return new Person(role,id, firstName, surname, phoneNum, email, address);
+
     }
 
     /**
@@ -780,7 +829,7 @@ public class PoisedPMS {
      * @param statement the statement
      * @throws SQLException if there is an issue with the SQL query.
      */
-    public static void noProjects(Statement statement)throws SQLException{
+    public static void noProjects(Statement statement) throws SQLException{
         if(projectList.isEmpty()){
             System.out.println("There are currently no projects.");
             menu(statement);
