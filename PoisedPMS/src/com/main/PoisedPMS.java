@@ -752,8 +752,8 @@ public class PoisedPMS {
         // Adds the project to database
         statement.executeUpdate("INSERT INTO project VALUES("
                 + projectNum + ",\"" + projectName + "\",\"" + deadline + "\", NULL," + cost + ","
-                + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + architect.getId() +  "\",\""
-                + customer.getId() +  "\",\"" + contractor.getId() + "\");");
+                + amountPaid + ", FALSE" + ",\"" + erfNum + "\",\"" + architect.getId() + "\",\""
+                + customer.getId() + "\",\"" + contractor.getId() + "\");");
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
     }
@@ -771,13 +771,13 @@ public class PoisedPMS {
                 System.out.println("What is the ERF number of the project?");
                 erfNum = input.nextLine();
                 // Checks that ERF isn't already in use
-                for(Project project:projectList){
-                    if(project.getBuilding().getErfNum().equals(erfNum)){
+                for (Project project : projectList) {
+                    if (project.getBuilding().getErfNum().equals(erfNum)) {
                         throw new SQLIntegrityConstraintViolationException();
                     }
                 }
                 if (erfNum.length() > 10) {
-                    throw new TooManyCharactersException("You have entered too many characters!");
+                    throw new TooManyCharactersException();
                 } else {
                     break;
                 }
@@ -835,7 +835,7 @@ public class PoisedPMS {
                 id = input.nextLine();
                 // Checks that user hasn't entered more than 5 digits
                 if (id.length() > 5) {
-                    throw new TooManyCharactersException("You have entered too many characters!");
+                    throw new TooManyCharactersException();
                 }
                 // Checks that ID is not a duplicate by trying to create a record with it
                 statement.executeUpdate("INSERT INTO " + role.toLowerCase()
@@ -869,7 +869,6 @@ public class PoisedPMS {
                 + id + "\",\"" + firstName + "\",\"" + surname + "\",\"" + phoneNum
                 + "\",\"" + email + "\",\"" + address + "\");");
         return new Person(role, id, firstName, surname, phoneNum, email, address);
-
     }
 
     /**
