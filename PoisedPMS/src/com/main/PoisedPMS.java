@@ -1,17 +1,10 @@
 package com.main;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * The main class of the program.
@@ -68,11 +61,23 @@ public class PoisedPMS {
      *
      * @param args the input arguments
      */
-// Calls main method
     public static void main(String[] args) {
-        // Creates a new projects.txt text file
-        readWriteFile();
+        try{
+        // Connects to poisepms database
+        Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
+            "tom",
+        "Suss3x225!"
+);
+        // Creates a direct line from the database for queries
+        Statement statement = connection.createStatement();
+        readWriteDatabase(statement);
         menu();
+        }
+        // Prints the stack, if an SQLException occurs
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -85,64 +90,72 @@ public class PoisedPMS {
     }
 
     /**
-     * Reads from the projects.txt file and if one does not exist, creates it.
+     * Reads from the poisepms database and adds each row as projects to projectList.
      */
-    private static void readWriteFile() {
-        try {
-            File projectsFile = new File(PROJECTS_TXT);
-            // If a new file is created
-            if (projectsFile.createNewFile()) {
-                // Appends a line with the fields of the project and prints a confirmation
-                Files.write(Paths.get(PROJECTS_TXT), FIELD_HEADERS.getBytes(),
-                        StandardOpenOption.APPEND);
-                System.out.println("New projects.txt file has been created in" + PROJECTS_TXT +
-                        "directory.");
+    public static void readWriteDatabase(Statement statement) throws SQLException {
+        // Runs an SQL query selecting each row of the table
+        ResultSet projectResults = statement.executeQuery("SELECT * FROM project;");
+        LocalDate completeDate;
+        // Creates a second statement for use inside the method
+        Statement statement2 = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/poisepms?useSSL=false",
+        "tom",
+    "Suss3x225!"
+        ).createStatement();
+        while(projectResults.next()) {
+            projectNum = projectResults.getInt("PROJECT_NUM");
+            String projectName = projectResults.getString("PROJECT_NAME");
+            LocalDate deadline = projectResults.getDate("DEADLINE").toLocalDate();
+            try {
+                completeDate = projectResults.getDate("COMPLETE_DATE").toLocalDate();
             }
+            catch(NullPointerException e){
+                completeDate = deadline;
+            }
+            float totalCost = projectResults.getFloat("TOTAL_COST");
+            float amountPaid = projectResults.getFloat("AMOUNT_PAID");
+            boolean finalised = projectResults.getBoolean("FINALISED");
+            String erfNumber = projectResults.getString("ERF_NUMBER");
+            String customerID = projectResults.getString("CUSTOMER_ID");
+            String architectID = projectResults.getString("ARCHITECT_ID");
+            String contractorID = projectResults.getString("CONTRACTOR_ID");
+            ResultSet buildingResults = statement2.executeQuery("SELECT * FROM building WHERE " +
+                    "ERF_NUMBER=" + erfNumber + ";");
+            buildingResults.next();
+            Building building = new Building(buildingResults.getString("BUILDING_TYPE"),
+                    buildingResults.getString("BUILDING_ADDRESS"),
+                    buildingResults.getString("ERF_NUMBER"));
+            ResultSet customerResults = statement2.executeQuery("SELECT * FROM customer WHERE " +
+                    "CUSTOMER_ID=" + customerID + ";");
+            customerResults.next();
+            Person customer = new Person("Customer",
+                    customerResults.getString("CUSTOMER_FNAME"),
+                    customerResults.getString("CUSTOMER_LNAME"),
+                    customerResults.getString("CUSTOMER_PHONE"),
+                    customerResults.getString("CUSTOMER_EMAIL"),
+                    customerResults.getString("CUSTOMER_ADDRESS"));
+            ResultSet architectResults = statement2.executeQuery("SELECT * FROM architect WHERE " +
+                    "ARCHITECT_ID=" + architectID + ";");
+            architectResults.next();
+            Person architect = new Person("Architect",
+                    architectResults.getString("ARCHITECT_FNAME"),
+                    architectResults.getString("ARCHITECT_LNAME"),
+                    architectResults.getString("ARCHITECT_PHONE"),
+                    architectResults.getString("ARCHITECT_EMAIL"),
+                    architectResults.getString("ARCHITECT_ADDRESS"));
+            ResultSet contractorResults = statement2.executeQuery("SELECT * FROM CONTRACTOR WHERE" +
+                    " CONTRACTOR_ID=" + contractorID + ";");
+            contractorResults.next();
+            Person contractor = new Person("Contractor",
+                    contractorResults.getString("CONTRACTOR_FNAME"),
+                    contractorResults.getString("CONTRACTOR_LNAME"),
+                    contractorResults.getString("CONTRACTOR_PHONE"),
+                    contractorResults.getString("CONTRACTOR_EMAIL"),
+                    contractorResults.getString("CONTRACTOR_ADDRESS"));
+            Project project = new Project(projectNum, projectName, building, totalCost, amountPaid,
+                    deadline, completeDate, finalised, customer, architect, contractor);
+            projectList.add(project);
 
-            // If file already exists, adds each line as a project to projectList
-            else {
-                System.out.println("projects.txt file already exists. Reading from file.");
-                Scanner fileReader = new Scanner(projectsFile);
-                fileReader.nextLine();  // Skips the first line (fields)
-                while (fileReader.hasNext()) {
-                    String line = fileReader.nextLine();
-                    // Splits each line into a list of parameters and adds to a new ArrayList
-                    String[] projectParameters = line.split(",");
-                    ArrayList<String> projectParametersList = new ArrayList<>();
-                    Collections.addAll(projectParametersList, projectParameters);
-                    // Creates a project using the parameters given
-                    Building building = new Building(projectParametersList.get(2),
-                            projectParametersList.get(3), projectParametersList.get(4),
-                            Double.parseDouble(projectParametersList.get(5)));
-                    Person customer = new Person(projectParametersList.get(10),
-                            projectParametersList.get(11), projectParametersList.get(12),
-                            projectParametersList.get(13), projectParametersList.get(14),
-                            projectParametersList.get(15));
-                    Person architect = new Person(projectParametersList.get(16),
-                            projectParametersList.get(17), projectParametersList.get(18),
-                            projectParametersList.get(19), projectParametersList.get(20),
-                            projectParametersList.get(21));
-                    Person contractor = new Person(projectParametersList.get(22),
-                            projectParametersList.get(23), projectParametersList.get(24),
-                            projectParametersList.get(25), projectParametersList.get(26),
-                            projectParametersList.get(27));
-                    Project project = new Project(parseInt(projectParametersList.get(0)),
-                            projectParametersList.get(1), building,
-                            Double.parseDouble(projectParametersList.get(6)),
-                            LocalDate.parse(projectParametersList.get(7)),
-                            LocalDate.parse(projectParametersList.get(8)),
-                            Boolean.parseBoolean(projectParametersList.get(9)),
-                            customer, architect, contractor);
-                    // Adds project to projectList
-                    projectList.add(project);
-                }
-                // Closes the scanner
-                fileReader.close();
-            }
-        }
-        // If an error occurs, prints the stack
-        catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -188,10 +201,8 @@ public class PoisedPMS {
             else if ("f".equals(userInput)) {
                 finalise();
             }
-            // If user enters q, saves the project list to file and quits the program
+            // If user enters q,  quits the program
             else if ("q".equals(userInput)) {
-                // Rewrites the project txt file
-                updateTextFile();
                 System.out.println("Thank you for using the Poised Project Management System. " +
                         "Goodbye!");
                 System.exit(0);
@@ -346,24 +357,6 @@ public class PoisedPMS {
         return searchProjectMethod;
     }
 
-    /**
-     * Updates the projects.txt file using the projectsList data.
-     */
-    private static void updateTextFile() {
-        try {
-            Path getTextPath = Paths.get(PROJECTS_TXT);
-            Files.write(getTextPath, FIELD_HEADERS.getBytes());
-            for (Project project : projectList) {
-                Files.write(getTextPath,
-                        project.getAttributes().getBytes(),
-                        StandardOpenOption.APPEND);
-            }
-        }
-        // If an error occurs, prints the stack
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Views all the projects and prints them in an easy-to-read format.
@@ -602,12 +595,12 @@ public class PoisedPMS {
             }
         }
         // Creates a new Building object
-        Building building = new Building(typeBuilding, address, erfNum, cost);
-        double totalPaid;
+        Building building = new Building(typeBuilding, address, erfNum);
+        double amountPaid;
         while (true) {
             System.out.println("How much has the customer already paid?");
             try {
-                totalPaid = input.nextDouble();
+                amountPaid = input.nextDouble();
                 input.nextLine();
                 break;
             }
@@ -653,19 +646,12 @@ public class PoisedPMS {
             projectName = customer.getSurname() + " " + typeBuilding;
         }
         // Creates a new project object
-        Project project = new Project(projectNum, projectName, building,
-                totalPaid, deadline, completionDate, finalised, customer, architect, contractor);
+        Project project = new Project(projectNum, projectName, building, cost,
+                amountPaid, deadline, completionDate, finalised, customer, architect, contractor);
         // Adds new project to list
         projectList.add(project);
-        // Adds the project to text file
-        try {
-            Files.write(Paths.get(PROJECTS_TXT), project.getAttributes().getBytes(),
-                    StandardOpenOption.APPEND);
-        }
-        // If an error occurs, prints the stack
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Adds the project to database
+
 
         // Prints a confirmation that the project has been added successfully
         System.out.println("Project added to system. Returning to menu...");
@@ -767,7 +753,7 @@ public class PoisedPMS {
         // Sets the current date to the complete date
         projectList.get(finaliseChoice).setCompleteDate(LocalDate.now());
         // Calculates the amount the customer still has to pay
-        double stillToPay = projectList.get(finaliseChoice).getBuilding().getCost()
+        double stillToPay = projectList.get(finaliseChoice).getCost()
                 - projectList.get(finaliseChoice).getTotalPaid();
         // Prints an invoice if the amount still to pay is more than 0
         if (stillToPay > 0) {

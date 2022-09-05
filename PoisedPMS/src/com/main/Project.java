@@ -14,6 +14,7 @@ public class Project {
     private int projectNum;
     private String projectName;
     private Building building;
+    private double cost;
     private double totalPaid;
     private LocalDate deadline;
     private boolean finalised;
@@ -38,12 +39,13 @@ public class Project {
      * @param architect    the architect
      * @param contractor   the contractor
      */
-    public Project(int projectNum, String projectName, Building building, double totalPaid,
+    public Project(int projectNum, String projectName, Building building, double cost, double totalPaid,
                    LocalDate deadline, LocalDate completeDate, boolean finalised, Person customer,
                    Person architect, Person contractor) {
         this.setProjectNum(projectNum);
         this.setProjectName(projectName);
         this.setBuilding(building);
+        this.setCost(cost);
         this.setTotalPaid(totalPaid);
         this.setDeadline(deadline);
         this.setCompleteDate(completeDate);
@@ -112,20 +114,6 @@ public class Project {
     }
 
     /**
-     * Gets the values of each field and writes them to a string.
-     *
-     * @return the string with the values of each attribute.
-     */
-    public String getAttributes() {
-        String attributes;
-        attributes = "\n" + getProjectNum() + "," + getProjectName() + "," + building.getAttributes() + ","
-                + getTotalPaid() + "," + getDeadline() + "," + getCompleteDate() + "," + isFinalised() + ","
-                + customer.getAttributes() + "," + architect.getAttributes() + ","
-                + contractor.getAttributes();
-        return attributes;
-    }
-
-    /**
      * toString method.
      *
      * @return string
@@ -135,6 +123,7 @@ public class Project {
         String output = "Project Number: " + getProjectNum();
         output += "\nProject Name: " + getProjectName();
         output += getBuilding();
+        output += "\nTotal Cost: " + df.format(getCost());
         output += "\nAmount Paid: " + df.format(getTotalPaid());
         output += "\nDeadline: " + getDeadline();
         // If the project is finalised, adds the completion date
@@ -187,6 +176,24 @@ public class Project {
      */
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    /**
+     * Gets cost.
+     *
+     * @return the cost
+     */
+    public double getCost() {
+        return cost;
+    }
+
+    /**
+     * Sets cost.
+     *
+     * @param cost the cost
+     */
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     /**
