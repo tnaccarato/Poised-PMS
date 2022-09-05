@@ -1,9 +1,8 @@
 # Poised Project Management System
 
 A project management system for a small structural engineering firm using OOP.
-The program reads data from the projects.txt file (or creates it if it does not
-exist) and generates a list from it, allowing the user to perform a range of
-functions.
+The program reads data from a database to generate a list of projects on which
+a number of functions can be performed.
 
 ## Menu
 
@@ -43,7 +42,7 @@ contractor for the project
 - The name, telephone number, email address and physical address of the
 customer for the project
 
-This data is then appended to the projects.txt and projectList.
+This data is added as a new record to the database.
 
 ### View All Projects
 
@@ -63,24 +62,25 @@ past their due date.
 ### Change Due Date
 
 If the user selects 'cd', allows the user to choose a project number to change
-the deadline for, given the project number.
+the deadline for, given the project number, and updates the database.
 
 ### Change Amount Paid
 
 If the user selects 'cp', allows the user to change the amount the client has
-paid for, given the project number.
+paid for, given the project number, and updates the database.
 
 ### Update Contact Details
 
 If the user selects 'uc', allows them to change any of the contact details
-for a Person object of their choice, given the project number.
+for a Person object of their choice, given the project number, and updates the
+database.
 
 ### Finalise Projects
 
 If the user selects 'f', allows them to mark a project (given the project
-number)as finalised, adds the current date as the completion date, prints the
-amount the client still has to pay, and prints an invoice if there is still an
-amount to be paid.
+number) as finalised, adds the current date as the completion date, prints the
+amount the client still has to pay, updates the database, and prints an invoice
+if there is still an amount to be paid.
 
 ### Quit
 
